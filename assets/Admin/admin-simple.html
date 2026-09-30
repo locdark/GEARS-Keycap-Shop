@@ -1224,7 +1224,7 @@
         </div>
 
         <div style="display: flex; gap: 10px; margin-bottom: 20px; align-items: center;">
-          <input type="text" class="search-input" placeholder="🔍 Tìm kiếm..." style="flex: 1;">
+          <input type="text" class="search-input" placeholder=" Tìm kiếm..." style="flex: 1;">
           <button class="btn btn-primary" onclick="showPage('customers')">
             <i class="material-icons">search</i> Tìm kiếm
           </button>
@@ -1271,7 +1271,7 @@
         </div>
 
         <div style="display: flex; gap: 10px; margin-bottom: 20px; align-items: center;">
-          <input type="text" class="search-input" placeholder="🔍 Tìm kiếm..." style="flex: 1;">
+          <input type="text" class="search-input" placeholder=" Tìm kiếm..." style="flex: 1;">
           <button class="btn btn-primary" onclick="showPage('products')">
             <i class="material-icons">search</i> Tìm kiếm
           </button>
@@ -1313,7 +1313,7 @@
         </div>
 
         <div style="display: flex; gap: 10px; margin-bottom: 20px; align-items: center;">
-          <input type="text" class="search-input" placeholder="🔍 Tìm kiếm..." style="flex: 1;">
+          <input type="text" class="search-input" placeholder=" Tìm kiếm..." style="flex: 1;">
           <button class="btn btn-primary" onclick="showPage('orders')">
             <i class="material-icons">search</i> Tìm kiếm
           </button>
@@ -1397,7 +1397,7 @@
         </div>
 
         <div style="display: flex; gap: 10px; margin-bottom: 20px; align-items: center;">
-          <input type="text" class="search-input" placeholder="🔍 Tìm kiếm..." style="flex: 1;">
+          <input type="text" class="search-input" placeholder=" Tìm kiếm..." style="flex: 1;">
           <button class="btn btn-primary" onclick="showPage('imports')">
             <i class="material-icons">search</i> Tìm kiếm
           </button>
@@ -1464,7 +1464,7 @@
         </div>
 
         <div style="display: flex; gap: 10px; margin-bottom: 20px; align-items: center;">
-          <input type="text" class="search-input" placeholder="🔍 Tìm kiếm..." style="flex: 1;">
+          <input type="text" class="search-input" placeholder=" Tìm kiếm..." style="flex: 1;">
           <button class="btn btn-primary" onclick="showPage('pricing')">
             <i class="material-icons">search</i> Tìm kiếm
           </button>
@@ -1528,7 +1528,7 @@
         </div>
 
         <div style="display: flex; gap: 10px; margin-bottom: 20px; align-items: center;">
-          <input type="text" class="search-input" placeholder="🔍 Tìm kiếm..." style="flex: 1;">
+          <input type="text" class="search-input" placeholder=" Tìm kiếm..." style="flex: 1;">
           <button class="btn btn-primary" onclick="showPage('inventory')">
             <i class="material-icons">search</i> Tìm kiếm
           </button>
@@ -2634,7 +2634,7 @@
 
     // Delete Functions with Confirmation
     function deleteUser(index) {
-      if (confirm('⚠️ Bạn có chắc chắn muốn xóa khách hàng này?\n\nThao tác này không thể hoàn tác!')) {
+      if (confirm('️ Bạn có chắc chắn muốn xóa khách hàng này?\n\nThao tác này không thể hoàn tác!')) {
         showLoading();
         setTimeout(() => {
           hideLoading();
@@ -2644,7 +2644,7 @@
     }
 
     function deleteProduct(id) {
-      if (confirm('⚠️ Bạn có chắc chắn muốn xóa sản phẩm này?\n\nThao tác này không thể hoàn tác!')) {
+      if (confirm('️ Bạn có chắc chắn muốn xóa sản phẩm này?\n\nThao tác này không thể hoàn tác!')) {
         showLoading();
         setTimeout(() => {
           hideLoading();
@@ -2654,7 +2654,7 @@
     }
 
     function deleteCategory(id) {
-      if (confirm('⚠️ Bạn có chắc chắn muốn xóa danh mục này?\n\nThao tác này không thể hoàn tác!')) {
+      if (confirm('️ Bạn có chắc chắn muốn xóa danh mục này?\n\nThao tác này không thể hoàn tác!')) {
         showLoading();
         setTimeout(() => {
           hideLoading();
@@ -2667,7 +2667,7 @@
     
     // Reset mật khẩu
     function resetPassword(index) {
-      if (confirm('⚠️ Reset mật khẩu về "123456" cho tài khoản này?')) {
+      if (confirm('️ Reset mật khẩu về "123456" cho tài khoản này?')) {
         showLoading();
         setTimeout(() => {
           hideLoading();
@@ -2680,7 +2680,7 @@
     function toggleUserStatus(index) {
       const action = Math.random() > 0.5 ? 'khóa' : 'mở khóa';
       
-      if (confirm(`⚠️ Bạn có chắc chắn muốn ${action} tài khoản này?`)) {
+      if (confirm(`️ Bạn có chắc chắn muốn ${action} tài khoản này?`)) {
         showLoading();
         setTimeout(() => {
           hideLoading();
@@ -2987,7 +2987,7 @@
     }
 
     function completeImport(index) {
-      if (confirm('⚠️ Hoàn thành phiếu nhập này? Sau khi hoàn thành sẽ không thể chỉnh sửa!')) {
+      if (confirm('️ Hoàn thành phiếu nhập này? Sau khi hoàn thành sẽ không thể chỉnh sửa!')) {
         showLoading();
         setTimeout(() => {
           hideLoading();
@@ -3083,7 +3083,7 @@
     }
 
     function applyCategoryProfit(typeId) {
-      if (confirm(`⚠️ Áp dụng tỉ lệ lợi nhuận cho tất cả sản phẩm trong danh mục này?`)) {
+      if (confirm(`️ Áp dụng tỉ lệ lợi nhuận cho tất cả sản phẩm trong danh mục này?`)) {
         showLoading();
         setTimeout(() => {
           hideLoading();

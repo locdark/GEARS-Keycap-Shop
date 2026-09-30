@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thống Kê Báo Cáo - GEARS Keycap Shop</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700;800&family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css">
+    <link rel="shortcut icon" href="../img/ShortCut_Icon.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+    <!-- Dark Obsidian Theme -->
+    <link rel="stylesheet" href="./css/admin-obsidian.css">
+</head>
+<body>
+
+    <!-- 1. SIDEBAR PHÍA TRÁI (DARK ERP STYLE) -->
+    <aside class="admin-sidebar">
+        <!-- Brand Header -->
+        <div class="sidebar-brand">
+            <div class="sidebar-brand-title">
+                <i class="fas fa-keyboard"></i>
+                <span>QUẢN TRỊ HỆ THỐNG</span>
+            </div>
+            <span class="version-badge">v2.6</span>
+            <button class="sidebar-toggle-btn" title="Thu gọn / Mở rộng sidebar" type="button">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+
+        <!-- Quick Actions (Được đưa lên trên ngay sau logo) -->
+        <div class="sidebar-quick-actions" style="padding:8px 12px;display:flex;gap:6px;border-bottom:1px solid var(--border-color,#232738);">
+            <a href="../../index.html" target="_blank" class="btn-sidebar-store" style="flex:1;padding:7px 10px;font-size:12px;gap:6px;" title="Xem cửa hàng khách hàng">
+                <i class="fas fa-store"></i> <span class="sidebar-link-text">Web KH</span>
+            </a>
+            <button type="button" class="btn-sidebar-logout" style="flex:1;padding:7px 10px;font-size:12px;gap:6px;" onclick="AdminCommon.logoutAdmin()" title="Đăng xuất khỏi hệ thống">
+                <i class="fas fa-sign-out-alt"></i> <span class="sidebar-link-text">Đăng Xuất</span>
+            </button>
+        </div>
+
+        <!-- Navigation Menu -->
+        <div class="sidebar-nav">
+            <!-- Nhóm 1: Nghiệp Vụ Bán Hàng -->
+            <div class="nav-section-title">
+                <i class="fas fa-bolt"></i> Nghiệp Vụ Bán Hàng
+            </div>
+            <ul class="sidebar-menu">
+                <li class="sidebar-item">
+                    <a href="dashboard.html" class="sidebar-link">
+                        <div class="sidebar-link-left">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span class="sidebar-link-text">Tổng Quan Dashboard</span>
+                        </div>
+                        <span class="sidebar-badge badge-live">Live</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="pos.html" class="sidebar-link">
+                        <div class="sidebar-link-left">
+                            <i class="fas fa-cash-register"></i>
+                            <span class="sidebar-link-text">Điểm Bán Lẻ (POS)</span>
+                        </div>
+                        <span class="sidebar-badge badge-hot">HOT</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="orders.html" class="sidebar-link">
+                        <div class="sidebar-link-left">
+                            <i class="fas fa-receipt"></i>
+                            <span class="sidebar-link-text">Quản Lý Đơn Hàng</span>
+                        </div>
+                        <span class="sidebar-badge badge-new" id="sidebar-order-count">Đơn</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="products.html" class="sidebar-link">
+                        <div class="sidebar-link-left">
+                            <i class="fas fa-cubes"></i>
+                            <span class="sidebar-link-text">Sản Phẩm Keycap</span>
+                        </div>
+                        <span class="sidebar-badge badge-count" id="sidebar-product-count">100+</span>
+                    </a>
+                </li>
+            </ul>
+
+            <!-- Nhóm 2: Đối Tác & Nhân Sự -->
+            <div class="nav-section-title">
+                <i class="fas fa-users-cog"></i> Đối Tác &amp; Nhân Sự
+            </div>
+            <ul class="sidebar-menu">
+                <li class="sidebar-item">
+                    <a href="suppliers.html" class="sidebar-link">
+                        <div class="sidebar-link-left">
+                            <i class="fas fa-truck-loading"></i>
+                            <span class="sidebar-link-text">Nhà Cung Cấp</span>
+                        </div>
+                        <span class="sidebar-badge badge-tech">Partner</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="customers.html" class="sidebar-link">
+                        <div class="sidebar-link-left">
+                            <i class="fas fa-users"></i>
+                            <span class="sidebar-link-text">Khách Hàng</span>
+                        </div>
+                        <span class="sidebar-badge badge-tech">CRM</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="employees.html" class="sidebar-link">
+                        <div class="sidebar-link-left">
+                            <i class="fas fa-user-shield"></i>
+                            <span class="sidebar-link-text">Nhân Viên &amp; Phân Quyền</span>
+                        </div>
+                        <span class="sidebar-badge badge-tech">Auth</span>
+                    </a>
+                </li>
+            </ul>
+
+            <!-- Nhóm 3: Báo Cáo & Cấu Hình -->
+            <div class="nav-section-title">
+                <i class="fas fa-sliders-h"></i> Báo Cáo &amp; Cấu Hình
+            </div>
+            <ul class="sidebar-menu">
+                <li class="sidebar-item active">
+                    <a href="reports.html" class="sidebar-link active">
+                        <div class="sidebar-link-left">
+                            <i class="fas fa-chart-line"></i>
+                            <span class="sidebar-link-text">Thống Kê Báo Cáo</span>
+                        </div>
+                        <span class="sidebar-badge badge-tech">Chart</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="database.html" class="sidebar-link">
+                        <div class="sidebar-link-left">
+                            <i class="fas fa-database" style="color: #10b981;"></i>
+                            <span class="sidebar-link-text">Cấu Hình CSDL (Navicat)</span>
+                        </div>
+                        <span class="sidebar-badge badge-tech" style="background: rgba(16,185,129,0.25); color: #34d399;">.env</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="settings.html" class="sidebar-link">
+                        <div class="sidebar-link-left">
+                            <i class="fas fa-cog"></i>
+                            <span class="sidebar-link-text">Cấu Hình Website</span>
+                        </div>
+                        <span class="sidebar-badge badge-new">Logo</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="/so-do-canvas" target="_blank" class="sidebar-link">
+                        <div class="sidebar-link-left">
+                            <i class="fas fa-project-diagram"></i>
+                            <span class="sidebar-link-text">Sơ Đồ PTTKHDT</span>
+                        </div>
+                        <span class="sidebar-badge badge-tech">UML</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </aside>
+
+    <!-- 2. MAIN WRAPPER -->
+    <div class="admin-main-wrapper">
+        <header class="admin-topbar">
+            <div class="topbar-breadcrumbs">
+                <span>Hệ Thống</span>
+                <i class="fas fa-chevron-right" style="font-size: 10px; color: var(--text-muted);"></i>
+                <span>Báo Cáo & Thiết Lập</span>
+                <i class="fas fa-chevron-right" style="font-size: 10px; color: var(--text-muted);"></i>
+                <strong>Thống Kê Báo Cáo Doanh Thu</strong>
+            </div>
+
+            <div class="topbar-actions">
+                <div class="status-pill">
+                    <span class="status-dot"></span>
+                    <span>Port 3333 Online</span>
+                </div>
+                <div class="user-profile-badge">
+                    <div class="user-avatar-mini" id="admin-user-avatar">AD</div>
+                    <div>
+                        <div style="font-size: 12.5px; font-weight: 700; color: #fff;" id="admin-user-name">Nguyễn Công Danh</div>
+                        <div style="font-size: 11px; color: var(--text-muted);">Quản Trị Viên (SGU)</div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main class="dashboard-content">
+            <!-- 3 Khối Chỉ Số KPI Tài Chính Cốt Lõi -->
+            <section class="kpi-grid" style="grid-template-columns: repeat(3, 1fr);">
+                <!-- 1. Doanh thu -->
+                <div class="kpi-card kpi-revenue">
+                    <div class="kpi-header">
+                        <span class="kpi-title">Doanh Thu Bán Hàng</span>
+                        <div class="kpi-icon-wrap" style="background: rgba(16, 185, 129, 0.15); color: #10b981;">
+                            <i class="fas fa-hand-holding-usd"></i>
+                        </div>
+                    </div>
+                    <div class="kpi-value" id="stat-revenue" style="color: #10b981;">0 đ</div>
+                    <div class="kpi-footer">
+                        <span style="color: #10b981; font-weight: 700;"><i class="fas fa-arrow-up"></i> +18.4%</span>
+                        <span>Tổng thu đơn hoàn tất</span>
+                    </div>
+                </div>
+
+                <!-- 2. Doanh số -->
+                <div class="kpi-card kpi-orders">
+                    <div class="kpi-header">
+                        <span class="kpi-title">Doanh Số Keycap Bán Ra</span>
+                        <div class="kpi-icon-wrap" style="background: rgba(59, 130, 246, 0.15); color: #3b82f6;">
+                            <i class="fas fa-box-open"></i>
+                        </div>
+                    </div>
+                    <div class="kpi-value" id="stat-sales-volume" style="color: #3b82f6;">0 chiếc</div>
+                    <div class="kpi-footer">
+                        <span style="color: #60a5fa; font-weight: 700;"><i class="fas fa-receipt"></i> Đơn hàng: <strong id="stat-orders-count">0</strong></span>
+                        <span>POS & Online</span>
+                    </div>
+                </div>
+
+                <!-- 3. Lợi nhuận -->
+                <div class="kpi-card kpi-products">
+                    <div class="kpi-header">
+                        <span class="kpi-title">Lợi Nhuận Gộp Ước Tính</span>
+                        <div class="kpi-icon-wrap" style="background: rgba(245, 158, 11, 0.15); color: #f59e0b;">
+                            <i class="fas fa-chart-pie"></i>
+                        </div>
+                    </div>
+                    <div class="kpi-value" id="stat-profit" style="color: #f59e0b;">0 đ</div>
+                    <div class="kpi-footer">
+                        <span style="color: #f59e0b; font-weight: 700;">Tỷ suất: <span id="stat-profit-margin">0%</span></span>
+                        <span>Doanh thu trừ giá vốn</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Khối Biểu Đồ Phân Tích (2 Cột) -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px;">
+                <!-- Biểu đồ Doanh thu & Lợi nhuận -->
+                <div class="detail-card" style="margin-bottom: 0;">
+                    <div class="section-header-styled">
+                        <h3><span class="bar-indicator" style="background-color: var(--accent-green);"></span> Biểu Đồ Doanh Thu & Lợi Nhuận</h3>
+                        <span class="sidebar-badge badge-live">7 ngày gần nhất</span>
+                    </div>
+                    <div style="position: relative; height: 280px;">
+                        <canvas id="revenueChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Biểu đồ Phân bổ Doanh số Thể loại Keycap -->
+                <div class="detail-card" style="margin-bottom: 0;">
+                    <div class="section-header-styled">
+                        <h3><span class="bar-indicator" style="background-color: var(--accent-purple);"></span> Phân Bổ Doanh Số Theo Thể Loại Keycap</h3>
+                        <span class="sidebar-badge badge-tech">Thị phần danh mục</span>
+                    </div>
+                    <div style="position: relative; height: 280px;">
+                        <canvas id="categoryChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Khối Bảng Top 5 Sản Phẩm Bán Chạy Nhất -->
+            <div class="detail-card">
+                <div class="section-header-styled">
+                    <h3><span class="bar-indicator" style="background-color: var(--accent-orange);"></span> Top 5 Sản Phẩm Keycap Bán Chạy Nhất</h3>
+                    <button id="btn-export-report" class="btn-tech btn-tech-excel">
+                        <i class="fas fa-file-excel"></i> Xuất Báo Cáo Excel
+                    </button>
+                </div>
+
+                <div class="table-responsive-dark">
+                    <table id="top-products-table" class="table-dark-tech">
+                        <thead>
+                            <tr>
+                                <th style="width: 100px;">Thứ Hạng</th>
+                                <th>Tên Sản Phẩm Keycap</th>
+                                <th style="width: 130px;">Danh Mục</th>
+                                <th style="width: 140px;">Số Lượng Đã Bán</th>
+                                <th style="width: 150px;">Tổng Doanh Thu</th>
+                                <th style="width: 160px;">Lợi Nhuận Đem Lại</th>
+                            </tr>
+                        </thead>
+                        <tbody id="top-products-tbody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- 3. FLOATING QUICK DOCK PHÍA PHẢI -->
+    <div class="floating-action-dock">
+        <a href="dashboard.html" class="dock-btn" title="Dashboard">
+            <i class="fas fa-tachometer-alt"></i>
+        </a>
+        <a href="pos.html" class="dock-btn" title="Điểm bán lẻ POS">
+            <i class="fas fa-cash-register"></i>
+        </a>
+        <a href="orders.html" class="dock-btn" title="Quản lý Đơn hàng">
+            <i class="fas fa-receipt"></i>
+        </a>
+        <a href="products.html" class="dock-btn" title="Quản lý Sản phẩm">
+            <i class="fas fa-cubes"></i>
+        </a>
+        <a href="reports.html" class="dock-btn" style="background: var(--accent-purple); color: #fff;" title="Thống kê Báo cáo">
+            <i class="fas fa-chart-line"></i>
+        </a>
+        <a href="settings.html" class="dock-btn" title="Cấu hình Website & Logo">
+            <i class="fas fa-sliders-h"></i>
+        </a>
+        <a href="../../SO-DO-THIET-KE-PTTKHDT.md" target="_blank" class="dock-btn" title="Sơ đồ thiết kế PTTKHDT">
+            <i class="fas fa-project-diagram"></i>
+        </a>
+        <a href="../../index.html" target="_blank" class="dock-btn" title="Xem Cửa hàng Khách hàng">
+            <i class="fas fa-store"></i>
+        </a>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <script src="../scripts/keycap-dataset-100.js"></script>
+    <script src="../scripts/modules/GearsApp.js"></script>
+    <script src="./script/admin-common.js"></script>
+    <script src="./script/reports.js"></script>
+</body>
+</html>

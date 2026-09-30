@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css">
+    <link rel="shortcut icon" href="../img/ShortCut_Icon.png">
+    <link rel="stylesheet" href="../css/Base.css">
+    <link rel="stylesheet" href="./css/style.css">
+    <title>Đăng Nhập - Hệ Thống Quản Lý Bán Keycap GEARS</title>
+    <style>
+        body {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Quicksand', sans-serif;
+            padding: 20px;
+        }
+        .login-card {
+            background: rgba(30, 41, 59, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(16px);
+            border-radius: 20px;
+            padding: 40px;
+            width: 100%;
+            max-width: 440px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+            animation: AP_FadeIn 0.4s ease;
+        }
+        .login-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .brand-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 163, 16, 0.15);
+            color: #ffa310;
+            padding: 8px 18px;
+            border-radius: 30px;
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            border: 1px solid rgba(255, 163, 16, 0.3);
+        }
+        .login-title {
+            color: #fff;
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin: 0 0 6px 0;
+        }
+        .login-subtitle {
+            color: #94a3b8;
+            font-size: 1.3rem;
+            margin: 0;
+        }
+        .form-group-custom {
+            margin-bottom: 20px;
+        }
+        .form-group-custom label {
+            display: block;
+            color: #cbd5e1;
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .input-with-icon {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        .input-with-icon i.input-icon {
+            position: absolute;
+            left: 14px;
+            color: #64748b;
+            font-size: 1.5rem;
+        }
+        .input-with-icon input {
+            width: 100%;
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #fff;
+            padding: 14px 44px 14px 42px;
+            border-radius: 10px;
+            font-size: 1.4rem;
+            outline: none;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+        .input-with-icon input:focus {
+            border-color: #ffa310;
+            box-shadow: 0 0 0 3px rgba(255, 163, 16, 0.2);
+        }
+        .toggle-password {
+            position: absolute;
+            right: 14px;
+            color: #94a3b8;
+            cursor: pointer;
+            font-size: 1.5rem;
+            transition: color 0.2s;
+        }
+        .toggle-password:hover {
+            color: #ffa310;
+        }
+        .btn-submit-login {
+            width: 100%;
+            background: linear-gradient(135deg, #ffa310, #ff8400);
+            color: #fff;
+            border: none;
+            padding: 14px;
+            border-radius: 10px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.25s;
+            margin-top: 10px;
+            box-shadow: 0 4px 15px rgba(255, 163, 16, 0.35);
+        }
+        .btn-submit-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 163, 16, 0.45);
+        }
+        .account-hint-box {
+            margin-top: 25px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px dashed rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            padding: 14px;
+            font-size: 1.25rem;
+            color: #cbd5e1;
+        }
+        .account-chip {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 4px 8px;
+            border-radius: 6px;
+            cursor: pointer;
+            color: #ffa310;
+            font-weight: 600;
+            display: inline-block;
+            margin: 3px 2px;
+        }
+        .account-chip:hover {
+            background: rgba(255, 163, 16, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="login-card">
+        <div class="login-header">
+            <div class="brand-badge">
+                <i class="fas fa-keyboard"></i> GEARS KEYCAP SHOP
+            </div>
+            <h2 class="login-title">Hệ Thống Đăng Nhập</h2>
+            <p class="login-subtitle">Phân hệ Quản trị & Bán hàng (PTTKHDT)</p>
+        </div>
+
+        <!-- Hộp thông báo lỗi -->
+        <div id="loginAlertBox" style="display: none; padding: 12px 14px; border-radius: 8px; font-size: 1.3rem; margin-bottom: 16px; background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; color: #fca5a5;">
+            <i class="fas fa-circle-exclamation"></i> <span id="loginAlertText"></span>
+        </div>
+
+        <form id="loginForm" novalidate>
+            <div class="form-group-custom">
+                <label for="username">Tên tài khoản hoặc Email:</label>
+                <div class="input-with-icon">
+                    <i class="fas fa-user input-icon"></i>
+                    <input type="text" id="username" placeholder="Nhập username hoặc email..." autocomplete="username">
+                </div>
+                <small id="userError" style="color: #f87171; font-size: 1.2rem; display: none; margin-top: 4px; font-weight: 500;"></small>
+            </div>
+
+            <div class="form-group-custom">
+                <label for="password">Mật khẩu:</label>
+                <div class="input-with-icon">
+                    <i class="fas fa-lock input-icon"></i>
+                    <input type="password" id="password" placeholder="Nhập mật khẩu..." autocomplete="current-password">
+                    <i class="fas fa-eye toggle-password" id="togglePasswordBtn" title="Hiển thị/ẩn mật khẩu"></i>
+                </div>
+                <small id="passError" style="color: #f87171; font-size: 1.2rem; display: none; margin-top: 4px; font-weight: 500;"></small>
+            </div>
+
+            <button type="submit" class="btn-submit-login">
+                <i class="fas fa-sign-in-alt"></i> Đăng Nhập
+            </button>
+        </form>
+
+        <div style="text-align: center; margin-top: 20px;">
+            <a href="../../index.html" style="color: #94a3b8; font-size: 1.25rem; text-decoration: none;">
+                <i class="fas fa-arrow-left"></i> Quay lại Web Khách hàng
+            </a>
+        </div>
+    </div>
+
+    <script src="../scripts/keycap-dataset-100.js"></script>
+    <script src="../scripts/modules/GearsApp.js"></script>
+    <script src="./script/admin-common.js"></script>
+    <script>
+        // Ẩn / Hiện mật khẩu
+        const toggleBtn = document.getElementById('togglePasswordBtn');
+        const passInput = document.getElementById('password');
+        toggleBtn.addEventListener('click', () => {
+            if (passInput.type === 'password') {
+                passInput.type = 'text';
+                toggleBtn.classList.replace('fa-eye', 'fa-eye-slash');
+            } else {
+                passInput.type = 'password';
+                toggleBtn.classList.replace('fa-eye-slash', 'fa-eye');
+            }
+        });
+
+        // Điền nhanh tài khoản mẫu
+        function fillLogin(u, p) {
+            document.getElementById('username').value = u;
+            document.getElementById('password').value = p;
+            clearErrors();
+        }
+
+        function clearErrors() {
+            document.getElementById('loginAlertBox').style.display = 'none';
+            document.getElementById('userError').style.display = 'none';
+            document.getElementById('passError').style.display = 'none';
+            document.getElementById('username').style.borderColor = 'rgba(255, 255, 255, 0.1)';
+            document.getElementById('password').style.borderColor = 'rgba(255, 255, 255, 0.1)';
+        }
+
+        // Xử lý submit và kiểm tra ô nhập
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            clearErrors();
+
+            const usernameInput = document.getElementById('username');
+            const passwordInput = document.getElementById('password');
+            const alertBox = document.getElementById('loginAlertBox');
+            const alertText = document.getElementById('loginAlertText');
+            const userErr = document.getElementById('userError');
+            const passErr = document.getElementById('passError');
+
+            const u = usernameInput.value.trim();
+            const p = passwordInput.value.trim();
+
+            let hasError = false;
+
+            // Kiểm tra rỗng ô tài khoản
+            if (!u) {
+                usernameInput.style.borderColor = '#ef4444';
+                userErr.innerText = 'Vui lòng nhập tên tài khoản hoặc email!';
+                userErr.style.display = 'block';
+                if (!hasError) usernameInput.focus();
+                hasError = true;
+            }
+
+            // Kiểm tra rỗng ô mật khẩu
+            if (!p) {
+                passwordInput.style.borderColor = '#ef4444';
+                passErr.innerText = 'Vui lòng nhập mật khẩu!';
+                passErr.style.display = 'block';
+                if (!hasError) passwordInput.focus();
+                hasError = true;
+            }
+
+            if (hasError) return;
+
+            // Khởi tạo hệ thống nếu chưa có dữ liệu
+            if (window.AdminCommon && window.AdminCommon.initializeSystemData) {
+                window.AdminCommon.initializeSystemData();
+            }
+
+            const employees = AdminCommon.getLocalStorage('employees') || [];
+            const emp = employees.find(e => (e.username.toLowerCase() === u.toLowerCase() || (e.email && e.email.toLowerCase() === u.toLowerCase())) && e.password === p);
+
+            if (emp) {
+                if (emp.status === 'locked') {
+                    alertText.innerText = 'Tài khoản nhân viên này đang bị KHÓA! Vui lòng liên hệ Quản trị viên hệ thống.';
+                    alertBox.style.display = 'block';
+                    AdminCommon.showToast('Tài khoản đã bị khóa!', 'error');
+                    return;
+                }
+
+                // Lưu đồng bộ cả localStorage và sessionStorage để không mất session giữa các tab
+                AdminCommon.setLocalStorage('currentAdminUser', emp);
+                AdminCommon.setLocalStorage('clientLoggedInUser', emp);
+                if (typeof sessionStorage !== 'undefined') {
+                    sessionStorage.setItem('currentAdminUser', JSON.stringify(emp));
+                    sessionStorage.setItem('clientLoggedInUser', JSON.stringify(emp));
+                }
+
+                AdminCommon.showToast(`Đăng nhập thành công! Xin chào ${emp.name} (${emp.roleName || emp.role})`, 'success');
+
+                setTimeout(() => {
+                    if (emp.role === 'pos') {
+                        window.location.href = 'pos.html';
+                    } else {
+                        window.location.href = 'dashboard.html';
+                    }
+                }, 600);
+                return;
+            }
+
+            // Kiểm tra xem có phải tài khoản khách hàng hoặc admin trong bảng user không
+            const customers = AdminCommon.getLocalStorage('user') || [];
+            const cust = customers.find(c => (c.username.toLowerCase() === u.toLowerCase() || (c.gmail && c.gmail.toLowerCase() === u.toLowerCase())) && c.password === p);
+
+            if (cust) {
+                if (cust.userType === 'admin' || cust.username === 'admin') {
+                    cust.role = 'admin';
+                    cust.roleName = cust.roleName || 'Quản Trị Viên (Admin)';
+                    AdminCommon.setLocalStorage('currentAdminUser', cust);
+                    AdminCommon.setLocalStorage('clientLoggedInUser', cust);
+                    if (typeof sessionStorage !== 'undefined') {
+                        sessionStorage.setItem('currentAdminUser', JSON.stringify(cust));
+                        sessionStorage.setItem('clientLoggedInUser', JSON.stringify(cust));
+                    }
+                    AdminCommon.showToast(`Chào mừng Quản trị viên ${cust.name}! Đang chuyển hướng...`, 'success');
+                    setTimeout(() => {
+                        window.location.href = 'dashboard.html';
+                    }, 600);
+                    return;
+                }
+
+                AdminCommon.setLocalStorage('clientLoggedInUser', cust);
+                if (typeof sessionStorage !== 'undefined') {
+                    sessionStorage.setItem('clientLoggedInUser', JSON.stringify(cust));
+                }
+                AdminCommon.showToast(`Chào mừng ${cust.name || cust.username}! Đang chuyển sang trang Cửa Hàng...`, 'success');
+                setTimeout(() => {
+                    window.location.href = '../../index.html';
+                }, 700);
+                return;
+            }
+
+            // Nếu sai tài khoản hoặc mật khẩu
+            alertText.innerText = 'Tên tài khoản hoặc mật khẩu không chính xác! Vui lòng thử lại.';
+            alertBox.style.display = 'block';
+            usernameInput.style.borderColor = '#ef4444';
+            passwordInput.style.borderColor = '#ef4444';
+            AdminCommon.showToast('Tên tài khoản hoặc mật khẩu không chính xác!', 'error');
+        });
+
+        // Bấm phím Enter để đăng nhập ngay lập tức
+        ['username', 'password'].forEach(id => {
+            const inp = document.getElementById(id);
+            if (inp) {
+                inp.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        const form = document.getElementById('loginForm');
+                        if (form) {
+                            form.dispatchEvent(new Event('submit', { cancelable: true }));
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

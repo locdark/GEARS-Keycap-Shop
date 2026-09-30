@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản Lý Nhân Viên & Phân Quyền - GEARS Keycap Shop</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700;800&family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css">
+    <link rel="shortcut icon" href="../img/ShortCut_Icon.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+    <!-- Dark Obsidian Theme -->
+    <link rel="stylesheet" href="./css/admin-obsidian.css">
+</head>
+<body>
+
+    <!-- 1. SIDEBAR PHIA TRAI (DARK ERP STYLE) -->
+    <aside class="admin-sidebar">
+        <!-- Brand Header -->
+        <div class="sidebar-brand">
+            <div class="sidebar-brand-title">
+                <i class="fas fa-keyboard"></i>
+                <span>QUẢN TRỊ HỆ THỐNG</span>
+            </div>
+            <span class="version-badge">v2.6</span>
+            <button class="sidebar-toggle-btn" title="Thu gọn / Mở rộng sidebar" type="button">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+
+        <!-- Quick Actions (Đưa lên trên ngay sau logo) -->
+        <div class="sidebar-quick-actions" style="padding:8px 12px;display:flex;gap:6px;border-bottom:1px solid var(--border-color,#232738);">
+            <a href="../../index.html" target="_blank" class="btn-sidebar-store" style="flex:1;padding:7px 10px;font-size:12px;gap:6px;" title="Xem cửa hàng khách hàng">
+                <i class="fas fa-store"></i> <span class="sidebar-link-text">Web KH</span>
+            </a>
+            <button type="button" class="btn-sidebar-logout" style="flex:1;padding:7px 10px;font-size:12px;gap:6px;" onclick="AdminCommon.logoutAdmin()" title="Đăng xuất khỏi hệ thống">
+                <i class="fas fa-sign-out-alt"></i> <span class="sidebar-link-text">Đăng Xuất</span>
+            </button>
+        </div>
+
+        <!-- Navigation Menu -->
+        <div class="sidebar-nav">
+            <!-- Nhóm 1: Nghiệp Vụ Bán Hàng -->
+            <div class="nav-section-title">
+                <i class="fas fa-bolt"></i> Nghiệp Vụ Bán Hàng
+            </div>
+            <ul class="sidebar-menu">
+                <li class="sidebar-item">
+                    <a href="dashboard.html" class="sidebar-link">
+                        <div class="sidebar-link-left">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span class="sidebar-link-text">Tổng Quan Dashboard</span>
+                        </div>
+                        <span class="sidebar-badge badge-live">Live</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="pos.html" class="sidebar-link">
+                        <div class="sidebar-link-left">
+                            <i class="fas fa-cash-register"></i>
+                            <span class="sidebar-link-text">Điểm Bán Lẻ (POS)</span>
+                        </div>
+                        <span class="sidebar-badge badge-hot">HOT</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="orders.html" class="sidebar-link">
+                        <div class="sidebar-link-left">
+                            <i class="fas fa-receipt"></i>
+                            <span class="sidebar-link-text">Quản Lý Đơn Hàng</span>
+                        </div>
+                        <span class="sidebar-badge badge-new" id="sidebar-order-count">5 Đơn</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="products.html" class="sidebar-link">
+                        <div class="sidebar-link-left">
+                            <i class="fas fa-cubes"></i>
+                            <span class="sidebar-link-text">Sản Phẩm Keycap</span>
+                        </div>
+                        <span class="sidebar-badge badge-count" id="sidebar-product-count">100+</span>
+                    </a>
+                </li>
+            </ul>
+
+            <!-- Nhóm 2: Đối Tác & Nhân Sự -->
+            <div class="nav-section-title">
+                <i class="fas fa-users-cog"></i> Đối Tác &amp; Nhân Sự
+            </div>
+            <ul class="sidebar-menu">
+                <li class="sidebar-item">
+                    <a href="suppliers.html" class="sidebar-link">
+                        <div class="sidebar-link-left">
+                            <i class="fas fa-truck-loading"></i>
+                            <span class="sidebar-link-text">Nhà Cung Cấp</span>
+                        </div>
+                        <span class="sidebar-badge badge-tech">Partner</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="customers.html" class="sidebar-link">
+                        <div class="sidebar-link-left">
+                            <i class="fas fa-users"></i>
+                            <span class="sidebar-link-text">Khách Hàng</span>
+                        </div>
+                        <span class="sidebar-badge badge-tech">CRM</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="employees.html" class="sidebar-link active">
+                        <div class="sidebar-link-left">
+                            <i class="fas fa-user-shield"></i>
+                            <span class="sidebar-link-text">Nhân Viên &amp; Phân Quyền</span>
+                        </div>
+                        <span class="sidebar-badge badge-tech">Auth</span>
+                    </a>
+                </li>
+            </ul>
+
+            <!-- Nhóm 3: Báo Cáo & Cấu Hình -->
+            <div class="nav-section-title">
+                <i class="fas fa-sliders-h"></i> Báo Cáo &amp; Cấu Hình
+            </div>
+            <ul class="sidebar-menu">
+                <li class="sidebar-item">
+                    <a href="reports.html" class="sidebar-link">
+                        <div class="sidebar-link-left">
+                            <i class="fas fa-chart-line"></i>
+                            <span class="sidebar-link-text">Thống Kê Báo Cáo</span>
+                        </div>
+                        <span class="sidebar-badge badge-tech">Chart</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="database.html" class="sidebar-link">
+                        <div class="sidebar-link-left">
+                            <i class="fas fa-database" style="color: #10b981;"></i>
+                            <span class="sidebar-link-text">Cấu Hình CSDL (Navicat)</span>
+                        </div>
+                        <span class="sidebar-badge badge-tech" style="background: rgba(16,185,129,0.25); color: #34d399;">.env</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="settings.html" class="sidebar-link">
+                        <div class="sidebar-link-left">
+                            <i class="fas fa-cog"></i>
+                            <span class="sidebar-link-text">Cấu Hình Website</span>
+                        </div>
+                        <span class="sidebar-badge badge-new">Logo</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="/so-do-canvas" target="_blank" class="sidebar-link">
+                        <div class="sidebar-link-left">
+                            <i class="fas fa-project-diagram"></i>
+                            <span class="sidebar-link-text">Sơ Đồ PTTKHDT</span>
+                        </div>
+                        <span class="sidebar-badge badge-tech">UML</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </aside>
+
+    <!-- 2. KHU VUC NOI DUNG CHINH -->
+    <div class="admin-main-wrapper">
+        <!-- Topbar -->
+        <header class="admin-topbar">
+            <div class="topbar-breadcrumbs">
+                <span>Hệ Thống</span>
+                <i class="fas fa-chevron-right" style="font-size: 10px; color: var(--text-muted);"></i>
+                <span>Nghiệp Vụ Nhân Sự</span>
+                <i class="fas fa-chevron-right" style="font-size: 10px; color: var(--text-muted);"></i>
+                <strong>Quản Lý Nhân Viên & Phân Quyền</strong>
+            </div>
+
+            <div class="topbar-actions">
+                <div class="status-pill">
+                    <span class="status-dot"></span>
+                    <span>Port 3333 Online</span>
+                </div>
+                <div class="user-profile-badge">
+                    <div class="user-avatar-mini" id="admin-user-avatar">AD</div>
+                    <div>
+                        <div style="font-size: 12.5px; font-weight: 700; color: #fff;" id="admin-user-name">Nguyễn Công Danh</div>
+                        <div style="font-size: 11px; color: var(--text-muted);" id="admin-user-role">Quản Trị Viên (SGU)</div>
+                    </div>
+                </div>
+                <button class="btn-logout-circle" onclick="AdminCommon.logoutAdmin()" title="Đăng xuất">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Body Content -->
+        <main class="admin-content-area">
+            <!-- 4 The KPI -->
+            <section class="kpi-grid">
+                <div class="kpi-card kpi-glow-cyan">
+                    <div class="kpi-header">
+                        <span class="kpi-title">TỔNG NHÂN VIÊN</span>
+                        <div class="kpi-icon-wrap icon-cyan">
+                            <i class="fas fa-user-shield"></i>
+                        </div>
+                    </div>
+                    <div class="kpi-value-text" id="kpi-total-emp">0</div>
+                    <div class="kpi-meta-sub">
+                        <span class="kpi-tag tag-cyan">Hồ sơ</span>
+                        <span>nhân viên hệ thống</span>
+                    </div>
+                </div>
+
+                <div class="kpi-card kpi-glow-red">
+                    <div class="kpi-header">
+                        <span class="kpi-title">QUẢN TRỊ VIÊN (ADMIN)</span>
+                        <div class="kpi-icon-wrap icon-red">
+                            <i class="fas fa-crown"></i>
+                        </div>
+                    </div>
+                    <div class="kpi-value-text" id="kpi-admin-count">0</div>
+                    <div class="kpi-meta-sub">
+                        <span class="kpi-tag tag-red">Toàn quyền</span>
+                        <span>quản trị ERP</span>
+                    </div>
+                </div>
+
+                <div class="kpi-card kpi-glow-purple">
+                    <div class="kpi-header">
+                        <span class="kpi-title">THU NGÂN / POS</span>
+                        <div class="kpi-icon-wrap icon-purple">
+                            <i class="fas fa-cash-register"></i>
+                        </div>
+                    </div>
+                    <div class="kpi-value-text" id="kpi-pos-count">0</div>
+                    <div class="kpi-meta-sub">
+                        <span class="kpi-tag tag-purple">Bán hàng</span>
+                        <span>tại quầy showroom</span>
+                    </div>
+                </div>
+
+                <div class="kpi-card kpi-glow-green">
+                    <div class="kpi-header">
+                        <span class="kpi-title">ĐANG HOẠT ĐỘNG</span>
+                        <div class="kpi-icon-wrap icon-green">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                    </div>
+                    <div class="kpi-value-text" id="kpi-active-count">0</div>
+                    <div class="kpi-meta-sub">
+                        <span class="kpi-tag tag-green">Active</span>
+                        <span>tài khoản hợp lệ</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Thanh cong cu tim kiem va hanh dong -->
+            <section class="products-filter-toolbar">
+                <div class="filter-left-group">
+                    <div class="search-box-dark">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" id="search-employee" class="search-input-dark" placeholder="Tìm theo mã NV, họ tên, username, SĐT...">
+                    </div>
+                    <button id="btn-search-emp" class="btn-tech btn-tech-blue">
+                        <i class="fas fa-search"></i> Tìm Kiếm
+                    </button>
+                    <button id="btn-reset-emp" class="btn-tech btn-tech-reset">
+                        <i class="fas fa-undo"></i> Tất Cả
+                    </button>
+                </div>
+
+                <div class="filter-right-group">
+                    <button id="btn-export-emp" class="btn-tech btn-tech-excel">
+                        <i class="fas fa-file-excel"></i> Xuất Excel
+                    </button>
+                    <button id="btn-open-add-emp" class="btn-tech btn-tech-blue">
+                        <i class="fas fa-user-plus"></i> Tạo Nhân Viên
+                    </button>
+                </div>
+            </section>
+
+            <!-- Bang Du Lieu Nhan Vien -->
+            <section class="table-responsive-dark">
+                <table class="table-dark-tech" id="employee-table">
+                    <thead>
+                        <tr>
+                            <th>Mã NV</th>
+                            <th>Họ và Tên</th>
+                            <th>Số Điện Thoại</th>
+                            <th>Email</th>
+                            <th>Tài Khoản</th>
+                            <th>Phân Quyền Vai Trò</th>
+                            <th>Trạng Thái</th>
+                            <th style="text-align: right;">Thao Tac</th>
+                        </tr>
+                    </thead>
+                    <tbody id="employee-tbody"></tbody>
+                </table>
+            </section>
+
+            <!-- Footer thong tin tong so -->
+            <div class="table-footer-pagination">
+                <div class="page-info-dark">
+                    Tổng số nhân viên hệ thống: <strong id="total-employees-count" style="color: #38bdf8;">0</strong>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal Form Tao / Sua Nhan Vien -->
+    <div id="employee-modal" class="modal-overlay-dark">
+        <div class="modal-box-dark" style="max-width: 580px;">
+            <div class="modal-header-dark">
+                <div class="modal-title-wrap">
+                    <i class="fas fa-user-plus" style="color: #38bdf8;"></i>
+                    <h3 id="modal-emp-title">Tạo Nhân Viên Mới</h3>
+                </div>
+                <button type="button" class="btn-close-modal" onclick="closeEmployeeModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="employeeForm">
+                <div class="modal-body-dark">
+                    <input type="hidden" id="emp-mode" value="add">
+                    <div class="form-row-grid-2">
+                        <div class="form-group-dark">
+                            <label class="form-label-dark">Mã Nhân Viên:</label>
+                            <input type="text" id="emp-id" class="input-dark" placeholder="VD: NV05" required>
+                        </div>
+                        <div class="form-group-dark">
+                            <label class="form-label-dark">Họ và Tên Nhân Viên:</label>
+                            <input type="text" id="emp-name" class="input-dark" placeholder="Nhập họ và tên..." required>
+                        </div>
+                    </div>
+
+                    <div class="form-row-grid-2">
+                        <div class="form-group-dark">
+                            <label class="form-label-dark">Số Điện Thoại:</label>
+                            <input type="text" id="emp-phone" class="input-dark" placeholder="Nhập số điện thoại..." required>
+                        </div>
+                        <div class="form-group-dark">
+                            <label class="form-label-dark">Địa Chỉ Email:</label>
+                            <input type="email" id="emp-email" class="input-dark" placeholder="Nhập email...">
+                        </div>
+                    </div>
+
+                    <div class="form-row-grid-2">
+                        <div class="form-group-dark">
+                            <label class="form-label-dark">Tên Tài Khoản (Username):</label>
+                            <input type="text" id="emp-username" class="input-dark" placeholder="Tên đăng nhập hệ thống..." required>
+                        </div>
+                        <div class="form-group-dark">
+                            <label class="form-label-dark">Mật Khẩu:</label>
+                            <input type="text" id="emp-password" class="input-dark" placeholder="Mật khẩu tài khoản..." required>
+                        </div>
+                    </div>
+
+                    <div class="form-group-dark">
+                        <label class="form-label-dark" style="color: #38bdf8;">
+                            <i class="fas fa-shield-alt"></i> Phân Quyền Vai Trò:
+                        </label>
+                        <select id="emp-role" class="select-dark" style="width: 100%;">
+                            <option value="admin">Quản trị viên / Quản lý cửa hàng (Toàn quyền)</option>
+                            <option value="pos">Nhân viên Bán hàng / Thu ngân POS</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer-dark">
+                    <button type="button" class="btn-tech btn-tech-reset" onclick="closeEmployeeModal()">Hủy (Discard)</button>
+                    <button type="submit" class="btn-tech btn-tech-blue">Lưu Nhân Viên</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Phan Quyen Rieng Biet -->
+    <div id="role-modal" class="modal-overlay-dark">
+        <div class="modal-box-dark" style="max-width: 480px;">
+            <div class="modal-header-dark">
+                <div class="modal-title-wrap">
+                    <i class="fas fa-user-cog" style="color: #38bdf8;"></i>
+                    <h3>Phân Quyền Tài Khoản Nhân Viên</h3>
+                </div>
+                <button type="button" class="btn-close-modal" onclick="closeRoleModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body-dark">
+                <input type="hidden" id="role-emp-id">
+                <div style="margin-bottom: 16px; font-size: 14px; background: rgba(255,255,255,0.03); padding: 12px; border-radius: 8px; border: 1px solid var(--border-color);">
+                    Nhân viên: <strong id="role-emp-name" style="color: #38bdf8;">---</strong>
+                </div>
+                <div class="form-group-dark">
+                    <label class="form-label-dark">Chọn Vai Trò Quyền Hạn:</label>
+                    <select id="role-select-box" class="select-dark" style="width: 100%;">
+                        <option value="admin">Quản lý (Truy cập toàn bộ chức năng hệ thống)</option>
+                        <option value="pos">Thu ngân POS (Chỉ bán hàng tại quầy và xem đơn hàng)</option>
+                    </select>
+                </div>
+                <div class="form-group-dark">
+                    <label class="form-label-dark">Trạng Thái Hoạt Động:</label>
+                    <select id="role-status-box" class="select-dark" style="width: 100%;">
+                        <option value="active">Đang hoạt động (Active)</option>
+                        <option value="locked">Khóa tài khoản (Locked)</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer-dark">
+                <button type="button" class="btn-tech btn-tech-reset" onclick="closeRoleModal()">Đóng</button>
+                <button type="button" class="btn-tech btn-tech-blue" onclick="saveRolePermission()">Cập Nhật Quyền</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <script src="../scripts/keycap-dataset-100.js"></script>
+    <script src="../scripts/modules/GearsApp.js"></script>
+    <script src="./script/admin-common.js"></script>
+    <script src="./script/employees.js"></script>
+</body>
+</html>

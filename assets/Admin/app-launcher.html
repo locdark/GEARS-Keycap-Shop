@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css">
+    <link rel="shortcut icon" href="../img/ShortCut_Icon.png">
+    <link rel="stylesheet" href="../css/Base.css">
+    <link rel="stylesheet" href="../css/Grid.css">
+    <link rel="stylesheet" href="../css/Responsive.css">
+    <link rel="stylesheet" href="./css/style.css">
+    <title>Cổng Ứng Dụng - Quản Lý Cửa Hàng Bán Keycap</title>
+    <style>
+        body {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+            min-height: 100vh;
+            color: #f8fafc;
+            font-family: 'Quicksand', sans-serif;
+        }
+        .launcher-wrap {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        .launcher-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .launcher-badge {
+            display: inline-block;
+            background: rgba(255, 163, 16, 0.15);
+            color: #ffa310;
+            border: 1px solid rgba(255, 163, 16, 0.4);
+            padding: 6px 16px;
+            border-radius: 30px;
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            letter-spacing: 0.5px;
+        }
+        .launcher-title {
+            font-size: 3.2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #fff 0%, #cbd5e1 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 0 0 10px 0;
+        }
+        .launcher-sub {
+            font-size: 1.5rem;
+            color: #94a3b8;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        .app-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 24px;
+            margin-bottom: 50px;
+        }
+        .app-card {
+            background: rgba(30, 41, 59, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(12px);
+            border-radius: 18px;
+            padding: 30px 20px;
+            text-align: center;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        .app-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 3px;
+            background: transparent;
+            transition: all 0.3s;
+        }
+        .app-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(255, 163, 16, 0.4);
+            box-shadow: 0 16px 32px rgba(0, 0, 0, 0.35);
+            background: rgba(30, 41, 59, 0.95);
+        }
+        .app-card:hover::before {
+            background: #ffa310;
+        }
+        .app-icon {
+            width: 72px;
+            height: 72px;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            margin-bottom: 18px;
+            transition: transform 0.3s ease;
+        }
+        .app-card:hover .app-icon {
+            transform: scale(1.1);
+        }
+        .app-name {
+            font-size: 1.7rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+            color: #fff;
+        }
+        .app-desc {
+            font-size: 1.25rem;
+            color: #94a3b8;
+            line-height: 1.4;
+        }
+        .app-tag {
+            margin-top: 14px;
+            font-size: 1.1rem;
+            padding: 3px 10px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.06);
+            color: #cbd5e1;
+        }
+        /* Project metadata box */
+        .project-meta-box {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .team-list {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .member-badge {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 8px 16px;
+            font-size: 1.3rem;
+        }
+        .member-badge strong {
+            color: #ffa310;
+        }
+    </style>
+</head>
+<body>
+    <div class="launcher-wrap">
+        <div class="launcher-header">
+            <div class="launcher-badge">
+                <i class="fas fa-graduation-cap"></i> ĐỒ ÁN PHÂN TÍCH THIẾT KẾ HƯỚNG ĐỐI TƯỢNG (PTTKHDT) - ĐH SÀI GÒN
+            </div>
+            <h1 class="launcher-title">HỆ THỐNG QUẢN LÝ CỬA HÀNG BÁN KEYCAP</h1>
+            <p class="launcher-sub">
+                Cổng truy cập trung tâm các phân hệ quản trị và bán hàng theo sơ đồ chức năng BFD (Business Function Diagram)
+            </p>
+        </div>
+
+        <!-- Lưới các ứng dụng theo sơ đồ BFD -->
+        <div class="app-grid">
+            <!-- 1. Điểm bán lẻ POS -->
+            <a href="pos.html" class="app-card">
+                <div class="app-icon" style="background: linear-gradient(135deg, #10b981, #059669); color: #fff;">
+                    <i class="fas fa-cash-register"></i>
+                </div>
+                <div class="app-name">Điểm bán lẻ (POS)</div>
+                <div class="app-desc">Tạo đơn tại quầy, Numpad tính tiền, chiết khấu %Dic, in biên lai hóa đơn</div>
+                <div class="app-tag" style="background: rgba(16, 185, 129, 0.2); color: #34d399;">
+                    <i class="fas fa-bolt"></i> Bán lẻ tại quầy
+                </div>
+            </a>
+
+            <!-- 2. Quản lý Đơn hàng -->
+            <a href="orders.html" class="app-card">
+                <div class="app-icon" style="background: linear-gradient(135deg, #3b82f6, #2563eb); color: #fff;">
+                    <i class="fas fa-receipt"></i>
+                </div>
+                <div class="app-name">Quản lý Đơn hàng</div>
+                <div class="app-desc">Tra cứu, lọc trạng thái, chi tiết đơn, hủy đơn, xuất danh sách Excel</div>
+                <div class="app-tag">Nhánh BFD: Đơn hàng</div>
+            </a>
+
+            <!-- 3. Quản lý Sản phẩm Keycap -->
+            <a href="products.html" class="app-card">
+                <div class="app-icon" style="background: linear-gradient(135deg, #f59e0b, #d97706); color: #fff;">
+                    <i class="fas fa-keyboard"></i>
+                </div>
+                <div class="app-name">Quản lý Sản phẩm</div>
+                <div class="app-desc">Danh mục Keycap (Anime, Artisan, Pudding), tạo sản phẩm, giá nhập, giá bán</div>
+                <div class="app-tag">Nhánh BFD: Sản phẩm</div>
+            </a>
+
+            <!-- 4. Quản lý Nhà cung cấp -->
+            <a href="suppliers.html" class="app-card">
+                <div class="app-icon" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed); color: #fff;">
+                    <i class="fas fa-truck-loading"></i>
+                </div>
+                <div class="app-name">Quản lý Nhà cung cấp</div>
+                <div class="app-desc">Thông tin đối tác cung cấp phím (Akko, Keychron...), tạo NCC mới, xuất Excel</div>
+                <div class="app-tag">Nhánh BFD: Nhà cung cấp</div>
+            </a>
+
+            <!-- 5. Quản lý Khách hàng -->
+            <a href="customers.html" class="app-card">
+                <div class="app-icon" style="background: linear-gradient(135deg, #ec4899, #db2777); color: #fff;">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="app-name">Quản lý Khách hàng</div>
+                <div class="app-desc">Hồ sơ khách mua hàng, tạo khách mới, khóa/mở khóa tài khoản, tích điểm</div>
+                <div class="app-tag">Nhánh BFD: Khách hàng</div>
+            </a>
+
+            <!-- 6. Quản lý Nhân viên & Phân quyền -->
+            <a href="employees.html" class="app-card">
+                <div class="app-icon" style="background: linear-gradient(135deg, #06b6d4, #0891b2); color: #fff;">
+                    <i class="fas fa-user-shield"></i>
+                </div>
+                <div class="app-name">Quản lý Nhân viên</div>
+                <div class="app-desc">Tạo nhân viên mới, phân quyền tài khoản Quản lý / Thu ngân POS bán hàng</div>
+                <div class="app-tag">Nhánh BFD: Nhân viên</div>
+            </a>
+
+            <!-- 7. Thống kê (Doanh thu - Doanh số - Lợi nhuận) -->
+            <a href="reports.html" class="app-card">
+                <div class="app-icon" style="background: linear-gradient(135deg, #6366f1, #4f46e5); color: #fff;">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <div class="app-name">Thống kê Báo cáo</div>
+                <div class="app-desc">Biểu đồ 3 nhánh BFD: Doanh thu, Doanh số và Lợi nhuận gộp, xuất Excel</div>
+                <div class="app-tag" style="background: rgba(99, 102, 241, 0.2); color: #a5b4fc;">
+                    Doanh thu • Doanh số • Lợi nhuận
+                </div>
+            </a>
+
+            <!-- 8. Dashboard Tổng quan -->
+            <a href="dashboard.html" class="app-card">
+                <div class="app-icon" style="background: linear-gradient(135deg, #14b8a6, #0d9488); color: #fff;">
+                    <i class="fas fa-tachometer-alt"></i>
+                </div>
+                <div class="app-name">Bảng Điều Khiển</div>
+                <div class="app-desc">Tổng quan con số toàn hệ thống, truy cập nhanh các chỉ số hoạt động</div>
+                <div class="app-tag">Dashboard tổng quan</div>
+            </a>
+
+            <!-- 9. Cấu hình Website & Logo -->
+            <a href="settings.html" class="app-card">
+                <div class="app-icon" style="background: linear-gradient(135deg, #e11d48, #be123c); color: #fff;">
+                    <i class="fas fa-sliders"></i>
+                </div>
+                <div class="app-name">Cấu Hình Website</div>
+                <div class="app-desc">Upload logo thương hiệu, khẩu hiệu, hotline, địa chỉ showroom, mạng xã hội</div>
+                <div class="app-tag" style="background: rgba(225, 29, 72, 0.2); color: #fda4af;">
+                    <i class="fas fa-image"></i> Nhận diện & Logo
+                </div>
+            </a>
+
+            <!-- 10. Cửa hàng trực tuyến Online Khách hàng -->
+            <a href="../../index.html" class="app-card" target="_blank">
+                <div class="app-icon" style="background: linear-gradient(135deg, #f97316, #ea580c); color: #fff;">
+                    <i class="fas fa-store"></i>
+                </div>
+                <div class="app-name">Web Khách Hàng</div>
+                <div class="app-desc">Xem giao diện cửa hàng trực tuyến phía Client cho khách đặt mua Keycap</div>
+                <div class="app-tag">Client Storefront</div>
+            </a>
+        </div>
+
+        <!-- Thông tin thành viên nhóm & đồ án -->
+        <div class="project-meta-box">
+            <div>
+                <div style="font-size: 1.5rem; font-weight: 700; color: #fff; margin-bottom: 4px;">
+                    <i class="fas fa-users-cog" style="color: #ffa310;"></i> Nhóm Sinh Viên Thực Hiện:
+                </div>
+                <div style="font-size: 1.25rem; color: #94a3b8;">
+                    Đề tài: Quản lý cửa hàng bán keycap • Hệ thống chuẩn hóa 100% theo sơ đồ BFD
+                </div>
+            </div>
+            <div class="team-list">
+                <div class="member-badge">
+                    <strong>Nguyễn Công Danh</strong> - 3124410032
+                </div>
+                <div class="member-badge">
+                    <strong>Trần Nhật Quang</strong> - 3124410293
+                </div>
+                <div class="member-badge">
+                    <strong>Lê Hoài Lộc</strong> - 3122560041
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../scripts/keycap-dataset-100.js"></script>
+    <script src="../scripts/modules/GearsApp.js"></script>
+    <script src="./script/admin-common.js"></script>
+</body>
+</html>

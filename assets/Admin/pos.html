@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Điểm Bán Lẻ POS - GEARS Keycap Shop</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700;800&family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css">
+    <link rel="shortcut icon" href="../img/ShortCut_Icon.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+    <!-- Dark Obsidian Theme -->
+    <link rel="stylesheet" href="./css/admin-obsidian.css">
+
+    <style>
+        body {
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        .pos-workspace {
+            display: flex;
+            height: calc(100vh - 68px);
+            overflow: hidden;
+        }
+
+        /* Cot trai: Gio hang & Numpad */
+        .pos-left {
+            width: 440px;
+            background: var(--bg-card);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            z-index: 10;
+        }
+
+        .pos-top-bar {
+            padding: 12px 16px;
+            background: #11141e;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+        }
+
+        .pos-customer-select {
+            padding: 10px 16px;
+            background: var(--bg-input);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .pos-order-items {
+            flex: 1;
+            overflow-y: auto;
+            padding: 10px 14px;
+        }
+
+        .pos-item-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 12px;
+            border-bottom: 1px dashed var(--border-color);
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.15s;
+            margin-bottom: 4px;
+        }
+
+        .pos-item-row:hover, .pos-item-row.selected {
+            background: rgba(16, 185, 129, 0.12);
+            border-color: rgba(16, 185, 129, 0.4);
+        }
+
+        .pos-item-name {
+            font-weight: 600;
+            font-size: 13px;
+            color: #ffffff;
+            margin-bottom: 3px;
+        }
+
+        .pos-item-sub {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .pos-item-price {
+            font-weight: 700;
+            font-size: 14px;
+            color: #34d399;
+        }
+
+        /* Order Summary */
+        .pos-summary {
+            padding: 12px 16px;
+            background: #11141e;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .pos-summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 4px;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .pos-summary-total {
+            font-size: 20px;
+            font-weight: 800;
+            color: #34d399;
+        }
+
+        /* Numpad & Action */
+        .pos-numpad-wrap {
+            padding: 10px 16px;
+            background: var(--bg-card);
+            border-top: 1px solid var(--border-color);
+        }
+
+        .numpad-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 6px;
+            margin-bottom: 8px;
+        }
+
+        .numpad-btn {
+            background: var(--bg-input);
+            border: 1px solid var(--border-color);
+            color: #ffffff;
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.15s;
+        }
+
+        .numpad-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--border-highlight);
+        }
+
+        .numpad-btn.active-mode {
+            background: #2563eb;
+            color: #ffffff;
+            border-color: #3b82f6;
+        }
+
+        .pos-btn-pay {
+            width: 100%;
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: #ffffff;
+            border: none;
+            padding: 13px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 800;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);
+            transition: all 0.2s;
+        }
+
+        .pos-btn-pay:hover {
+            background: linear-gradient(135deg, #059669, #047857);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 18px rgba(16, 185, 129, 0.45);
+        }
+
+        /* Cot phai: Products catalog */
+        .pos-right {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            background: var(--bg-body);
+            overflow: hidden;
+        }
+
+        .pos-filter-bar {
+            padding: 12px 18px;
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        .cat-chip {
+            padding: 6px 14px;
+            background: var(--bg-input);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            border-radius: 20px;
+            font-size: 12.5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            user-select: none;
+        }
+
+        .cat-chip:hover {
+            border-color: #34d399;
+            color: #ffffff;
+        }
+
+        .cat-chip.active {
+            background: rgba(16, 185, 129, 0.2);
+            color: #34d399;
+            border-color: #10b981;
+            font-weight: 700;
+        }
+
+        .pos-products-grid {
+            flex: 1;
+            overflow-y: auto;
+            padding: 18px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 14px;
+            align-content: start;
+        }
+
+        .pos-product-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            min-height: 200px;
+        }
+
+        .pos-product-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+            border-color: #10b981;
+        }
+
+        .pos-product-img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            background: #151822;
+            padding: 4px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .pos-product-info {
+            padding: 10px 12px;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            background: var(--bg-card);
+        }
+
+        .pos-product-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 6px;
+            line-height: 1.3;
+            height: 34px;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+
+        .pos-product-price {
+            font-size: 14px;
+            font-weight: 700;
+            color: #34d399;
+            margin-top: auto;
+        }
+
+        .pos-product-stock {
+            font-size: 11.5px;
+            color: var(--text-muted);
+        }
+
+        /* Bill Receipt print styling */
+        .receipt-paper {
+            background: #ffffff;
+            padding: 24px;
+            font-family: 'Courier New', Courier, monospace;
+            color: #000000;
+            max-width: 360px;
+            margin: 0 auto;
+            border: 1px dashed #ccc;
+            border-radius: 4px;
+        }
+
+        @media (max-width: 1100px) {
+            .pos-left { width: 380px; }
+            .pos-products-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+        }
+
+        /* In ấn hóa đơn biên lai chuẩn máy in nhiệt POS 80mm */
+        @media print {
+            body {
+                background: #ffffff !important;
+                color: #000000 !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+            body * {
+                visibility: hidden !important;
+            }
+            #pos-receipt-modal,
+            #pos-receipt-modal * {
+                visibility: visible !important;
+            }
+            #pos-receipt-modal {
+                position: absolute !important;
+                left: 0 !important;
+                top: 0 !important;
+                width: 100% !important;
+                height: auto !important;
+                background: #ffffff !important;
+                display: block !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                z-index: 999999 !important;
+            }
+            #pos-receipt-modal .modal-header-dark,
+            #pos-receipt-modal .modal-footer-dark,
+            #pos-receipt-modal .btn-close-modal {
+                display: none !important;
+            }
+            #pos-receipt-modal .modal-box-dark {
+                box-shadow: none !important;
+                border: none !important;
+                background: transparent !important;
+                max-width: 100% !important;
+                width: 100% !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+            #pos-receipt-modal .modal-body-dark {
+                background: transparent !important;
+                padding: 0 !important;
+            }
+            .receipt-paper {
+                border: none !important;
+                box-shadow: none !important;
+                padding: 5mm 8mm !important;
+                max-width: 80mm !important;
+                width: 80mm !important;
+                margin: 0 auto !important;
+                color: #000000 !important;
+            }
+            #receipt-qr-image {
+                max-width: 130px !important;
+                max-height: 130px !important;
+                display: block !important;
+                margin: 0 auto !important;
+            }
+            @page {
+                size: 80mm auto;
+                margin: 0mm;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 1. SIDEBAR PHÍA TRÁI (DARK ERP STYLE) -->
+    <aside class="admin-sidebar">
+        <!-- Brand Header -->
+        <div class="sidebar-brand">
+            <div class="sidebar-brand-title">
+                <i class="fas fa-keyboard"></i>
+                <span>QUẢN TRỊ HỆ THỐNG</span>
+            </div>
+            <span class="version-badge">v2.6</span>
+            <button class="sidebar-toggle-btn" title="Thu gọn / Mở rộng sidebar" type="button">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+
+        <!-- Quick Actions (Được đưa lên trên ngay sau logo) -->
+        <div class="sidebar-quick-actions" style="padding:8px 12px;display:flex;gap:6px;border-bottom:1px solid var(--border-color,#232738);">
+            <a href="../../index.html" target="_blank" class="btn-sidebar-store" style="flex:1;padding:7px 10px;font-size:12px;gap:6px;" title="Xem cửa hàng khách hàng">
+                <i class="fas fa-store"></i> <span class="sidebar-link-text">Web KH</span>
+            </a>
+            <button type="button" class="btn-sidebar-logout" style="flex:1;padding:7px 10px;font-size:12px;gap:6px;" onclick="AdminCommon.logoutAdmin()" title="Đăng xuất khỏi hệ thống">
+                <i class="fas fa-sign-out-alt"></i> <span class="sidebar-link-text">Đăng Xuất</span>
+            </button>
+        </div>
+
+        <!-- Navigation Menu -->
+        <div class="sidebar-nav">
+            <!-- Nhóm 1: Nghiệp Vụ Bán Hàng -->
+            <div class="nav-section-title">
+                <i class="fas fa-bolt"></i> Nghiệp Vụ Bán Hàng
+            </div>
+            <ul class="sidebar-menu">
+                <li class="sidebar-item">
+                    <a href="dashboard.html" class="sidebar-link">
+                        <div class="sidebar-link-left">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span class="sidebar-link-text">Tổng Quan Dashboard</span>
+                        </div>
+                        <span class="sidebar-badge badge-live">Live</span>
+                    </a>
+                </li>
+                <li class="sidebar-item active">
+                    <a href="pos.html" class="sidebar-link active">
+                        <div class="sidebar-link-left">
+                            <i class="fas fa-cash-register"></i>
+                            <span class="sidebar-link-text">Điểm Bán Lẻ (POS)</span>
+                        </div>
+                        <span class="sidebar-badge badge-hot">HOT</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="orders.html" class="sidebar-link">
+                        <div class="sidebar-link-left">
+                            <i class="fas fa-receipt"></i>
+                            <span class="sidebar-link-text">Quản Lý Đơn Hàng</span>
+                        </div>
+                        <span class="sidebar-badge badge-new" id="sidebar-order-count">Đơn</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="products.html" class="sidebar-link">
+                        <div class="sidebar-link-left">
+                            <i class="fas fa-cubes"></i>
+                            <span class="sidebar-link-text">Sản Phẩm Keycap</span>
+                        </div>
+                        <span class="sidebar-badge badge-count" id="sidebar-product-count">100+</span>
+                    </a>
+                </li>
+            </ul>
+
+            <!-- Nhóm 2: Đối Tác & Nhân Sự -->
+            <div class="nav-section-title">
+                <i class="fas fa-users-cog"></i> Đối Tác &amp; Nhân Sự
+            </div>
+            <ul class="sidebar-menu">
+                <li class="sidebar-item">
+                    <a href="suppliers.html" class="sidebar-link">
+                        <div class="sidebar-link-left">
+                            <i class="fas fa-truck-loading"></i>
+                            <span class="sidebar-link-text">Nhà Cung Cấp</span>
+                        </div>
+                        <span class="sidebar-badge badge-tech">Partner</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="customers.html" class="sidebar-link">
+                        <div class="sidebar-link-left">
+                            <i class="fas fa-users"></i>
+                            <span class="sidebar-link-text">Khách Hàng</span>
+                        </div>
+                        <span class="sidebar-badge badge-tech">CRM</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="employees.html" class="sidebar-link">
+                        <div class="sidebar-link-left">
+                            <i class="fas fa-user-shield"></i>
+                            <span class="sidebar-link-text">Nhân Viên &amp; Phân Quyền</span>
+                        </div>
+                        <span class="sidebar-badge badge-tech">Auth</span>
+                    </a>
+                </li>
+            </ul>
+
+            <!-- Nhóm 3: Báo Cáo & Cấu Hình -->
+            <div class="nav-section-title">
+                <i class="fas fa-sliders-h"></i> Báo Cáo &amp; Cấu Hình
+            </div>
+            <ul class="sidebar-menu">
+                <li class="sidebar-item">
+                    <a href="reports.html" class="sidebar-link">
+                        <div class="sidebar-link-left">
+                            <i class="fas fa-chart-line"></i>
+                            <span class="sidebar-link-text">Thống Kê Báo Cáo</span>
+                        </div>
+                        <span class="sidebar-badge badge-tech">Chart</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="database.html" class="sidebar-link">
+                        <div class="sidebar-link-left">
+                            <i class="fas fa-database" style="color: #10b981;"></i>
+                            <span class="sidebar-link-text">Cấu Hình CSDL (Navicat)</span>
+                        </div>
+                        <span class="sidebar-badge badge-tech" style="background: rgba(16,185,129,0.25); color: #34d399;">.env</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="settings.html" class="sidebar-link">
+                        <div class="sidebar-link-left">
+                            <i class="fas fa-cog"></i>
+                            <span class="sidebar-link-text">Cấu Hình Website</span>
+                        </div>
+                        <span class="sidebar-badge badge-new">Logo</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="/so-do-canvas" target="_blank" class="sidebar-link">
+                        <div class="sidebar-link-left">
+                            <i class="fas fa-project-diagram"></i>
+                            <span class="sidebar-link-text">Sơ Đồ PTTKHDT</span>
+                        </div>
+                        <span class="sidebar-badge badge-tech">UML</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </aside>
+
+    <!-- 2. KHU VUC NOI DUNG CHINH -->
+    <div class="admin-main-wrapper" style="padding-right: 0;">
+        <!-- Topbar -->
+        <header class="admin-topbar">
+            <div class="topbar-breadcrumbs">
+                <span>Hệ Thống</span>
+                <i class="fas fa-chevron-right" style="font-size: 10px; color: var(--text-muted);"></i>
+                <span>Bán Hàng</span>
+                <i class="fas fa-chevron-right" style="font-size: 10px; color: var(--text-muted);"></i>
+                <strong>Điểm Bán Lẻ Tại Quầy (POS)</strong>
+            </div>
+
+            <div class="topbar-actions">
+                <div class="status-pill">
+                    <span class="status-dot"></span>
+                    <span>POS Terminal Online</span>
+                </div>
+                <div class="user-profile-badge">
+                    <div class="user-avatar-mini" id="admin-user-avatar">TN</div>
+                    <div>
+                        <div style="font-size: 12.5px; font-weight: 700; color: #fff;" id="admin-user-name">Nguyễn Công Danh</div>
+                        <div style="font-size: 11px; color: var(--text-muted);" id="admin-user-role">Thu Ngân / Quản Lý</div>
+                    </div>
+                </div>
+                <button class="btn-logout-circle" onclick="AdminCommon.logoutAdmin()" title="Đăng xuất">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- POS Workspace -->
+        <div class="pos-workspace">
+            <!-- Left Side: Order & Payment -->
+            <div class="pos-left">
+                <!-- Top Status Bar -->
+                <div class="pos-top-bar">
+                    <div style="font-size: 13.5px; font-weight: 700; color: #ffffff;">
+                        <i class="fas fa-cash-register" style="color: #34d399;"></i> Điểm Thu Ngân Quầy
+                    </div>
+                    <div style="font-size: 12.5px; color: var(--text-secondary);">
+                        Thu ngân: <strong id="pos-cashier-name" style="color: #34d399;">Nguyễn Công Danh</strong>
+                    </div>
+                </div>
+
+                <!-- Chon khach hang -->
+                <div class="pos-customer-select">
+                    <i class="fas fa-user" style="color: var(--text-muted); font-size: 14px;"></i>
+                    <select id="pos-customer" class="select-dark" style="margin: 0; min-width: auto; flex: 1; padding: 6px 10px; font-size: 13px;">
+                        <option value="guest">Khách Hàng Vãng Lai</option>
+                    </select>
+                    <button type="button" class="btn-tech btn-tech-blue" onclick="openQuickAddCustomerModal()" style="padding: 6px 10px; font-size: 12px; white-space: nowrap; display: flex; align-items: center; gap: 5px;" title="Tạo khách hàng mới tại quầy">
+                        <i class="fas fa-user-plus"></i> + Khách Mới
+                    </button>
+                    <button class="btn-tech btn-tech-reset" onclick="clearCart()" style="background: rgba(239, 68, 68, 0.15); border-color: rgba(239, 68, 68, 0.4); color: #f87171; padding: 6px 10px; font-size: 12px;" title="Xóa toàn bộ giỏ">
+                        <i class="fas fa-trash"></i> Hủy đơn
+                    </button>
+                </div>
+
+                <!-- Danh sach mon da chon -->
+                <div class="pos-order-items" id="pos-cart-list">
+                    <div style="text-align: center; color: var(--text-muted); padding-top: 50px; font-size: 13.5px;">
+                        <i class="fas fa-shopping-basket" style="font-size: 32px; margin-bottom: 10px; display: block; color: var(--border-highlight);"></i>
+                        Chưa có sản phẩm nào trong đơn hàng.<br>Vui lòng click chọn Keycap bên phải!
+                    </div>
+                </div>
+
+                <!-- Tong ket don hang -->
+                <div class="pos-summary">
+                    <div class="pos-summary-row">
+                        <span>Tạm tính (<span id="pos-items-count">0</span> món):</span>
+                        <strong id="pos-subtotal" style="color: #ffffff;">0 d</strong>
+                    </div>
+                    <div class="pos-summary-row">
+                        <span>Chiết khấu (%):</span>
+                        <span id="pos-discount-text" style="color: #f87171;">0% (0 d)</span>
+                    </div>
+                    <div class="pos-summary-row" style="margin-top: 6px; padding-top: 6px; border-top: 1px solid var(--border-color);">
+                        <span style="font-size: 14px; font-weight: 700; color: #ffffff;">TỔNG THANH TOÁN:</span>
+                        <span class="pos-summary-total" id="pos-total-amount">0 d</span>
+                    </div>
+                </div>
+
+                <!-- Ban phim so Numpad ao -->
+                <div class="pos-numpad-wrap">
+                    <div class="numpad-grid">
+                        <button class="numpad-btn" onclick="pressNumpad('1')">1</button>
+                        <button class="numpad-btn" onclick="pressNumpad('2')">2</button>
+                        <button class="numpad-btn" onclick="pressNumpad('3')">3</button>
+                        <button class="numpad-btn active-mode" id="btn-mode-qty" onclick="setNumpadMode('qty')">Số lượng (SL)</button>
+
+                        <button class="numpad-btn" onclick="pressNumpad('4')">4</button>
+                        <button class="numpad-btn" onclick="pressNumpad('5')">5</button>
+                        <button class="numpad-btn" onclick="pressNumpad('6')">6</button>
+                        <button class="numpad-btn" id="btn-mode-disc" onclick="setNumpadMode('disc')">Giảm giá (%)</button>
+
+                        <button class="numpad-btn" onclick="pressNumpad('7')">7</button>
+                        <button class="numpad-btn" onclick="pressNumpad('8')">8</button>
+                        <button class="numpad-btn" onclick="pressNumpad('9')">9</button>
+                        <button class="numpad-btn" onclick="removeSelectedItem()" style="color: #f87171;" title="Xóa món đang chọn">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+
+                        <button class="numpad-btn" onclick="pressNumpad('+/-')">+/-</button>
+                        <button class="numpad-btn" onclick="pressNumpad('0')">0</button>
+                        <button class="numpad-btn" onclick="pressNumpad('.')">.</button>
+                        <button class="numpad-btn" onclick="pressNumpad('backspace')">
+                            <i class="fas fa-backspace"></i>
+                        </button>
+                    </div>
+
+                    <button class="pos-btn-pay" onclick="openPaymentModal()">
+                        <i class="fas fa-credit-card"></i> THANH TOÁN (F9)
+                    </button>
+                </div>
+            </div>
+
+            <!-- Right Side: Products Catalog -->
+            <div class="pos-right">
+                <!-- Search & Category Filters -->
+                <div class="pos-filter-bar">
+                    <div class="search-box-dark" style="max-width: 280px;">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" id="pos-search" class="search-input-dark" placeholder="Nhập tên Keycap cần tìm...">
+                    </div>
+                    
+                    <div id="pos-category-chips" style="display: flex; gap: 8px;">
+                        <div class="cat-chip active" onclick="filterPosCategory('all')">Tất cả Keycap</div>
+                        <div class="cat-chip" onclick="filterPosCategory('Artisan')">Artisan</div>
+                        <div class="cat-chip" onclick="filterPosCategory('Anime')">Anime</div>
+                        <div class="cat-chip" onclick="filterPosCategory('Pudding')">Pudding</div>
+                        <div class="cat-chip" onclick="filterPosCategory('Other')">Khác</div>
+                    </div>
+                </div>
+
+                <!-- Products Grid -->
+                <div class="pos-products-grid" id="pos-products-container"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Thanh Toan (Payment Modal) -->
+    <div id="pos-payment-modal" class="modal-overlay-dark">
+        <div class="modal-box-dark" style="max-width: 620px;">
+            <div class="modal-header-dark" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.25), rgba(5, 150, 105, 0.1));">
+                <div class="modal-title-wrap">
+                    <i class="fas fa-money-check-alt" style="color: #34d399;"></i>
+                    <h3 style="color: #34d399;">Thanh Toan Don Hang POS</h3>
+                </div>
+                <button type="button" class="btn-close-modal" onclick="closePaymentModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body-dark">
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <div style="font-size: 13.5px; color: var(--text-muted);">Số tiền cần thanh toán:</div>
+                    <div style="font-size: 32px; font-weight: 800; color: #34d399;" id="modal-pay-amount">0 d</div>
+                </div>
+
+                <!-- Chon phuong thuc thanh toan -->
+                <label class="form-label-dark" style="margin-bottom: 10px;">Phương thức thanh toán:</label>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 20px;">
+                    <button type="button" class="btn-tech pay-method-btn active" id="pay-cash" onclick="selectPayMethod('Cash')" style="justify-content: center; background: #10b981; color: #ffffff;">
+                        <i class="fas fa-money-bill-wave"></i> Tiền Mặt (Cash)
+                    </button>
+                    <button type="button" class="btn-tech pay-method-btn" id="pay-bank" onclick="selectPayMethod('Bank')" style="justify-content: center; background: var(--bg-input); color: var(--text-secondary);">
+                        <i class="fas fa-university"></i> Ngân Hàng (Bank / VietQR)
+                    </button>
+                    <button type="button" class="btn-tech pay-method-btn" id="pay-account" onclick="selectPayMethod('Customer Account')" style="justify-content: center; background: var(--bg-input); color: var(--text-secondary);">
+                        <i class="fas fa-id-card"></i> Tài Khoản KH
+                    </button>
+                </div>
+
+                <!-- Khối QR chuyển khoản khi chọn Bank/VietQR -->
+                <div id="pos-bank-qr-box" style="display: none; background: rgba(37, 99, 235, 0.08); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 10px; padding: 14px; margin-bottom: 16px; text-align: center;">
+                    <div style="font-size: 13px; font-weight: 700; color: #60a5fa; margin-bottom: 6px; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                        <i class="fas fa-qrcode"></i> QUÉT MÃ VIETQR THANH TOÁN CHUYỂN KHOẢN
+                    </div>
+                    <div style="font-size: 11.5px; color: var(--text-muted); margin-bottom: 8px;">
+                        Khách hàng mở App Ngân hàng hoặc Ví MoMo/ZaloPay quét mã bên dưới
+                    </div>
+                    <div style="display: flex; justify-content: center; margin: 8px 0;">
+                        <img id="pos-payment-modal-qr" src="" alt="VietQR POS" style="width: 170px; height: 170px; object-fit: contain; background: #ffffff; padding: 6px; border-radius: 8px; border: 1px solid #3b82f6; box-shadow: 0 4px 12px rgba(0,0,0,0.3);" />
+                    </div>
+                    <div style="font-size: 12px; color: #94a3b8; line-height: 1.5; background: rgba(0,0,0,0.3); padding: 8px; border-radius: 6px; margin-top: 6px;">
+                        <div>Ngân hàng: <strong style="color: #ffffff;">MBBank (Quân Đội)</strong> - STK: <strong style="color: #60a5fa; font-family: monospace;">0987654321</strong></div>
+                        <div>Chủ TK: <strong style="color: #ffffff;">GEARS KEYCAP SHOP</strong></div>
+                        <div>Số tiền: <strong style="color: #34d399;" id="pos-payment-qr-amount">0 đ</strong></div>
+                        <div>Nội dung CK: <strong style="color: #f59e0b; font-family: monospace;" id="pos-payment-qr-memo">DH-POS-XXXX</strong></div>
+                    </div>
+                </div>
+
+                <!-- Tien khach dua & tien thua -->
+                <div id="cash-calculator-box">
+                    <div class="form-group-dark">
+                        <label class="form-label-dark">Tiền khách đưa (VNĐ):</label>
+                        <input type="number" id="pos-cash-given" class="input-dark" style="font-size: 18px; font-weight: 700; color: #ffffff;" placeholder="0" oninput="calculateChange()">
+                    </div>
+
+                    <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px;">
+                        <button type="button" class="cat-chip" onclick="quickCash(100000)">+100.000 d</button>
+                        <button type="button" class="cat-chip" onclick="quickCash(200000)">+200.000 d</button>
+                        <button type="button" class="cat-chip" onclick="quickCash(500000)">+500.000 d</button>
+                        <button type="button" class="cat-chip" onclick="quickCash(1000000)">+1.000.000 d</button>
+                        <button type="button" class="cat-chip" onclick="quickCashExact()" style="background: rgba(59, 130, 246, 0.2); color: #60a5fa; border-color: #3b82f6;">Đúng Số Tiền</button>
+                    </div>
+
+                    <div style="background: var(--bg-input); border: 1px solid var(--border-color); padding: 14px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
+                        <span style="font-size: 14px; font-weight: 600; color: var(--text-secondary);">Tiền thừa thối lại khách:</span>
+                        <span id="pos-cash-change" style="font-size: 22px; font-weight: 700; color: #60a5fa;">0 d</span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer-dark">
+                <button type="button" class="btn-tech btn-tech-reset" onclick="closePaymentModal()">Quay Lại</button>
+                <button type="button" class="btn-tech btn-tech-excel" style="background: #10b981; color: #ffffff;" onclick="confirmOrderPayment()">
+                    <i class="fas fa-check-circle"></i> XÁC NHẬN & IN BIÊN LAI
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal In Biên Lai Hoa Don (Receipt) -->
+    <div id="pos-receipt-modal" class="modal-overlay-dark">
+        <div class="modal-box-dark" style="max-width: 440px;">
+            <div class="modal-header-dark">
+                <div class="modal-title-wrap">
+                    <i class="fas fa-print" style="color: #38bdf8;"></i>
+                    <h3>Biên Lai Bán Hàng</h3>
+                </div>
+                <button type="button" class="btn-close-modal" onclick="finishAndNewOrder()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body-dark" style="padding: 16px; background: #0c0d12;">
+                <div class="receipt-paper" id="receipt-print-area">
+                    <div style="text-align: center; margin-bottom: 12px;">
+                        <h2 style="margin: 0; font-size: 18px; letter-spacing: 1px;">GEARS KEYCAP SHOP</h2>
+                        <div style="font-size: 11px;">Chuyên Keycap Phím Cơ Custom Cao Cấp</div>
+                        <div style="font-size: 11px;">Đ/C: 273 An Dương Vương, P.3, Q.5, TP.HCM</div>
+                        <div style="font-size: 11px;">Hotline: 0912.345.678</div>
+                        <div style="border-top: 1px dashed #000; margin: 8px 0;"></div>
+                        <strong style="font-size: 14px;">HÓA ĐƠN BIÊN LAI BÁN LẺ</strong>
+                        <div id="receipt-order-id" style="font-size: 12px; margin-top: 4px;">Số: #DH-POS-1001</div>
+                        <div id="receipt-datetime" style="font-size: 11px;">Ngày: 30/09/2026 00:00</div>
+                        <div id="receipt-cashier" style="font-size: 11px;">Thu ngân: Nguyễn Công Danh</div>
+                        <div id="receipt-customer" style="font-size: 11px;">Khách hàng: Khách Vãng Lai</div>
+                    </div>
+                    <div style="border-top: 1px dashed #000; margin: 8px 0;"></div>
+
+                    <table style="width: 100%; font-size: 11px; text-align: left; border-collapse: collapse;">
+                        <thead>
+                            <tr>
+                                <th>Tên hàng</th>
+                                <th style="text-align: center;">SL</th>
+                                <th style="text-align: right;">D.Gia</th>
+                                <th style="text-align: right;">T.Tien</th>
+                            </tr>
+                        </thead>
+                        <tbody id="receipt-items-tbody"></tbody>
+                    </table>
+
+                    <div style="border-top: 1px dashed #000; margin: 8px 0;"></div>
+                    <div style="font-size: 12px;">
+                        <div style="display: flex; justify-content: space-between;">
+                            <span>Cộng tiền hàng:</span>
+                            <span id="receipt-subtotal">0 d</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <span>Giảm giá (%):</span>
+                            <span id="receipt-discount">0 d</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; font-weight: bold; font-size: 14px; margin-top: 4px;">
+                            <span>TỔNG CỘNG:</span>
+                            <span id="receipt-total">0 d</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-top: 4px;">
+                            <span>Hình thức TT:</span>
+                            <span id="receipt-payment-method">Tien mat</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <span>Tiền khách đưa:</span>
+                            <span id="receipt-cash-given">0 d</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <span>Tiền thối lại:</span>
+                            <span id="receipt-change">0 d</span>
+                        </div>
+                    </div>
+                    <div style="border-top: 1px dashed #000; margin: 10px 0;"></div>
+
+                    <!-- MÃ QR CHUYỂN KHOẢN (NẾU HÌNH THỨC TT LÀ CHUYỂN KHOẢN / NGÂN HÀNG / CK) -->
+                    <div id="receipt-qr-section" style="display: none; text-align: center; margin: 8px 0; padding: 4px 0;">
+                        <div style="font-weight: 800; font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.5px; color: #000;">
+                            MÃ QR CHUYỂN KHOẢN (VIETQR)
+                        </div>
+                        <div style="font-size: 10px; color: #333; margin-top: 2px;">
+                            Quét mã bằng App Ngân hàng hoặc Ví điện tử
+                        </div>
+                        <div style="display: flex; justify-content: center; align-items: center; margin: 6px 0;">
+                            <img id="receipt-qr-image" src="" alt="Mã VietQR" style="width: 140px; height: 140px; object-fit: contain; border: 1px solid #111; padding: 4px; background: #fff; border-radius: 4px; display: block;" onerror="this.onerror=null; this.src='https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=GEARS-KEYCAP-SHOP';" />
+                        </div>
+                        <div style="font-size: 10.5px; line-height: 1.4; color: #000; text-align: left; background: #f8fafc; padding: 6px 8px; border: 1px dashed #888; border-radius: 4px; margin-top: 4px;">
+                            <div><strong>Ngân hàng:</strong> MBBank (Quân Đội)</div>
+                            <div><strong>STK:</strong> <span style="font-weight: 800; font-family: monospace;">0987654321</span></div>
+                            <div><strong>Chủ TK:</strong> GEARS KEYCAP SHOP</div>
+                            <div><strong>Số tiền:</strong> <span id="receipt-qr-amount" style="font-weight: 800;">0 đ</span></div>
+                            <div><strong>Nội dung:</strong> <span id="receipt-qr-memo" style="font-weight: 800; font-family: monospace;"></span></div>
+                        </div>
+                        <div style="border-top: 1px dashed #000; margin: 10px 0 0;"></div>
+                    </div>
+
+                    <div style="text-align: center; font-size: 11px; font-style: italic;">
+                        Cảm ơn Quý khách & Hẹn gặp lại!<br>
+                        Website: gearskeycap.vn
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer-dark">
+                <button type="button" class="btn-tech btn-tech-blue" onclick="printReceiptDirectly()">
+                    <i class="fas fa-print"></i> In Biên Lai
+                </button>
+                <button type="button" class="btn-tech btn-tech-excel" style="background: #10b981; color: #ffffff;" onclick="finishAndNewOrder()">
+                    <i class="fas fa-plus"></i> Đơn Mới (F2)
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL TẠO NHANH KHÁCH HÀNG TẠI QUẦY (QUICK ADD CUSTOMER) -->
+    <div id="quickCustomerModal" class="modal-backdrop-dark" style="display: none; position: fixed; inset: 0; background: rgba(10, 12, 20, 0.85); backdrop-filter: blur(8px); z-index: 9999; justify-content: center; align-items: center; padding: 20px;">
+        <div style="background: #151824; border: 1px solid #2b3147; border-radius: 12px; width: 100%; max-width: 500px; box-shadow: 0 20px 40px rgba(0,0,0,0.6); overflow: hidden;">
+            <div style="padding: 16px 20px; border-bottom: 1px solid #2b3147; display: flex; justify-content: space-between; align-items: center; background: #1c2030;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <i class="fas fa-user-plus" style="color: #3b82f6; font-size: 18px;"></i>
+                    <h3 style="font-size: 16px; font-weight: 800; color: #fff; margin: 0;">TẠO KHÁCH HÀNG MỚI TẠI QUẦY</h3>
+                </div>
+                <button type="button" onclick="closeQuickAddCustomerModal()" style="background: none; border: none; color: #94a3b8; font-size: 18px; cursor: pointer;">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <form id="quickCustomerForm" onsubmit="handleQuickCreateCustomer(event)" style="padding: 22px 24px; display: flex; flex-direction: column; gap: 16px;">
+                <div class="form-group" style="display: flex; flex-direction: column; gap: 6px;">
+                    <label style="font-size: 13px; font-weight: 700; color: #e2e8f0;">
+                        Họ và tên khách hàng <span style="color: #ef4444;">*</span>
+                    </label>
+                    <input type="text" id="pos-new-cust-name" class="input-dark" placeholder="VD: Nguyễn Văn Anh" style="height: 40px; font-size: 13px;">
+                    <small id="error-pos-new-cust-name" style="color: #ef4444; font-size: 11.5px; display: none;"></small>
+                </div>
+
+                <div class="form-group" style="display: flex; flex-direction: column; gap: 6px;">
+                    <label style="font-size: 13px; font-weight: 700; color: #e2e8f0;">
+                        Số điện thoại <span style="color: #ef4444;">*</span>
+                    </label>
+                    <input type="tel" id="pos-new-cust-phone" class="input-dark" placeholder="VD: 0912345678 (10 số)" style="height: 40px; font-size: 13px;">
+                    <small id="error-pos-new-cust-phone" style="color: #ef4444; font-size: 11.5px; display: none;"></small>
+                </div>
+
+                <div class="form-group" style="display: flex; flex-direction: column; gap: 6px;">
+                    <label style="font-size: 13px; font-weight: 700; color: #e2e8f0;">
+                        Email (Tùy chọn)
+                    </label>
+                    <input type="email" id="pos-new-cust-email" class="input-dark" placeholder="VD: vananh@gmail.com" style="height: 40px; font-size: 13px;">
+                </div>
+
+                <div class="form-group" style="display: flex; flex-direction: column; gap: 6px;">
+                    <label style="font-size: 13px; font-weight: 700; color: #e2e8f0;">
+                        Địa chỉ nhận hàng (Tùy chọn)
+                    </label>
+                    <input type="text" id="pos-new-cust-address" class="input-dark" placeholder="VD: 123 Nguyễn Văn Cừ, Quận 5, TP.HCM" style="height: 40px; font-size: 13px;">
+                </div>
+
+                <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 10px; border-top: 1px solid #2b3147; padding-top: 16px;">
+                    <button type="button" class="btn-tech btn-tech-reset" onclick="closeQuickAddCustomerModal()">
+                        Hủy Bỏ
+                    </button>
+                    <button type="submit" class="btn-tech btn-tech-blue" style="font-weight: 700;">
+                        <i class="fas fa-check"></i> Lưu &amp; Chọn Khách Hàng
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../scripts/keycap-dataset-100.js"></script>
+    <script src="../scripts/modules/GearsApp.js"></script>
+    <script src="./script/admin-common.js"></script>
+    <script src="./script/pos.js"></script>
+</body>
+</html>

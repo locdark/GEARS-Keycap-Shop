@@ -89,7 +89,7 @@
   margin: 12px 0;
 }
 
-/* ✅ Sửa lỗi line-clamp */
+/*  Sửa lỗi line-clamp */
 .container__cart-Item-name {
   font-size: 1.7rem;
   font-weight: 500;

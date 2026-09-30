@@ -1,7 +1,6 @@
-Web1-Nhóm 19
-Đề tài:Shop bán Gear
-Các thành viên:
--3124410212 Đinh Ngọc Minh
--3121410113 Bùi Võ Tiến Duy
--3121410269 Đỗ Minh Khoa
--3124410293 Trần Nhật Quang
+BÁO CÁO ĐỒ ÁN - ĐẠI HỌC SÀI GÒN (SGU)
+Đề tài: Quản lý cửa hàng bán keycap (GEARS Keycap Shop)
+Các thành viên nhóm:
+- 3124410032 Nguyễn Công Danh
+- 3124410293 Trần Nhật Quang
+- 3122560041 Lê Hoài Lộc

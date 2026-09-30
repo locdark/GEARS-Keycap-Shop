@@ -4,7 +4,7 @@
 
 Admin Panel đã được tái cấu trúc hoàn toàn với các trang riêng biệt:
 
-### 📁 Cấu trúc thư mục
+###  Cấu trúc thư mục
 
 ```
 assets/Admin/
@@ -24,7 +24,7 @@ assets/Admin/
 
 ---
 
-## 🚀 Tính năng chính
+##  Tính năng chính
 
 ### 1. Dashboard (Trang chủ)
 - **URL**: `dashboard.html`
@@ -37,42 +37,42 @@ assets/Admin/
 ### 2. Quản lý Khách hàng
 - **URL**: `customers.html`
 - **Tính năng**:
-  - ✅ Hiển thị danh sách khách hàng
-  - ✅ Tìm kiếm theo tên hoặc email
-  - ✅ Lọc theo loại tài khoản (Admin/Khách hàng)
-  - ✅ Lọc theo trạng thái (Hoạt động/Bị khóa)
-  - ✅ Phân trang (10 khách hàng/trang)
-  - ✅ Reset mật khẩu
-  - ✅ Khóa/Mở khóa tài khoản
+  -  Hiển thị danh sách khách hàng
+  -  Tìm kiếm theo tên hoặc email
+  -  Lọc theo loại tài khoản (Admin/Khách hàng)
+  -  Lọc theo trạng thái (Hoạt động/Bị khóa)
+  -  Phân trang (10 khách hàng/trang)
+  -  Reset mật khẩu
+  -  Khóa/Mở khóa tài khoản
 
 ### 3. Quản lý Sản phẩm
 - **URL**: `products.html`
 - **Tính năng**:
-  - ✅ Hiển thị danh sách sản phẩm
-  - ✅ Tìm kiếm sản phẩm theo tên
-  - ✅ Lọc theo danh mục
-  - ✅ Lọc theo khoảng giá
-  - ✅ Phân trang (10 sản phẩm/trang)
-  - ✅ **THÊM** sản phẩm mới
-  - ✅ **SỬA** thông tin sản phẩm (tên, giá, danh mục, ảnh)
-  - ✅ **XÓA** sản phẩm
-  - ✅ Quản lý danh mục (Thêm/Sửa/Xóa thể loại)
+  -  Hiển thị danh sách sản phẩm
+  -  Tìm kiếm sản phẩm theo tên
+  -  Lọc theo danh mục
+  -  Lọc theo khoảng giá
+  -  Phân trang (10 sản phẩm/trang)
+  -  **THÊM** sản phẩm mới
+  -  **SỬA** thông tin sản phẩm (tên, giá, danh mục, ảnh)
+  -  **XÓA** sản phẩm
+  -  Quản lý danh mục (Thêm/Sửa/Xóa thể loại)
 
 ### 4. Quản lý Đơn hàng
 - **URL**: `orders.html`
 - **Tính năng**:
-  - ✅ Hiển thị danh sách đơn hàng
-  - ✅ Lọc theo khoảng thời gian
-  - ✅ Lọc theo trạng thái đơn hàng
-  - ✅ Tìm kiếm theo tên khách hàng
-  - ✅ Phân trang (10 đơn hàng/trang)
-  - ✅ Xem chi tiết đơn hàng
-  - ✅ Cập nhật trạng thái đơn hàng
-  - ✅ Xóa đơn hàng
+  -  Hiển thị danh sách đơn hàng
+  -  Lọc theo khoảng thời gian
+  -  Lọc theo trạng thái đơn hàng
+  -  Tìm kiếm theo tên khách hàng
+  -  Phân trang (10 đơn hàng/trang)
+  -  Xem chi tiết đơn hàng
+  -  Cập nhật trạng thái đơn hàng
+  -  Xóa đơn hàng
 
 ---
 
-## 🔧 Cách sử dụng
+##  Cách sử dụng
 
 ### Truy cập Admin Panel
 
@@ -89,7 +89,7 @@ Sử dụng menu điều hướng ở đầu trang:
 
 ---
 
-## 📊 Cấu trúc dữ liệu LocalStorage
+##  Cấu trúc dữ liệu LocalStorage
 
 ### 1. User (Khách hàng)
 ```javascript
@@ -148,7 +148,7 @@ Sử dụng menu điều hướng ở đầu trang:
 
 ---
 
-## 🛠️ Các hàm tiện ích (admin-common.js)
+## ️ Các hàm tiện ích (admin-common.js)
 
 Tất cả trang admin đều có thể sử dụng các hàm sau:
 
@@ -179,7 +179,7 @@ escapeHtml(text)         // Tránh XSS attack
 
 ---
 
-## 🔄 Đồng bộ dữ liệu
+##  Đồng bộ dữ liệu
 
 ### Sản phẩm được đồng bộ hoàn toàn giữa Admin và Client:
 
@@ -196,7 +196,7 @@ escapeHtml(text)         // Tránh XSS attack
 
 ---
 
-## ⚠️ Lỗi thường gặp và cách khắc phục
+## ️ Lỗi thường gặp và cách khắc phục
 
 ### 1. Không hiển thị dữ liệu
 **Nguyên nhân**: LocalStorage chưa có dữ liệu  
@@ -212,7 +212,7 @@ escapeHtml(text)         // Tránh XSS attack
 
 ---
 
-## 🎨 Tùy chỉnh
+##  Tùy chỉnh
 
 ### Thay đổi số item trên mỗi trang:
 
@@ -229,16 +229,16 @@ const itemsPerPage = 10;  // Đổi thành số bạn muốn
 
 ---
 
-## 📝 File cũ
+##  File cũ
 
 File `index.html` cũ vẫn còn nhưng KHÔNG ĐƯỢC SỬ DỤNG NỮA.  
 Toàn bộ chức năng đã được tách ra các trang riêng.
 
 ---
 
-## 🚨 Bảo mật
+##  Bảo mật
 
-⚠️ **LƯU Ý QUAN TRỌNG**:
+️ **LƯU Ý QUAN TRỌNG**:
 
 1. Admin panel KHÔNG CÓ kiểm tra đăng nhập
 2. Không dùng cho production (sản phẩm thật)
@@ -249,7 +249,7 @@ Toàn bộ chức năng đã được tách ra các trang riêng.
 
 ---
 
-## 📞 Hỗ trợ
+##  Hỗ trợ
 
 Nếu gặp vấn đề, kiểm tra:
 1. Console của trình duyệt (F12)

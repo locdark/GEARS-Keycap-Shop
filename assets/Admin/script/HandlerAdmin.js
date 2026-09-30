@@ -880,7 +880,7 @@ function createProducts1() {
 function showInventoryList() {
     const productData = localStorage.getItem('product');
     if (!productData) {
-        console.warn("⚠️ Không có dữ liệu sản phẩm trong localStorage.");
+        console.warn("️ Không có dữ liệu sản phẩm trong localStorage.");
         return;
     }
 
@@ -911,7 +911,7 @@ function showInventoryList() {
     if (table) {
         table.innerHTML = tableHTML;
     } else {
-        console.error("❌ Không tìm thấy bảng #inventory-list");
+        console.error(" Không tìm thấy bảng #inventory-list");
     }
 }
 function showLowStockList() {

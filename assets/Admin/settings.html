@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cấu Hình Website & Thương Hiệu - GEARS Keycap Shop</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700;800&family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css">
+    <link rel="shortcut icon" href="../img/ShortCut_Icon.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+    <!-- Dark Obsidian Theme -->
+    <link rel="stylesheet" href="./css/admin-obsidian.css">
+</head>
+<body>
+
+    <!-- 1. SIDEBAR PHIA TRAI (DARK ERP STYLE) -->
+    <aside class="admin-sidebar">
+        <!-- Brand Header -->
+        <div class="sidebar-brand">
+            <div class="sidebar-brand-title">
+                <i class="fas fa-keyboard"></i>
+                <span>QUẢN TRỊ HỆ THỐNG</span>
+            </div>
+            <span class="version-badge">v2.6</span>
+            <button class="sidebar-toggle-btn" title="Thu gọn / Mở rộng sidebar" type="button">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+
+        <!-- Quick Actions (Đưa lên trên ngay sau logo) -->
+        <div class="sidebar-quick-actions" style="padding:8px 12px;display:flex;gap:6px;border-bottom:1px solid var(--border-color,#232738);">
+            <a href="../../index.html" target="_blank" class="btn-sidebar-store" style="flex:1;padding:7px 10px;font-size:12px;gap:6px;" title="Xem cửa hàng khách hàng">
+                <i class="fas fa-store"></i> <span class="sidebar-link-text">Web KH</span>
+            </a>
+            <button type="button" class="btn-sidebar-logout" style="flex:1;padding:7px 10px;font-size:12px;gap:6px;" onclick="AdminCommon.logoutAdmin()" title="Đăng xuất khỏi hệ thống">
+                <i class="fas fa-sign-out-alt"></i> <span class="sidebar-link-text">Đăng Xuất</span>
+            </button>
+        </div>
+
+        <!-- Navigation Menu -->
+        <div class="sidebar-nav">
+            <!-- Nhóm 1: Nghiệp Vụ Bán Hàng -->
+            <div class="nav-section-title">
+                <i class="fas fa-bolt"></i> Nghiệp Vụ Bán Hàng
+            </div>
+            <ul class="sidebar-menu">
+                <li class="sidebar-item">
+                    <a href="dashboard.html" class="sidebar-link">
+                        <div class="sidebar-link-left">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span class="sidebar-link-text">Tổng Quan Dashboard</span>
+                        </div>
+                        <span class="sidebar-badge badge-live">Live</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="pos.html" class="sidebar-link">
+                        <div class="sidebar-link-left">
+                            <i class="fas fa-cash-register"></i>
+                            <span class="sidebar-link-text">Điểm Bán Lẻ (POS)</span>
+                        </div>
+                        <span class="sidebar-badge badge-hot">HOT</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="orders.html" class="sidebar-link">
+                        <div class="sidebar-link-left">
+                            <i class="fas fa-receipt"></i>
+                            <span class="sidebar-link-text">Quản Lý Đơn Hàng</span>
+                        </div>
+                        <span class="sidebar-badge badge-new" id="sidebar-order-count">5 Đơn</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="products.html" class="sidebar-link">
+                        <div class="sidebar-link-left">
+                            <i class="fas fa-cubes"></i>
+                            <span class="sidebar-link-text">Sản Phẩm Keycap</span>
+                        </div>
+                        <span class="sidebar-badge badge-count" id="sidebar-product-count">100+</span>
+                    </a>
+                </li>
+            </ul>
+
+            <!-- Nhóm 2: Đối Tác & Nhân Sự -->
+            <div class="nav-section-title">
+                <i class="fas fa-users-cog"></i> Đối Tác &amp; Nhân Sự
+            </div>
+            <ul class="sidebar-menu">
+                <li class="sidebar-item">
+                    <a href="suppliers.html" class="sidebar-link">
+                        <div class="sidebar-link-left">
+                            <i class="fas fa-truck-loading"></i>
+                            <span class="sidebar-link-text">Nhà Cung Cấp</span>
+                        </div>
+                        <span class="sidebar-badge badge-tech">Partner</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="customers.html" class="sidebar-link">
+                        <div class="sidebar-link-left">
+                            <i class="fas fa-users"></i>
+                            <span class="sidebar-link-text">Khách Hàng</span>
+                        </div>
+                        <span class="sidebar-badge badge-tech">CRM</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="employees.html" class="sidebar-link">
+                        <div class="sidebar-link-left">
+                            <i class="fas fa-user-shield"></i>
+                            <span class="sidebar-link-text">Nhân Viên &amp; Phân Quyền</span>
+                        </div>
+                        <span class="sidebar-badge badge-tech">Auth</span>
+                    </a>
+                </li>
+            </ul>
+
+            <!-- Nhóm 3: Báo Cáo & Cấu Hình -->
+            <div class="nav-section-title">
+                <i class="fas fa-sliders-h"></i> Báo Cáo &amp; Cấu Hình
+            </div>
+            <ul class="sidebar-menu">
+                <li class="sidebar-item">
+                    <a href="reports.html" class="sidebar-link">
+                        <div class="sidebar-link-left">
+                            <i class="fas fa-chart-line"></i>
+                            <span class="sidebar-link-text">Thống Kê Báo Cáo</span>
+                        </div>
+                        <span class="sidebar-badge badge-tech">Chart</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="database.html" class="sidebar-link">
+                        <div class="sidebar-link-left">
+                            <i class="fas fa-database" style="color: #10b981;"></i>
+                            <span class="sidebar-link-text">Cấu Hình CSDL (Navicat)</span>
+                        </div>
+                        <span class="sidebar-badge badge-tech" style="background: rgba(16,185,129,0.25); color: #34d399;">.env</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="settings.html" class="sidebar-link active">
+                        <div class="sidebar-link-left">
+                            <i class="fas fa-cog"></i>
+                            <span class="sidebar-link-text">Cấu Hình Website</span>
+                        </div>
+                        <span class="sidebar-badge badge-new">Logo</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="/so-do-canvas" target="_blank" class="sidebar-link">
+                        <div class="sidebar-link-left">
+                            <i class="fas fa-project-diagram"></i>
+                            <span class="sidebar-link-text">Sơ Đồ PTTKHDT</span>
+                        </div>
+                        <span class="sidebar-badge badge-tech">UML</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </aside>
+
+    <!-- 2. KHU VUC NOI DUNG CHINH -->
+    <div class="admin-main-wrapper">
+        <!-- Topbar -->
+        <header class="admin-topbar">
+            <div class="topbar-breadcrumbs">
+                <span>Hệ Thống</span>
+                <i class="fas fa-chevron-right" style="font-size: 10px; color: var(--text-muted);"></i>
+                <span>Cấu Hình</span>
+                <i class="fas fa-chevron-right" style="font-size: 10px; color: var(--text-muted);"></i>
+                <strong>Cấu Hình Website & Thương Hiệu</strong>
+            </div>
+
+            <div class="topbar-actions">
+                <div class="status-pill">
+                    <span class="status-dot"></span>
+                    <span>Port 3333 Online</span>
+                </div>
+                <div class="user-profile-badge">
+                    <div class="user-avatar-mini" id="admin-user-avatar">AD</div>
+                    <div>
+                        <div style="font-size: 12.5px; font-weight: 700; color: #fff;" id="admin-user-name">Nguyễn Công Danh</div>
+                        <div style="font-size: 11px; color: var(--text-muted);" id="admin-user-role">Quản Trị Viên (SGU)</div>
+                    </div>
+                </div>
+                <button class="btn-logout-circle" onclick="AdminCommon.logoutAdmin()" title="Đăng xuất">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Body Content -->
+        <main class="admin-content-area" style="max-width: 1200px; padding-bottom: 90px;">
+            <!-- Header tieu de -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 14px;">
+                <div>
+                    <h2 style="font-size: 22px; font-weight: 800; color: #ffffff; margin: 0 0 6px 0; display: flex; align-items: center; gap: 10px;">
+                        <i class="fas fa-sliders" style="color: var(--accent-red);"></i> CẤU HÌNH HỆ THỐNG WEBSITE
+                    </h2>
+                    <p style="margin: 0; color: var(--text-muted); font-size: 13.5px;">
+                        Quản lý thông tin nhận diện thương hiệu, tải lên logo, địa chỉ liên hệ và mạng xã hội.
+                    </p>
+                </div>
+                <a href="../../index.html" target="_blank" class="btn-tech btn-tech-blue">
+                    <i class="fas fa-external-link-alt"></i> Xem Trang Khách Hàng
+                </a>
+            </div>
+
+            <!-- 1. Cau hinh Thuong hieu & Upload Logo -->
+            <div class="settings-card-dark">
+                <div class="settings-card-header-dark">
+                    <i class="fas fa-image"></i>
+                    <h3>1. Nhận Diện Thương Hiệu & Logo Website</h3>
+                </div>
+
+                <div class="settings-grid-2-dark">
+                    <div>
+                        <div class="form-group-dark">
+                            <label class="form-label-dark" for="cfg-shop-name">Tên cửa hàng (Shop Name):</label>
+                            <input type="text" id="cfg-shop-name" class="input-dark" placeholder="Nhập tên thương hiệu (VD: GEARS Keycap Shop)...">
+                        </div>
+                        <div class="form-group-dark">
+                            <label class="form-label-dark" for="cfg-brand-tagline">Khẩu hiệu / Slogan ngắn:</label>
+                            <input type="text" id="cfg-brand-tagline" class="input-dark" placeholder="VD: Hệ Thống Bán Lẻ Keycap & Bàn Phím Cơ Chính Hãng...">
+                        </div>
+                        <div class="form-group-dark">
+                            <label class="form-label-dark" for="cfg-top-banner">Thông báo Banner khuyến mãi đầu trang:</label>
+                            <input type="text" id="cfg-top-banner" class="input-dark" placeholder="Nhập câu thông báo khuyến mãi...">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="form-label-dark">
+                            Tải Lên Logo Thương Hiệu:
+                        </label>
+                        <div class="upload-dropzone-dark" onclick="document.getElementById('logo-file-input').click()">
+                            <input type="file" id="logo-file-input" accept="image/*" style="display: none;" onchange="handleLogoUpload(this)">
+                            <i class="fas fa-cloud-arrow-up" style="font-size: 36px; color: var(--accent-red); margin-bottom: 8px; display: block;"></i>
+                            <span style="font-size: 14px; font-weight: 700; color: #ffffff;">Bấm để chọn tệp logo từ máy tính</span>
+                            <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">Định dạng PNG, JPG, SVG hoặc WebP (Tối đa 2MB)</div>
+                        </div>
+
+                        <div class="upload-preview-box-dark" id="logo-preview-box">
+                            <img id="logo-preview-img" src="../img/ShortCut_Icon.png" alt="Preview Logo" style="max-height: 60px; max-width: 180px; object-fit: contain; border-radius: 6px; background: #ffffff; padding: 4px;">
+                            <div style="flex: 1;">
+                                <div style="font-size: 13px; font-weight: 600; color: #ffffff;" id="logo-preview-status">Logo hiện tại (Biểu tượng mặc định)</div>
+                                <div style="margin-top: 6px;">
+                                    <button type="button" class="btn-tech btn-tech-reset" onclick="resetDefaultLogo()" style="font-size: 11.5px; padding: 4px 10px;">
+                                        <i class="fas fa-undo"></i> Dùng logo icon mặc định
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. Thong tin lien he & Showroom -->
+            <div class="settings-card-dark">
+                <div class="settings-card-header-dark">
+                    <i class="fas fa-headset"></i>
+                    <h3>2. Thông Tin Liên Hệ & Showroom Trực Tiếp</h3>
+                </div>
+
+                <div class="settings-grid-3-dark">
+                    <div class="form-group-dark">
+                        <label class="form-label-dark" for="cfg-hotline"><i class="fas fa-phone"></i> Hotline CSKH (Miễn phí):</label>
+                        <input type="text" id="cfg-hotline" class="input-dark" placeholder="VD: 1800 6975...">
+                    </div>
+                    <div class="form-group-dark">
+                        <label class="form-label-dark" for="cfg-email"><i class="fas fa-envelope"></i> Email hỗ trợ khách hàng:</label>
+                        <input type="email" id="cfg-email" class="input-dark" placeholder="VD: cskh@gearskeycap.vn...">
+                    </div>
+                    <div class="form-group-dark">
+                        <label class="form-label-dark" for="cfg-hours"><i class="fas fa-clock"></i> Thời gian mở cửa:</label>
+                        <input type="text" id="cfg-hours" class="input-dark" placeholder="VD: 08:00 - 21:30 (Thứ 2 - CN)...">
+                    </div>
+                </div>
+
+                <div class="form-group-dark" style="margin-top: 12px;">
+                    <label class="form-label-dark" for="cfg-address"><i class="fas fa-map-marker-alt"></i> Địa chỉ Showroom chính:</label>
+                    <input type="text" id="cfg-address" class="input-dark" placeholder="VD: 273 An Dương Vương, Phường 3, Quận 5, TP. Hồ Chí Minh...">
+                </div>
+            </div>
+
+            <!-- 3. Mang xa hoi & Kenh theo doi -->
+            <div class="settings-card-dark">
+                <div class="settings-card-header-dark">
+                    <i class="fas fa-share-nodes"></i>
+                    <h3>3. Kênh Mạng Xã Hội (Theo Dõi)</h3>
+                </div>
+
+                <div class="settings-grid-3-dark">
+                    <div class="form-group-dark">
+                        <label class="form-label-dark" for="cfg-fb"><i class="fab fa-facebook" style="color: #1877f2;"></i> Link Facebook:</label>
+                        <input type="url" id="cfg-fb" class="input-dark" placeholder="https://facebook.com/...">
+                    </div>
+                    <div class="form-group-dark">
+                        <label class="form-label-dark" for="cfg-insta"><i class="fab fa-instagram" style="color: #e4405f;"></i> Link Instagram:</label>
+                        <input type="url" id="cfg-insta" class="input-dark" placeholder="https://instagram.com/...">
+                    </div>
+                    <div class="form-group-dark">
+                        <label class="form-label-dark" for="cfg-gh"><i class="fab fa-github" style="color: #cbd5e1;"></i> Link Github / Du an:</label>
+                        <input type="url" id="cfg-gh" class="input-dark" placeholder="https://github.com/...">
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. Noi dung Gioi thieu Chan trang (Footer) -->
+            <div class="settings-card-dark">
+                <div class="settings-card-header-dark">
+                    <i class="fas fa-file-alt"></i>
+                    <h3>4. Nội Dung Giới Thiệu Chân Trang (Footer)</h3>
+                </div>
+
+                <div class="form-group-dark">
+                    <label class="form-label-dark" for="cfg-desc">Van ban gioi thieu thuong hieu (Cot 1 Footer):</label>
+                    <textarea id="cfg-desc" rows="4" class="input-dark" style="resize: vertical; width: 100%; height: auto;" placeholder="Nhap noi dung gioi thieu cua hang..."></textarea>
+                </div>
+            </div>
+
+            <!-- Thanh nut luu co dinh phia duoi -->
+            <div class="btn-action-bar-dark">
+                <button type="button" class="btn-tech btn-tech-reset" onclick="resetAllConfigToDefault()" style="font-size: 13.5px; padding: 10px 20px;">
+                    <i class="fas fa-undo"></i> Khôi Phục Mặc Định
+                </button>
+                <button type="button" class="btn-tech btn-tech-red" onclick="saveWebsiteConfig()" style="font-size: 13.5px; padding: 10px 28px;">
+                    <i class="fas fa-save"></i> LƯU CẤU HÌNH WEBSITE
+                </button>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../scripts/keycap-dataset-100.js"></script>
+    <script src="../scripts/modules/GearsApp.js"></script>
+    <script src="./script/admin-common.js"></script>
+    <script src="./script/settings.js"></script>
+</body>
+</html>

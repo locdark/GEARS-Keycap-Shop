@@ -31,38 +31,26 @@ function createAccount() {
 // --------------------------------------------------------------------------- //
 //  khởi tạo dữ liệu sản phẩm
 function createProducts() {
-    if (localStorage.getItem('product') === null) {
-        var productArray = [
-            { id: 0, type: 'Other', name: 'OSU! keycap', img: '/img/Products/Other/020.jpg', price: 55000, description: "Keycap với biểu tượng OSU!", stock: 2 },
-            { id: 1, type: 'Other', name: 'Apple logo keycap', img: '/img/Products/Other/021.jpg', price: 55000, description: "", stock: 10 },
-            { id: 2, type: 'Other', name: 'CS:GO keycap', img: '/img/Products/Other/022.jpg', price: 110000, description: "", stock: 1 },
-            { id: 3, type: 'Other', name: 'TypeWriter set keycap', img: '/img/Products/Other/023.jpg', price: 270000, description: "", stock: 8 },
-            { id: 4, type: 'Artisan', name: 'Sun Goddess Shrine keycap', img: '/img/Products/Artisan/001.jpg', price: 823529, description: "", stock: 5 },
-            { id: 5, type: 'Artisan', name: 'Galaxy Keycap', img: '/img/Products/Artisan/002.jpg', price: 802118, description: "", stock: 2 },
-            { id: 6, type: 'Artisan', name: 'Koi Fish Keycap', img: '/img/Products/Artisan/003.jpg', price: 543529, description: "", stock: 12 },
-            { id: 7, type: 'Artisan', name: 'Interstellar Keycap', img: '/img/Products/Artisan/004.jpg', price: 929176, description: "", stock: 3 },
-            { id: 8, type: 'Artisan', name: 'Cute Cat Keycaps', img: '/img/Products/Artisan/005.jpg', price: 188000, description: "", stock: 0 },
-            { id: 9, type: 'Artisan', name: 'Mega Charizard Keycap', img: '/img/Products/Artisan/006.jpg', price: 136447, description: "", stock: 7 },
-            { id: 10, type: 'Artisan', name: 'Devil Fruit Keycap', img: '/img/Products/Artisan/007.jpg', price: 938824, description: "", stock: 15 },
-            { id: 11, type: 'Artisan', name: 'Re:Zero Rem Keycap', img: '/img/Products/Artisan/008.jpg', price: 677116, description: "", stock: 1 },
-            { id: 12, type: 'Artisan', name: 'Totoru Natural Landscape & Waterfall Keycap', img: '/img/Products/Artisan/009.jpg', price: 124705, description: "", stock: 9 },
-            { id: 13, type: 'Artisan', name: 'Keycap Doubleshot xuyên led Kim Loại - Spiderman', img: '/img/Products/Artisan/010.jpg', price: 300000, description: "", stock: 6 },
-            { id: 14, type: 'Pudding', name: 'Keycap PBT Pudding Black', img: '/img/Products/Pudding/011.jpg', price: 350000, description: "Set keycap Pudding màu đen với chất liệu PBT chắn chắn", stock: 11 },
-            { id: 15, type: 'Pudding', name: 'Keycap PBT Pudding White', img: '/img/Products/Pudding/012.jpg', price: 350000, description: "Set keycap Pudding màu trắng với chất liệu PBT chắn chắn", stock: 3 },
-            { id: 16, type: 'Pudding', name: 'Keycap PBT Pudding Pink', img: '/img/Products/Pudding/013.jpg', price: 350000, description: "Set keycap Pudding màu hồng với chất liệu PBT chắn chắn", stock: 4 },
-            { id: 17, type: 'Pudding', name: 'Keycap PBT Pudding Blue', img: '/img/Products/Pudding/blue.jpg', price: 350000, description: "Set keycap Pudding màu xanh với chất liệu PBT chắn chắn", stock: 2 },
-            { id: 18, type: 'Pudding', name: 'Keycap PBT Pudding Purple', img: '/img/Products/Pudding/purple.jpg', price: 350000, description: "Set keycap Pudding màu tím với chất liệu PBT chắn chắn", stock: 10 },
-            { id: 19, type: 'Pudding', name: 'Keycap PBT Pudding Red', img: '/img/Products/Pudding/red.jpg', price: 350000, description: "Set keycap Pudding màu đỏ với chất liệu PBT chắn chắn", stock: 1 },
-            { id: 20, type: 'Anime', name: 'Kimetsu no Yaiba set Keycap', img: '/img/Products/Anime/014.png', price: 745000, description: "Set keycap song ngữ chủ đề anime Kimetsu no Yaiba", stock: 9 },
-            { id: 21, type: 'Anime', name: 'Re: Zero set Keycap', img: '/img/Products/Anime/015.png', price: 745000, description: "Set keycap song ngữ chủ đề anime Re: Zero", stock: 5 },
-            { id: 22, type: 'Anime', name: 'Pokemon Bulbasaur set keycap', img: '/img/Products/Anime/016.png', price: 790000, description: "Set keycap song ngữ chủ đề pokemon Bulbasaur", stock: 4 },
-            { id: 23, type: 'Anime', name: 'Pokemon Charmander set keycap', img: '/img/Products/Anime/017.png', price: 790000, description: "Set keycap song ngữ chủ đề pokemon Charmander", stock: 8 },
-            { id: 24, type: 'Anime', name: 'Pokemon Squirtle set keycap', img: '/img/Products/Anime/018.png', price: 790000, description: "Set keycap song ngữ chủ đề pokemon Squirtle", stock: 3 },
-            { id: 25, type: 'Anime', name: 'Hatsune Miku set keycap', img: '/img/Products/Anime/019.jpeg', price: 690000, description: "Set keycap song ngữ chủ đề nhân vật Hatsune Miku", stock: 0 },
-        ];
-        localStorage.setItem('product', JSON.stringify(productArray));
+    var stored = localStorage.getItem('product');
+    var parsed = null;
+    try {
+        parsed = stored ? JSON.parse(stored) : null;
+    } catch (e) {
+        parsed = null;
+    }
+
+    if (!parsed || parsed.length < 100 || !parsed[0].supplierId) {
+        if (typeof window !== 'undefined' && window.KEYCAP_100_PRODUCTS && window.KEYCAP_100_PRODUCTS.length >= 100) {
+            localStorage.setItem('product', JSON.stringify(window.KEYCAP_100_PRODUCTS));
+            return;
+        }
+        if (typeof KEYCAP_100_PRODUCTS !== 'undefined' && KEYCAP_100_PRODUCTS.length >= 100) {
+            localStorage.setItem('product', JSON.stringify(KEYCAP_100_PRODUCTS));
+            return;
+        }
     }
 }
+
 
 
 // --------------------------------------------------------------------------- //

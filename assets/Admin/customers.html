@@ -4,84 +4,386 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+    <title>Quản Lý Khách Hàng - GEARS Keycap Shop</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700;800&family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css">
     <link rel="shortcut icon" href="../img/ShortCut_Icon.png">
-    <link rel="stylesheet" href="../css/Base.css">
-    <link rel="stylesheet" href="../css/Grid.css">
-    <link rel="stylesheet" href="../css/Responsive.css">
-    <link rel="stylesheet" href="./css/style.css">
-    <title>Quản lý Khách hàng - GEARS Shop</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+    <!-- Dark Obsidian Theme -->
+    <link rel="stylesheet" href="./css/admin-obsidian.css">
 </head>
 <body>
-    <div class="main-body">
-        <!-- Header -->
-        <div class="header">
-            <div class="header-navbar--list">
-                <div class="header-navbar--item">
-                    <a href="dashboard.html" style="color: inherit; text-decoration: none;">Trang chủ</a>
-                </div>
-                <div class="header-navbar--item headerActive">
-                    <a href="customers.html" style="color: inherit; text-decoration: none;">Quản lý khách hàng</a>
-                </div>
-                <div class="header-navbar--item">
-                    <a href="products.html" style="color: inherit; text-decoration: none;">Quản lý sản phẩm</a>
-                </div>
-                <div class="header-navbar--item">
-                    <a href="orders.html" style="color: inherit; text-decoration: none;">Quản lý đơn hàng</a>
-                </div>
-                <div class="line"></div>
+
+    <!-- 1. SIDEBAR PHÍA TRÁI (DARK ERP STYLE) -->
+    <aside class="admin-sidebar">
+        <!-- Brand Header -->
+        <div class="sidebar-brand">
+            <div class="sidebar-brand-title">
+                <i class="fas fa-keyboard"></i>
+                <span>QUẢN TRỊ HỆ THỐNG</span>
             </div>
+            <span class="version-badge">v2.6</span>
+            <button class="sidebar-toggle-btn" title="Thu gọn / Mở rộng sidebar" type="button">
+                <i class="fas fa-bars"></i>
+            </button>
         </div>
 
-        <!-- Container -->
-        <div class="container">
-            <div class="grid max-Width">
-                <div class="row sm-gutter">
-                    <div class="col l-12 m-12 c-12">
-                        <div class="container-main">
-                            <div class="container-title">Quản lý Khách hàng</div>
-                            
-                            <!-- Thanh tìm kiếm -->
-                            <div class="search-bar" style="margin-bottom: 20px; display: flex; gap: 10px; align-items: center;">
-                                <input type="text" id="search-customer" placeholder="Tìm kiếm theo tên hoặc email..." 
-                                    class="input-field" style="flex: 1; max-width: 400px;">
-                                <select id="filter-type" class="input-field" style="width: 150px;">
-                                    <option value="">Tất cả</option>
-                                    <option value="admin">Admin</option>
-                                    <option value="client">Khách hàng</option>
-                                </select>
-                                <select id="filter-status" class="input-field" style="width: 150px;">
-                                    <option value="">Tất cả trạng thái</option>
-                                    <option value="active">Hoạt động</option>
-                                    <option value="locked">Bị khóa</option>
-                                </select>
-                                <button id="btn-search" class="confirm-btn">Tìm kiếm</button>
-                                <button id="btn-reset" class="confirm-btn" style="background: #999;">Reset</button>
-                            </div>
+        <!-- Quick Actions (Đưa lên trên ngay sau logo) -->
+        <div class="sidebar-quick-actions" style="padding:8px 12px;display:flex;gap:6px;border-bottom:1px solid var(--border-color,#232738);">
+            <a href="../../index.html" target="_blank" class="btn-sidebar-store" style="flex:1;padding:7px 10px;font-size:12px;gap:6px;" title="Xem cửa hàng khách hàng">
+                <i class="fas fa-store"></i> <span class="sidebar-link-text">Web KH</span>
+            </a>
+            <button type="button" class="btn-sidebar-logout" style="flex:1;padding:7px 10px;font-size:12px;gap:6px;" onclick="AdminCommon.logoutAdmin()" title="Đăng xuất khỏi hệ thống">
+                <i class="fas fa-sign-out-alt"></i> <span class="sidebar-link-text">Đăng Xuất</span>
+            </button>
+        </div>
 
-                            <!-- Bảng danh sách -->
-                            <div class="container-table" style="max-height: 60vh;">
-                                <table id="customer-list"></table>
-                            </div>
-
-                            <!-- Phân trang -->
-                            <div class="pagination" id="pagination" style="display: flex; justify-content: center; gap: 10px; margin-top: 20px; flex-wrap: wrap;">
-                            </div>
-
-                            <!-- Thông tin trang -->
-                            <div class="page-info" style="text-align: center; margin-top: 10px; color: #666;">
-                                Hiển thị <span id="showing-start">0</span> - <span id="showing-end">0</span> 
-                                trong tổng số <span id="total-customers">0</span> khách hàng
-                            </div>
+        <!-- Navigation Menu -->
+        <div class="sidebar-nav">
+            <!-- Nhóm 1: Nghiệp Vụ Bán Hàng -->
+            <div class="nav-section-title">
+                <i class="fas fa-bolt"></i> Nghiệp Vụ Bán Hàng
+            </div>
+            <ul class="sidebar-menu">
+                <li class="sidebar-item">
+                    <a href="dashboard.html" class="sidebar-link">
+                        <div class="sidebar-link-left">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span class="sidebar-link-text">Tổng Quan Dashboard</span>
                         </div>
+                        <span class="sidebar-badge badge-live">Live</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="pos.html" class="sidebar-link">
+                        <div class="sidebar-link-left">
+                            <i class="fas fa-cash-register"></i>
+                            <span class="sidebar-link-text">Điểm Bán Lẻ (POS)</span>
+                        </div>
+                        <span class="sidebar-badge badge-hot">HOT</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="orders.html" class="sidebar-link">
+                        <div class="sidebar-link-left">
+                            <i class="fas fa-receipt"></i>
+                            <span class="sidebar-link-text">Quản Lý Đơn Hàng</span>
+                        </div>
+                        <span class="sidebar-badge badge-new" id="sidebar-order-count">5 Đơn</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="products.html" class="sidebar-link">
+                        <div class="sidebar-link-left">
+                            <i class="fas fa-cubes"></i>
+                            <span class="sidebar-link-text">Sản Phẩm Keycap</span>
+                        </div>
+                        <span class="sidebar-badge badge-count" id="sidebar-product-count">100+</span>
+                    </a>
+                </li>
+            </ul>
+
+            <!-- Nhóm 2: Đối Tác & Nhân Sự -->
+            <div class="nav-section-title">
+                <i class="fas fa-users-cog"></i> Đối Tác &amp; Nhân Sự
+            </div>
+            <ul class="sidebar-menu">
+                <li class="sidebar-item">
+                    <a href="suppliers.html" class="sidebar-link">
+                        <div class="sidebar-link-left">
+                            <i class="fas fa-truck-loading"></i>
+                            <span class="sidebar-link-text">Nhà Cung Cấp</span>
+                        </div>
+                        <span class="sidebar-badge badge-tech">Partner</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="customers.html" class="sidebar-link active">
+                        <div class="sidebar-link-left">
+                            <i class="fas fa-users"></i>
+                            <span class="sidebar-link-text">Khách Hàng</span>
+                        </div>
+                        <span class="sidebar-badge badge-tech">CRM</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="employees.html" class="sidebar-link">
+                        <div class="sidebar-link-left">
+                            <i class="fas fa-user-shield"></i>
+                            <span class="sidebar-link-text">Nhân Viên &amp; Phân Quyền</span>
+                        </div>
+                        <span class="sidebar-badge badge-tech">Auth</span>
+                    </a>
+                </li>
+            </ul>
+
+            <!-- Nhóm 3: Báo Cáo & Cấu Hình -->
+            <div class="nav-section-title">
+                <i class="fas fa-sliders-h"></i> Báo Cáo &amp; Cấu Hình
+            </div>
+            <ul class="sidebar-menu">
+                <li class="sidebar-item">
+                    <a href="reports.html" class="sidebar-link">
+                        <div class="sidebar-link-left">
+                            <i class="fas fa-chart-line"></i>
+                            <span class="sidebar-link-text">Thống Kê Báo Cáo</span>
+                        </div>
+                        <span class="sidebar-badge badge-tech">Chart</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="database.html" class="sidebar-link">
+                        <div class="sidebar-link-left">
+                            <i class="fas fa-database" style="color: #10b981;"></i>
+                            <span class="sidebar-link-text">Cấu Hình CSDL (Navicat)</span>
+                        </div>
+                        <span class="sidebar-badge badge-tech" style="background: rgba(16,185,129,0.25); color: #34d399;">.env</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="settings.html" class="sidebar-link">
+                        <div class="sidebar-link-left">
+                            <i class="fas fa-cog"></i>
+                            <span class="sidebar-link-text">Cấu Hình Website</span>
+                        </div>
+                        <span class="sidebar-badge badge-new">Logo</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="/so-do-canvas" target="_blank" class="sidebar-link">
+                        <div class="sidebar-link-left">
+                            <i class="fas fa-project-diagram"></i>
+                            <span class="sidebar-link-text">Sơ Đồ PTTKHDT</span>
+                        </div>
+                        <span class="sidebar-badge badge-tech">UML</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </aside>
+
+    <!-- 2. MAIN WRAPPER -->
+    <div class="admin-main-wrapper">
+        <header class="admin-topbar">
+            <div class="topbar-breadcrumbs">
+                <span>Hệ Thống</span>
+                <i class="fas fa-chevron-right" style="font-size: 10px; color: var(--text-muted);"></i>
+                <span>Đối Tác & Nhân Sự</span>
+                <i class="fas fa-chevron-right" style="font-size: 10px; color: var(--text-muted);"></i>
+                <strong>Quản Lý Khách Hàng (CRM)</strong>
+            </div>
+
+            <div class="topbar-actions">
+                <div class="status-pill">
+                    <span class="status-dot"></span>
+                    <span>Port 3333 Online</span>
+                </div>
+                <div class="user-profile-badge">
+                    <div class="user-avatar-mini" id="admin-user-avatar">AD</div>
+                    <div>
+                        <div style="font-size: 12.5px; font-weight: 700; color: #fff;" id="admin-user-name">Nguyễn Công Danh</div>
+                        <div style="font-size: 11px; color: var(--text-muted);">Quản Trị Viên (SGU)</div>
                     </div>
                 </div>
+            </div>
+        </header>
+
+        <main class="dashboard-content">
+            <!-- Bảng Quản Lý Khách Hàng -->
+            <div class="detail-card">
+                <div class="section-header-styled">
+                    <h3><span class="bar-indicator" style="background-color: var(--accent-purple);"></span> Danh Sách Khách Hàng & Tài Khoản</h3>
+                    <div style="font-size: 13px; color: var(--text-muted);">
+                        Hệ thống dữ liệu khách hàng đăng ký trực tuyến và khách hàng mua trực tiếp tại quầy POS
+                    </div>
+                </div>
+
+                <!-- Thanh Lọc & Tìm Kiếm -->
+                <div class="products-filter-toolbar">
+                    <div class="filter-left-group">
+                        <div class="search-box-dark" style="max-width: 380px;">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="search-customer" placeholder="Tìm theo tên, username, SĐT hoặc email...">
+                        </div>
+                        <button id="btn-search-customer" class="btn-tech btn-tech-filter">
+                            <i class="fas fa-search"></i> Tìm Kiếm
+                        </button>
+                        <button id="btn-reset-filter" class="btn-tech btn-tech-reset">
+                            <i class="fas fa-undo"></i> Tất Cả
+                        </button>
+                    </div>
+
+                    <div class="filter-right-group">
+                        <button id="btn-export-customers" class="btn-tech btn-tech-excel">
+                            <i class="fas fa-file-excel"></i> Xuất Excel
+                        </button>
+                        <button id="btn-open-add-cust" class="btn-tech" style="background: linear-gradient(135deg, #ec4899, #db2777); color: #fff; box-shadow: 0 4px 14px rgba(236, 72, 153, 0.3);">
+                            <i class="fas fa-user-plus"></i> Tạo Khách Hàng
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Bảng Dữ Liệu Dark Tech -->
+                <div class="table-responsive-dark">
+                    <table id="customer-list" class="table-dark-tech"></table>
+                </div>
+
+                <!-- Phân Trang & Thông Tin Hiển Thị -->
+                <div class="table-footer-pagination">
+                    <div class="page-info-dark">
+                        Hiển thị <span id="showing-start" style="color: #fff; font-weight: 700;">0</span> - 
+                        <span id="showing-end" style="color: #fff; font-weight: 700;">0</span> trong tổng số 
+                        <strong id="total-customers" style="color: #f472b6;">0</strong> khách hàng
+                    </div>
+
+                    <div class="pagination-container-dark" id="pagination-customers"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- 3. FLOATING QUICK DOCK PHÍA PHẢI -->
+    <div class="floating-action-dock">
+        <a href="dashboard.html" class="dock-btn" title="Dashboard">
+            <i class="fas fa-tachometer-alt"></i>
+        </a>
+        <a href="pos.html" class="dock-btn" title="Điểm bán lẻ POS">
+            <i class="fas fa-cash-register"></i>
+        </a>
+        <a href="orders.html" class="dock-btn" title="Quản lý Đơn hàng">
+            <i class="fas fa-receipt"></i>
+        </a>
+        <a href="products.html" class="dock-btn" title="Quản lý Sản phẩm">
+            <i class="fas fa-cubes"></i>
+        </a>
+        <a href="reports.html" class="dock-btn" title="Thống kê Báo cáo">
+            <i class="fas fa-chart-line"></i>
+        </a>
+        <a href="settings.html" class="dock-btn" title="Cấu hình Website & Logo">
+            <i class="fas fa-sliders-h"></i>
+        </a>
+        <a href="../../SO-DO-THIET-KE-PTTKHDT.md" target="_blank" class="dock-btn" title="Sơ đồ thiết kế PTTKHDT">
+            <i class="fas fa-project-diagram"></i>
+        </a>
+        <a href="../../index.html" target="_blank" class="dock-btn" title="Xem Cửa hàng Khách hàng">
+            <i class="fas fa-store"></i>
+        </a>
+    </div>
+
+    <!-- 4. MODAL FORM TẠO / SỬA KHÁCH HÀNG (DARK GLASSMORPHISM) -->
+    <div id="customer-modal" class="modal-backdrop-dark">
+        <div class="modal-box-dark" style="max-width: 650px;">
+            <div class="modal-header-styled" style="background: linear-gradient(90deg, rgba(236, 72, 153, 0.2), rgba(139, 92, 246, 0.1)); border-bottom: 1px solid rgba(236, 72, 153, 0.3);">
+                <div class="modal-header-title">
+                    <i class="fas fa-user-plus" style="color: #ec4899;"></i>
+                    <span id="modal-cust-title">Tạo Khách Hàng Mới</span>
+                </div>
+                <div class="btn-modal-close-icon" onclick="closeCustomerModal()" title="Đóng">
+                    <i class="fas fa-times"></i>
+                </div>
+            </div>
+
+            <form id="customerForm" class="modal-form-body">
+                <input type="hidden" id="cust-mode" value="add">
+
+                <div class="form-row-grid-2">
+                    <div class="form-field-group">
+                        <label>Mã Khách Hàng <span style="color: #ef4444;">*</span></label>
+                        <input type="text" id="cust-id" class="input-dark-control" placeholder="VD: KH05" required>
+                    </div>
+                    <div class="form-field-group">
+                        <label>Tên Đăng Nhập (Username) <span style="color: #ef4444;">*</span></label>
+                        <input type="text" id="cust-username" class="input-dark-control" placeholder="nguyenvan_a" required>
+                    </div>
+                </div>
+
+                <div class="form-row-grid-2">
+                    <div class="form-field-group">
+                        <label>Họ và Tên Khách Hàng <span style="color: #ef4444;">*</span></label>
+                        <input type="text" id="cust-name" class="input-dark-control" placeholder="Nguyễn Văn A" required>
+                    </div>
+                    <div class="form-field-group">
+                        <label>Số Điện Thoại <span style="color: #ef4444;">*</span></label>
+                        <input type="text" id="cust-phone" class="input-dark-control" placeholder="0987654321" required>
+                    </div>
+                </div>
+
+                <div class="form-field-group">
+                    <label>Địa Chỉ Email</label>
+                    <input type="email" id="cust-email" class="input-dark-control" placeholder="khachhang@gmail.com">
+                </div>
+
+                <div class="form-field-group">
+                    <label>Địa Chỉ Giao Hàng</label>
+                    <input type="text" id="cust-address" class="input-dark-control" placeholder="Số nhà, đường, phường/xã, quận/huyện...">
+                </div>
+
+                <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 10px; padding-top: 14px; border-top: 1px solid var(--border-color);">
+                    <button type="button" class="btn-tech btn-tech-reset" onclick="closeCustomerModal()">
+                        Hủy Bỏ
+                    </button>
+                    <button type="submit" class="btn-tech" style="background: linear-gradient(135deg, #ec4899, #db2777); color: #fff;">
+                        <i class="fas fa-check-circle"></i> Lưu Khách Hàng
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 5. MODAL XEM LỊCH SỬ ĐƠN HÀNG CỦA KHÁCH HÀNG -->
+    <div id="customer-order-history-modal" class="modal-backdrop-dark" style="display: none; position: fixed; inset: 0; background: rgba(10, 12, 20, 0.85); backdrop-filter: blur(8px); z-index: 9999; justify-content: center; align-items: center; padding: 20px;">
+        <div class="modal-box-dark" style="max-width: 850px; width: 100%; max-height: 85vh; display: flex; flex-direction: column; background: #151824; border: 1px solid #2b3147; border-radius: 12px; box-shadow: 0 20px 40px rgba(0,0,0,0.6); overflow: hidden;">
+            <div class="modal-header-styled" style="padding: 16px 20px; background: linear-gradient(90deg, rgba(16, 185, 129, 0.2), rgba(59, 130, 246, 0.1)); border-bottom: 1px solid rgba(16, 185, 129, 0.3); display: flex; justify-content: space-between; align-items: center;">
+                <div class="modal-header-title" style="display: flex; align-items: center; gap: 10px; font-size: 15px; font-weight: 800; color: #fff;">
+                    <i class="fas fa-receipt" style="color: #10b981;"></i>
+                    <span>Lịch Sử Đơn Hàng Của Khách: <strong id="hist-customer-name" style="color: #38bdf8;">---</strong></span>
+                </div>
+                <div class="btn-modal-close-icon" onclick="closeCustomerOrderHistoryModal()" title="Đóng" style="cursor: pointer; color: #94a3b8; font-size: 18px;">
+                    <i class="fas fa-times"></i>
+                </div>
+            </div>
+            <div style="padding: 18px 24px; overflow-y: auto; flex: 1;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; background: #10121a; padding: 12px 16px; border-radius: 8px; border: 1px solid #232738;">
+                    <div>
+                        <div style="font-size: 13px; color: #94a3b8;">Tổng Số Đơn: <strong id="hist-total-orders" style="color: #fff; font-size: 14px;">0</strong> đơn</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 13px; color: #94a3b8;">Tổng Chi Tiêu: <strong id="hist-total-spent" style="color: #34d399; font-size: 15px;">0 đ</strong></div>
+                    </div>
+                </div>
+
+                <div class="table-responsive-dark" style="border: 1px solid var(--border-color); border-radius: 8px; overflow-x: auto;">
+                    <table class="table-dark-tech" style="width: 100%; margin: 0; text-align: left;">
+                        <thead>
+                            <tr style="background: #11141e; border-bottom: 1px solid #23283d; color: #94a3b8; font-size: 12px;">
+                                <th style="padding: 10px 14px; width: 110px;">Mã Đơn</th>
+                                <th style="padding: 10px 14px; width: 140px;">Ngày Đặt</th>
+                                <th style="padding: 10px 14px;">Chi Tiết Sản Phẩm</th>
+                                <th style="padding: 10px 14px; width: 120px;">Tổng Tiền</th>
+                                <th style="padding: 10px 14px; width: 110px;">Thanh Toán</th>
+                                <th style="padding: 10px 14px; width: 110px;">Trạng Thái</th>
+                            </tr>
+                        </thead>
+                        <tbody id="hist-orders-tbody" style="font-size: 13px;">
+                            <!-- Render dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div style="padding: 14px 24px; border-top: 1px solid var(--border-color); background: #1c2030; display: flex; justify-content: flex-end;">
+                <button type="button" class="btn-tech btn-tech-reset" onclick="closeCustomerOrderHistoryModal()">Đóng</button>
             </div>
         </div>
     </div>
 
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <script src="../scripts/keycap-dataset-100.js"></script>
+    <script src="../scripts/modules/GearsApp.js"></script>
     <script src="./script/admin-common.js"></script>
     <script src="./script/customers.js"></script>
 </body>

@@ -4,69 +4,1390 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+    <title>Bảng Điều Khiển Quản Trị Hệ Thống - GEARS Keycap Shop</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700;800&family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css">
     <link rel="shortcut icon" href="../img/ShortCut_Icon.png">
-    <link rel="stylesheet" href="../css/Base.css">
-    <link rel="stylesheet" href="../css/Grid.css">
-    <link rel="stylesheet" href="../css/Responsive.css">
-    <link rel="stylesheet" href="./css/style.css">
-    <title>Admin Dashboard - GEARS Shop</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        :root {
+            --bg-body: #0c0d12;
+            --bg-sidebar: #10121a;
+            --bg-card: #151822;
+            --bg-card-hover: #1c202d;
+            --bg-input: #1a1e2b;
+            --border-color: #232738;
+            --border-highlight: #3b4259;
+            --accent-red: #e30019;
+            --accent-purple: #8b5cf6;
+            --accent-blue: #3b82f6;
+            --accent-green: #10b981;
+            --accent-orange: #f59e0b;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Quicksand', 'Roboto', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            overflow-x: hidden;
+            font-size: 14px;
+        }
+
+        /* 1. SIDEBAR PHÍA TRÁI (THEO PHONG CÁCH REFERENCE IMAGE) */
+        .admin-sidebar {
+            width: 270px;
+            background-color: var(--bg-sidebar);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 100;
+            overflow-y: auto;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-brand {
+            padding: 22px 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .sidebar-brand-title {
+            font-size: 16px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sidebar-brand-title i {
+            color: var(--accent-red);
+            font-size: 20px;
+        }
+
+        .version-badge {
+            font-size: 11px;
+            font-weight: 700;
+            padding: 2px 7px;
+            border-radius: 6px;
+            background: rgba(227, 0, 25, 0.2);
+            color: #ff6b7b;
+            border: 1px solid rgba(227, 0, 25, 0.4);
+        }
+
+        .sidebar-nav {
+            padding: 15px 12px;
+            flex: 1;
+        }
+
+        .nav-section-title {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+            padding: 14px 12px 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            margin-bottom: 10px;
+        }
+
+        .sidebar-item {
+            margin-bottom: 4px;
+        }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 14px;
+            border-radius: 8px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 13.5px;
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+        }
+
+        .sidebar-link:hover {
+            background-color: var(--bg-card);
+            color: #ffffff;
+            border-color: var(--border-color);
+        }
+
+        .sidebar-link.active {
+            background: linear-gradient(90deg, rgba(227, 0, 25, 0.15), rgba(139, 92, 246, 0.1));
+            color: #ffffff;
+            border: 1px solid rgba(227, 0, 25, 0.4);
+            box-shadow: 0 4px 12px rgba(227, 0, 25, 0.15);
+        }
+
+        .sidebar-link-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .sidebar-link-left i {
+            font-size: 15px;
+            width: 18px;
+            text-align: center;
+            color: var(--text-muted);
+            transition: color 0.2s;
+        }
+
+        .sidebar-link:hover .sidebar-link-left i,
+        .sidebar-link.active .sidebar-link-left i {
+            color: var(--accent-red);
+        }
+
+        /* Micro badges trong sidebar */
+        .sidebar-badge {
+            font-size: 10px;
+            font-weight: 700;
+            padding: 2px 7px;
+            border-radius: 5px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .badge-live { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.4); }
+        .badge-hot { background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.4); }
+        .badge-new { background: rgba(59, 130, 246, 0.2); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.4); }
+        .badge-count { background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.4); }
+        .badge-tech { background: rgba(139, 92, 246, 0.2); color: #c084fc; border: 1px solid rgba(139, 92, 246, 0.4); }
+
+        .sidebar-footer {
+            padding: 16px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .btn-sidebar-store {
+            background: linear-gradient(135deg, #1e2433, #161a25);
+            border: 1px solid var(--border-color);
+            color: #ffffff;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 700;
+            text-align: center;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.25s;
+        }
+
+        .btn-sidebar-store:hover {
+            border-color: var(--accent-red);
+            background: rgba(227, 0, 25, 0.15);
+            color: #ffffff;
+        }
+
+        .btn-sidebar-logout {
+            background: rgba(220, 38, 38, 0.1);
+            border: 1px solid rgba(220, 38, 38, 0.25);
+            color: #ef4444;
+            padding: 9px 14px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 700;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.25s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-sidebar-logout:hover {
+            background: #dc2626;
+            color: #ffffff;
+        }
+
+        /* 2. MAIN VIEWPORT */
+        .admin-main-wrapper {
+            margin-left: 270px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            padding-right: 50px; /* Chừa chỗ cho Floating Dock bên phải */
+        }
+
+        /* Top Header Bar */
+        .admin-topbar {
+            height: 64px;
+            background-color: var(--bg-sidebar);
+            border-bottom: 1px solid var(--border-color);
+            padding: 0 28px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 90;
+        }
+
+        .topbar-breadcrumbs {
+            font-size: 13.5px;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .topbar-breadcrumbs strong {
+            color: #ffffff;
+        }
+
+        .topbar-actions {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .status-pill {
+            background: rgba(16, 185, 129, 0.12);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            color: #34d399;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12.5px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #10b981;
+            border-radius: 50%;
+            box-shadow: 0 0 8px #10b981;
+            animation: pulse-green 2s infinite;
+        }
+
+        @keyframes pulse-green {
+            0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+            70% { box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+        }
+
+        .theme-toggle-btn {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-size: 12.5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .theme-toggle-btn:hover {
+            color: #fff;
+            border-color: var(--border-highlight);
+        }
+
+        .user-profile-badge {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 4px 10px;
+            border-radius: 8px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+        }
+
+        .user-avatar-mini {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #e30019, #8b5cf6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 800;
+            color: #fff;
+        }
+
+        /* 3. DASHBOARD CONTENT CONTAINER */
+        .dashboard-content {
+            padding: 24px 28px 60px;
+            flex: 1;
+        }
+
+        /* KPI STATS ROW */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            margin-bottom: 24px;
+        }
+
+        .kpi-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.25s;
+        }
+
+        .kpi-card:hover {
+            border-color: var(--border-highlight);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .kpi-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 3px;
+        }
+
+        .kpi-revenue::before { background: linear-gradient(90deg, #10b981, #059669); }
+        .kpi-orders::before { background: linear-gradient(90deg, #3b82f6, #2563eb); }
+        .kpi-products::before { background: linear-gradient(90deg, #f59e0b, #d97706); }
+        .kpi-customers::before { background: linear-gradient(90deg, #8b5cf6, #7c3aed); }
+
+        .kpi-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .kpi-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .kpi-icon-wrap {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 17px;
+        }
+
+        .kpi-value {
+            font-size: 26px;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 8px;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .kpi-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .kpi-trend {
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .trend-up { color: #10b981; }
+        .trend-neutral { color: #3b82f6; }
+
+        /* 4. MASTER - DETAIL WORKSPACE (LAYOUT CHÍNH GIỐNG HỆ THỐNG TRONG ẢNH) */
+        .workspace-grid {
+            display: grid;
+            grid-template-columns: 340px 1fr;
+            gap: 20px;
+        }
+
+        /* Khung bên trái: Danh Sách Chọn Nhanh (Master Panel) */
+        .master-panel {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            height: calc(100vh - 210px);
+            position: sticky;
+            top: 84px;
+        }
+
+        .section-header-styled {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 14px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .section-header-styled h3 {
+            font-size: 15.5px;
+            font-weight: 700;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 0;
+        }
+
+        .section-header-styled h3 span.bar-indicator {
+            width: 4px;
+            height: 18px;
+            background-color: var(--accent-red);
+            border-radius: 2px;
+            display: inline-block;
+        }
+
+        .btn-reload-mini {
+            background: var(--bg-input);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            padding: 5px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-reload-mini:hover {
+            color: #fff;
+            border-color: var(--accent-red);
+        }
+
+        .search-box-dark {
+            position: relative;
+            margin-bottom: 12px;
+        }
+
+        .search-box-dark input {
+            width: 100%;
+            background: var(--bg-input);
+            border: 1px solid var(--border-color);
+            color: #ffffff;
+            padding: 9px 12px 9px 36px;
+            border-radius: 8px;
+            font-size: 13px;
+            outline: none;
+            transition: all 0.25s;
+        }
+
+        .search-box-dark input:focus {
+            border-color: var(--accent-red);
+            box-shadow: 0 0 0 2px rgba(227, 0, 25, 0.2);
+        }
+
+        .search-box-dark i {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+
+        .filter-tags-row {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 14px;
+            overflow-x: auto;
+            padding-bottom: 4px;
+        }
+
+        .filter-tag-pill {
+            background: var(--bg-input);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            padding: 4px 10px;
+            border-radius: 14px;
+            font-size: 11.5px;
+            font-weight: 600;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .filter-tag-pill.active, .filter-tag-pill:hover {
+            background: rgba(227, 0, 25, 0.15);
+            border-color: var(--accent-red);
+            color: #ffffff;
+        }
+
+        .master-item-list {
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+
+        .master-item-list::-webkit-scrollbar {
+            width: 5px;
+        }
+        .master-item-list::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 4px;
+        }
+
+        .master-item-card {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 12px;
+            border-radius: 8px;
+            background: var(--bg-body);
+            border: 1px solid var(--border-color);
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .master-item-card:hover {
+            background: var(--bg-card-hover);
+            border-color: var(--border-highlight);
+            transform: translateX(3px);
+        }
+
+        .master-item-card.active {
+            background: linear-gradient(90deg, rgba(227, 0, 25, 0.15), rgba(139, 92, 246, 0.08));
+            border-color: var(--accent-red);
+            box-shadow: 0 4px 12px rgba(227, 0, 25, 0.15);
+        }
+
+        .master-item-thumb {
+            width: 44px;
+            height: 44px;
+            border-radius: 8px;
+            background: #ffffff;
+            padding: 3px;
+            object-fit: cover;
+            flex-shrink: 0;
+            border: 1px solid var(--border-color);
+        }
+
+        .master-item-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .master-item-name {
+            font-size: 13px;
+            font-weight: 700;
+            color: #ffffff;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-bottom: 3px;
+        }
+
+        .master-item-sub {
+            font-size: 11.5px;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .master-item-price {
+            color: var(--accent-green);
+            font-weight: 700;
+        }
+
+        .stock-badge-pill {
+            font-size: 10.5px;
+            font-weight: 700;
+            padding: 1px 6px;
+            border-radius: 4px;
+        }
+
+        .stock-ok { background: rgba(16, 185, 129, 0.2); color: #34d399; }
+        .stock-low { background: rgba(245, 158, 11, 0.2); color: #fbbf24; }
+
+        /* Khung bên phải: Chi Tiết Nghiệp Vụ & Báo Cáo (Detail Panel) */
+        .detail-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .detail-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 22px;
+        }
+
+        .detail-grid-inputs {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-top: 14px;
+        }
+
+        .detail-field {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .detail-field label {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .detail-input-readonly {
+            background: var(--bg-input);
+            border: 1px solid var(--border-color);
+            color: #ffffff;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 13.5px;
+            font-weight: 600;
+            font-family: inherit;
+        }
+
+        .quick-stock-ctrl {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 14px;
+            padding-top: 14px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .btn-ctrl-stock {
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 12.5px;
+            font-weight: 700;
+            cursor: pointer;
+            border: 1px solid var(--border-color);
+            background: var(--bg-input);
+            color: #ffffff;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-ctrl-stock:hover {
+            border-color: var(--accent-red);
+            background: rgba(227, 0, 25, 0.15);
+        }
+
+        .btn-ctrl-primary {
+            background: var(--accent-red);
+            border-color: var(--accent-red);
+        }
+        .btn-ctrl-primary:hover {
+            background: #b90014;
+        }
+
+        /* Biểu đồ phân bổ & Bảng đơn hàng */
+        .chart-and-status-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .category-breakdown-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .cat-item-row {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .cat-header-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12.5px;
+            font-weight: 600;
+        }
+
+        .progress-bar-wrap {
+            height: 8px;
+            background: var(--bg-input);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        /* Bảng đơn hàng giao diện Dark Tech */
+        .table-dark-tech {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 12px;
+        }
+
+        .table-dark-tech th {
+            text-align: left;
+            padding: 10px 12px;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            border-bottom: 1px solid var(--border-color);
+            background: rgba(16, 18, 26, 0.5);
+        }
+
+        .table-dark-tech td {
+            padding: 11px 12px;
+            font-size: 13px;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-secondary);
+        }
+
+        .table-dark-tech tr:hover td {
+            background: rgba(255, 255, 255, 0.02);
+            color: #ffffff;
+        }
+
+        /* 5. FLOATING QUICK DOCK PHÍA PHẢI (GIỐNG DỌC ICON BÊN PHẢI TRONG ẢNH) */
+        .floating-action-dock {
+            position: fixed;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            background: rgba(21, 24, 34, 0.85);
+            border: 1px solid var(--border-color);
+            padding: 8px 6px;
+            border-radius: 20px;
+            backdrop-filter: blur(8px);
+            z-index: 95;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+        }
+
+        .dock-btn {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            text-decoration: none;
+            font-size: 15px;
+            transition: all 0.25s;
+            position: relative;
+        }
+
+        .dock-btn:hover {
+            color: #ffffff;
+            background: var(--accent-red);
+            border-color: var(--accent-red);
+            transform: scale(1.1);
+        }
+
+        .dock-btn[title]:hover::after {
+            content: attr(title);
+            position: absolute;
+            right: 48px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #1e2433;
+            color: #fff;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            white-space: nowrap;
+            border: 1px solid var(--border-color);
+            pointer-events: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 1280px) {
+            .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+            .workspace-grid { grid-template-columns: 280px 1fr; }
+            .chart-and-status-row { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 1024px) {
+            .admin-sidebar { width: 70px; }
+            .admin-sidebar .sidebar-brand-title span,
+            .admin-sidebar .version-badge,
+            .admin-sidebar .nav-section-title,
+            .admin-sidebar .sidebar-link-text,
+            .admin-sidebar .sidebar-badge,
+            .admin-sidebar .sidebar-footer { display: none; }
+            .admin-main-wrapper { margin-left: 70px; padding-right: 0; }
+            .floating-action-dock { display: none; }
+            .workspace-grid { grid-template-columns: 1fr; }
+            .master-panel { position: static; height: 400px; }
+        }
+
+        /* SIDEBAR COLLAPSED STATE */
+        .admin-sidebar.collapsed { width: 70px !important; }
+        .admin-sidebar.collapsed .sidebar-brand-title span,
+        .admin-sidebar.collapsed .version-badge,
+        .admin-sidebar.collapsed .nav-section-title,
+        .admin-sidebar.collapsed .sidebar-link-text,
+        .admin-sidebar.collapsed .sidebar-badge,
+        .admin-sidebar.collapsed .sidebar-footer,
+        .admin-sidebar.collapsed .sidebar-quick-actions .sidebar-link-text { display: none !important; }
+        .admin-sidebar.collapsed .sidebar-brand { justify-content: center; padding: 16px 8px; }
+        .admin-sidebar.collapsed .sidebar-brand-title { justify-content: center; }
+        .admin-sidebar.collapsed .sidebar-toggle-btn { display: none !important; }
+        .admin-sidebar.collapsed .sidebar-link { justify-content: center; padding: 10px 8px; }
+        .admin-sidebar.collapsed .sidebar-link-left { justify-content: center; gap: 0; }
+        .admin-sidebar.collapsed .sidebar-link-left i { font-size: 18px; }
+        .admin-sidebar.collapsed .sidebar-nav { padding: 10px 6px; }
+        .admin-sidebar.collapsed .sidebar-quick-actions { flex-direction: column !important; padding: 6px !important; gap: 4px !important; }
+        .admin-sidebar.collapsed .sidebar-quick-actions a,
+        .admin-sidebar.collapsed .sidebar-quick-actions button { padding: 8px !important; justify-content: center !important; font-size: 14px !important; }
+        .admin-main-wrapper.sidebar-collapsed { margin-left: 70px !important; }
+    </style>
 </head>
 <body>
-    <div class="main-body">
-        <!-- Header -->
-        <div class="header">
-            <div class="header-navbar--list">
-                <div class="header-navbar--item headerActive">
-                    <a href="dashboard.html" style="color: inherit; text-decoration: none;">Trang chủ</a>
-                </div>
-                <div class="header-navbar--item">
-                    <a href="customers.html" style="color: inherit; text-decoration: none;">Quản lý khách hàng</a>
-                </div>
-                <div class="header-navbar--item">
-                    <a href="products.html" style="color: inherit; text-decoration: none;">Quản lý sản phẩm</a>
-                </div>
-                <div class="header-navbar--item">
-                    <a href="orders.html" style="color: inherit; text-decoration: none;">Quản lý đơn hàng</a>
-                </div>
-                <div class="line"></div>
+
+    <!-- 1. SIDEBAR PHÍA TRÁI (DARK ERP STYLE KHỚP ẢNH THAM KHẢO) -->
+    <aside class="admin-sidebar">
+        <!-- Brand Header -->
+        <div class="sidebar-brand">
+            <div class="sidebar-brand-title">
+                <i class="fas fa-keyboard"></i>
+                <span>QUẢN TRỊ HỆ THỐNG</span>
             </div>
+            <span class="version-badge">v2.6</span>
+            <button class="sidebar-toggle-btn" title="Thu gọn / Mở rộng sidebar" type="button">
+                <i class="fas fa-bars"></i>
+            </button>
         </div>
 
-        <!-- Container -->
-        <div class="container">
-            <div class="grid max-Width">
-                <div class="row sm-gutter">
-                    <div class="col l-12 m-12 c-12">
-                        <div class="container-main">
-                            <div class="container-title">Thống kê tổng quan</div>
-                            <div class="dashboard-stats" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; padding: 20px;">
-                                <div class="stat-card" style="background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
-                                    <h3 style="margin: 0 0 10px 0; color: #666;">Tổng khách hàng</h3>
-                                    <p id="total-customers" style="font-size: 32px; font-weight: bold; margin: 0; color: #4CAF50;">0</p>
+        <!-- Quick Actions (Đưa lên trên ngay sau logo) -->
+        <div class="sidebar-quick-actions" style="padding:8px 12px;display:flex;gap:6px;border-bottom:1px solid var(--border-color,#232738);">
+            <a href="../../index.html" target="_blank" class="btn-sidebar-store" style="flex:1;padding:7px 10px;font-size:12px;gap:6px;" title="Xem cửa hàng khách hàng">
+                <i class="fas fa-store"></i> <span class="sidebar-link-text">Web KH</span>
+            </a>
+            <button type="button" class="btn-sidebar-logout" style="flex:1;padding:7px 10px;font-size:12px;gap:6px;" onclick="AdminCommon.logoutAdmin()" title="Đăng xuất khỏi hệ thống">
+                <i class="fas fa-sign-out-alt"></i> <span class="sidebar-link-text">Đăng Xuất</span>
+            </button>
+        </div>
+
+        <!-- Navigation Menu -->
+        <div class="sidebar-nav">
+            <!-- Nhóm 1: Nghiệp Vụ Bán Hàng -->
+            <div class="nav-section-title">
+                <i class="fas fa-bolt"></i> Nghiệp Vụ Bán Hàng
+            </div>
+            <ul class="sidebar-menu">
+                <li class="sidebar-item">
+                    <a href="dashboard.html" class="sidebar-link active">
+                        <div class="sidebar-link-left">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span class="sidebar-link-text">Tổng Quan Dashboard</span>
+                        </div>
+                        <span class="sidebar-badge badge-live">Live</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="pos.html" class="sidebar-link">
+                        <div class="sidebar-link-left">
+                            <i class="fas fa-cash-register"></i>
+                            <span class="sidebar-link-text">Điểm Bán Lẻ (POS)</span>
+                        </div>
+                        <span class="sidebar-badge badge-hot">HOT</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="orders.html" class="sidebar-link">
+                        <div class="sidebar-link-left">
+                            <i class="fas fa-receipt"></i>
+                            <span class="sidebar-link-text">Quản Lý Đơn Hàng</span>
+                        </div>
+                        <span class="sidebar-badge badge-new" id="sidebar-order-count">5 Đơn</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="products.html" class="sidebar-link">
+                        <div class="sidebar-link-left">
+                            <i class="fas fa-cubes"></i>
+                            <span class="sidebar-link-text">Sản Phẩm Keycap</span>
+                        </div>
+                        <span class="sidebar-badge badge-count" id="sidebar-product-count">100+</span>
+                    </a>
+                </li>
+            </ul>
+
+            <!-- Nhóm 2: Đối Tác & Nhân Sự -->
+            <div class="nav-section-title">
+                <i class="fas fa-users-cog"></i> Đối Tác &amp; Nhân Sự
+            </div>
+            <ul class="sidebar-menu">
+                <li class="sidebar-item">
+                    <a href="suppliers.html" class="sidebar-link">
+                        <div class="sidebar-link-left">
+                            <i class="fas fa-truck-loading"></i>
+                            <span class="sidebar-link-text">Nhà Cung Cấp</span>
+                        </div>
+                        <span class="sidebar-badge badge-tech">Partner</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="customers.html" class="sidebar-link">
+                        <div class="sidebar-link-left">
+                            <i class="fas fa-users"></i>
+                            <span class="sidebar-link-text">Khách Hàng</span>
+                        </div>
+                        <span class="sidebar-badge badge-tech">CRM</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="employees.html" class="sidebar-link">
+                        <div class="sidebar-link-left">
+                            <i class="fas fa-user-shield"></i>
+                            <span class="sidebar-link-text">Nhân Viên &amp; Phân Quyền</span>
+                        </div>
+                        <span class="sidebar-badge badge-tech">Auth</span>
+                    </a>
+                </li>
+            </ul>
+
+            <!-- Nhóm 3: Báo Cáo & Cấu Hình -->
+            <div class="nav-section-title">
+                <i class="fas fa-sliders-h"></i> Báo Cáo &amp; Cấu Hình
+            </div>
+            <ul class="sidebar-menu">
+                <li class="sidebar-item">
+                    <a href="reports.html" class="sidebar-link">
+                        <div class="sidebar-link-left">
+                            <i class="fas fa-chart-line"></i>
+                            <span class="sidebar-link-text">Thống Kê Báo Cáo</span>
+                        </div>
+                        <span class="sidebar-badge badge-tech">Chart</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="database.html" class="sidebar-link">
+                        <div class="sidebar-link-left">
+                            <i class="fas fa-database" style="color: #10b981;"></i>
+                            <span class="sidebar-link-text">Cấu Hình CSDL (Navicat)</span>
+                        </div>
+                        <span class="sidebar-badge badge-tech" style="background: rgba(16,185,129,0.25); color: #34d399;">.env</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="settings.html" class="sidebar-link">
+                        <div class="sidebar-link-left">
+                            <i class="fas fa-cog"></i>
+                            <span class="sidebar-link-text">Cấu Hình Website</span>
+                        </div>
+                        <span class="sidebar-badge badge-new">Logo</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="/so-do-canvas" target="_blank" class="sidebar-link">
+                        <div class="sidebar-link-left">
+                            <i class="fas fa-project-diagram"></i>
+                            <span class="sidebar-link-text">Sơ Đồ PTTKHDT</span>
+                        </div>
+                        <span class="sidebar-badge badge-tech">UML</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </aside>
+
+    <!-- 2. MAIN WRAPPER -->
+    <div class="admin-main-wrapper">
+        <!-- Top Bar -->
+        <header class="admin-topbar">
+            <div class="topbar-breadcrumbs">
+                <span>Hệ Thống</span>
+                <i class="fas fa-chevron-right" style="font-size: 10px; color: var(--text-muted);"></i>
+                <strong>Tổng Quan Dashboard</strong>
+            </div>
+
+            <div class="topbar-actions">
+                <div class="status-pill">
+                    <span class="status-dot"></span>
+                    <span>Port 3333 Online</span>
+                </div>
+                <button type="button" class="theme-toggle-btn" onclick="AdminCommon.showToast('Giao diện Dark Mode công nghệ cao đang hoạt động tối ưu!', 'info')">
+                    <i class="fas fa-moon"></i> Tối
+                </button>
+                <div class="user-profile-badge">
+                    <div class="user-avatar-mini" id="admin-user-avatar">AD</div>
+                    <div>
+                        <div style="font-size: 12.5px; font-weight: 700; color: #fff;" id="admin-user-name">Nguyễn Công Danh</div>
+                        <div style="font-size: 11px; color: var(--text-muted);">Quản Trị Viên (SGU)</div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Dashboard Body Content -->
+        <main class="dashboard-content">
+            <!-- 4 Thẻ KPI hiện đại có viền Gradient phía trên -->
+            <section class="kpi-grid">
+                <div class="kpi-card kpi-revenue">
+                    <div class="kpi-header">
+                        <span class="kpi-title">Tổng Doanh Thu</span>
+                        <div class="kpi-icon-wrap" style="background: rgba(16, 185, 129, 0.15); color: #10b981;">
+                            <i class="fas fa-coins"></i>
+                        </div>
+                    </div>
+                    <div class="kpi-value" id="total-revenue">0 đ</div>
+                    <div class="kpi-footer">
+                        <span class="kpi-trend trend-up"><i class="fas fa-arrow-up"></i> +18.4%</span>
+                        <span>Không tính đơn hủy</span>
+                    </div>
+                </div>
+
+                <div class="kpi-card kpi-orders">
+                    <div class="kpi-header">
+                        <span class="kpi-title">Tổng Đơn Hàng</span>
+                        <div class="kpi-icon-wrap" style="background: rgba(59, 130, 246, 0.15); color: #3b82f6;">
+                            <i class="fas fa-receipt"></i>
+                        </div>
+                    </div>
+                    <div class="kpi-value" id="total-orders">0</div>
+                    <div class="kpi-footer">
+                        <span class="kpi-trend trend-neutral"><i class="fas fa-check-circle"></i> POS & Online</span>
+                        <span id="order-completed-count">Đã hoàn tất</span>
+                    </div>
+                </div>
+
+                <div class="kpi-card kpi-products">
+                    <div class="kpi-header">
+                        <span class="kpi-title">Sản Phẩm Trong Kho</span>
+                        <div class="kpi-icon-wrap" style="background: rgba(245, 158, 11, 0.15); color: #f59e0b;">
+                            <i class="fas fa-cubes"></i>
+                        </div>
+                    </div>
+                    <div class="kpi-value" id="total-products">100</div>
+                    <div class="kpi-footer">
+                        <span class="kpi-trend" style="color: #f59e0b;"><i class="fas fa-box"></i> 5 Danh mục</span>
+                        <span id="total-stock-count">0 nút khả dụng</span>
+                    </div>
+                </div>
+
+                <div class="kpi-card kpi-customers">
+                    <div class="kpi-header">
+                        <span class="kpi-title">Khách Hàng & Đối Tác</span>
+                        <div class="kpi-icon-wrap" style="background: rgba(139, 92, 246, 0.15); color: #8b5cf6;">
+                            <i class="fas fa-handshake"></i>
+                        </div>
+                    </div>
+                    <div class="kpi-value" id="total-customers">0</div>
+                    <div class="kpi-footer">
+                        <span class="kpi-trend" style="color: #8b5cf6;"><i class="fas fa-truck-loading"></i> <span id="total-suppliers">0</span> NCC</span>
+                        <span>Dữ liệu quan hệ 3NF</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- WORKSPACE CHÍNH (MASTER - DETAIL THEO GIAO DIỆN MẪU) -->
+            <div class="workspace-grid">
+                <!-- CỘT TRÁI: DANH SÁCH KEYCAP (MASTER PANEL) -->
+                <div class="master-panel">
+                    <div class="section-header-styled">
+                        <h3><span class="bar-indicator"></span> Danh Sách Keycap</h3>
+                        <button type="button" class="btn-reload-mini" onclick="reloadMasterList()" title="Tải lại danh sách">
+                            <i class="fas fa-sync-alt"></i> Tải lại
+                        </button>
+                    </div>
+
+                    <div class="search-box-dark">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="master-search-input" placeholder="Tìm kiếm Keycap nhanh..." oninput="filterMasterList()">
+                    </div>
+
+                    <div class="filter-tags-row">
+                        <button class="filter-tag-pill active" onclick="setMasterCategory('all', this)">Tất cả</button>
+                        <button class="filter-tag-pill" onclick="setMasterCategory('Artisan', this)">Artisan</button>
+                        <button class="filter-tag-pill" onclick="setMasterCategory('Anime', this)">Anime</button>
+                        <button class="filter-tag-pill" onclick="setMasterCategory('Pudding', this)">Pudding</button>
+                        <button class="filter-tag-pill" onclick="setMasterCategory('lowStock', this)">Sắp hết</button>
+                    </div>
+
+                    <div class="master-item-list" id="master-item-list-container">
+                        <!-- Render động qua JavaScript -->
+                    </div>
+                </div>
+
+                <!-- CỘT PHẢI: CHI TIẾT SẢN PHẨM & CÁC KHỐI NGHIỆP VỤ (DETAIL PANEL) -->
+                <div class="detail-panel">
+                    <!-- KHỐI 1: THÔNG TIN CHI TIẾT SẢN PHẨM ĐANG CHỌN (KHỚP KHỐI BÊN PHẢI TRONG ẢNH) -->
+                    <div class="detail-card">
+                        <div class="section-header-styled">
+                            <h3><span class="bar-indicator"></span> Thông Tin Cơ Bản & Điều Chỉnh Kho Nhanh</h3>
+                            <span id="selected-product-badge" class="sidebar-badge badge-new">Đang chọn: #1</span>
+                        </div>
+
+                        <!-- Khung ảnh đại diện và Upload ảnh Keycap -->
+                        <div class="detail-product-hero" style="display: flex; gap: 18px; align-items: center; margin-bottom: 16px; background: rgba(16, 18, 26, 0.6); padding: 14px 16px; border-radius: 10px; border: 1px solid var(--border-color);">
+                            <div style="position: relative; width: 100px; height: 100px; flex-shrink: 0; background: #ffffff; border-radius: 10px; padding: 4px; border: 2px solid var(--border-highlight); display: flex; align-items: center; justify-content: center; overflow: hidden;">
+                                <img id="det-img-preview" src="../img/ShortCut_Icon.png" alt="Keycap Preview" style="width: 100%; height: 100%; object-fit: contain; border-radius: 6px;">
+                                <label for="dash-upload-img" style="position: absolute; bottom: 4px; right: 4px; background: var(--accent-red); color: #fff; width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 11px; box-shadow: 0 2px 6px rgba(0,0,0,0.4);" title="Tải ảnh mới từ máy tính">
+                                    <i class="fas fa-camera"></i>
+                                </label>
+                                <input type="file" id="dash-upload-img" accept="image/*" style="display: none;" onchange="handleDashboardImageUpload(this)">
+                            </div>
+                            <div style="flex: 1; min-width: 0;">
+                                <div style="font-size: 16px; font-weight: 800; color: #fff; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" id="det-hero-name">Tên sản phẩm</div>
+                                <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px; line-height: 1.4;" id="det-hero-desc">Mô tả sản phẩm</div>
+                                <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                                    <button type="button" class="btn-ctrl-stock" onclick="document.getElementById('dash-upload-img').click()" style="padding: 5px 12px; font-size: 11.5px;">
+                                        <i class="fas fa-upload"></i> Upload / Đổi Ảnh
+                                    </button>
+                                    <span id="det-hero-tag" class="sidebar-badge badge-tech">Artisan</span>
                                 </div>
-                                <div class="stat-card" style="background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
-                                    <h3 style="margin: 0 0 10px 0; color: #666;">Tổng sản phẩm</h3>
-                                    <p id="total-products" style="font-size: 32px; font-weight: bold; margin: 0; color: #2196F3;">0</p>
-                                </div>
-                                <div class="stat-card" style="background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
-                                    <h3 style="margin: 0 0 10px 0; color: #666;">Tổng đơn hàng</h3>
-                                    <p id="total-orders" style="font-size: 32px; font-weight: bold; margin: 0; color: #FF9800;">0</p>
-                                </div>
-                                <div class="stat-card" style="background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
-                                    <h3 style="margin: 0 0 10px 0; color: #666;">Doanh thu</h3>
-                                    <p id="total-revenue" style="font-size: 32px; font-weight: bold; margin: 0; color: #9C27B0;">0 đ</p>
-                                </div>
+                            </div>
+                        </div>
+
+                        <div class="detail-grid-inputs">
+                            <div class="detail-field">
+                                <label>Tên Sản Phẩm Keycap:</label>
+                                <input type="text" id="det-name" class="detail-input-readonly" readonly>
+                            </div>
+                            <div class="detail-field">
+                                <label>Phân Loại / Thể Loại:</label>
+                                <input type="text" id="det-type" class="detail-input-readonly" readonly>
+                            </div>
+                            <div class="detail-field">
+                                <label>Mã Sản Phẩm (ID):</label>
+                                <input type="text" id="det-id" class="detail-input-readonly" readonly>
+                            </div>
+                            <div class="detail-field">
+                                <label>Giá Vốn Nhập Kho (NCC):</label>
+                                <input type="text" id="det-cost" class="detail-input-readonly" style="color: #f59e0b;" readonly>
+                            </div>
+                            <div class="detail-field">
+                                <label>Giá Niêm Yết Bán Lẻ:</label>
+                                <input type="text" id="det-price" class="detail-input-readonly" style="color: #10b981;" readonly>
+                            </div>
+                            <div class="detail-field">
+                                <label>Lợi Nhuận Dự Kiến / Chiếc:</label>
+                                <input type="text" id="det-profit" class="detail-input-readonly" style="color: #38bdf8;" readonly>
+                            </div>
+                        </div>
+
+                        <!-- Thanh điều chỉnh tồn kho nhanh -->
+                        <div class="quick-stock-ctrl">
+                            <div style="font-size: 13px; font-weight: 700; color: #fff; margin-right: 10px;">
+                                Tồn kho khả dụng: <span id="det-stock-val" style="color: #f59e0b; font-size: 16px;">0</span>
+                            </div>
+                            <button type="button" class="btn-ctrl-stock" onclick="quickStockAdjust(10)">
+                                <i class="fas fa-plus"></i> Nhập +10
+                            </button>
+                            <button type="button" class="btn-ctrl-stock" onclick="quickStockAdjust(50)">
+                                <i class="fas fa-plus"></i> Nhập +50
+                            </button>
+                            <button type="button" class="btn-ctrl-stock" onclick="quickStockAdjust(-5)">
+                                <i class="fas fa-minus"></i> Xuất -5
+                            </button>
+                            <button type="button" class="btn-ctrl-stock btn-ctrl-primary" onclick="goToFullEditProduct()">
+                                <i class="fas fa-edit"></i> Chỉnh sửa đầy đủ tại Quản lý Sản phẩm
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- KHỐI 2: PHÂN BỔ THỂ LOẠI & ĐỒ THỊ DOANH SỐ -->
+                    <div class="chart-and-status-row">
+                        <div class="detail-card">
+                            <div class="section-header-styled">
+                                <h3><span class="bar-indicator"></span> Cơ Cấu Tồn Kho Theo Thể Loại Keycap</h3>
+                            </div>
+                            <ul class="category-breakdown-list" id="category-breakdown-container">
+                                <!-- Render tiến độ tồn kho từng loại -->
+                            </ul>
+                        </div>
+
+                        <div class="detail-card">
+                            <div class="section-header-styled">
+                                <h3><span class="bar-indicator"></span> Lối Tắt Nghiệp Vụ Cốt Lõi (BFD)</h3>
+                            </div>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 10px;">
+                                <a href="pos.html" style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); padding: 14px; border-radius: 8px; text-decoration: none; display: flex; align-items: center; gap: 12px;">
+                                    <i class="fas fa-cash-register" style="font-size: 22px; color: #10b981;"></i>
+                                    <div>
+                                        <div style="font-size: 13.5px; font-weight: 700; color: #fff;">Điểm Bán Lẻ POS</div>
+                                        <div style="font-size: 11px; color: var(--text-muted);">Bán hàng, in hóa đơn</div>
+                                    </div>
+                                </a>
+
+                                <a href="orders.html" style="background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); padding: 14px; border-radius: 8px; text-decoration: none; display: flex; align-items: center; gap: 12px;">
+                                    <i class="fas fa-receipt" style="font-size: 22px; color: #3b82f6;"></i>
+                                    <div>
+                                        <div style="font-size: 13.5px; font-weight: 700; color: #fff;">Quản Lý Đơn Hàng</div>
+                                        <div style="font-size: 11px; color: var(--text-muted);">Khóa đơn khi Done</div>
+                                    </div>
+                                </a>
+
+                                <a href="reports.html" style="background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); padding: 14px; border-radius: 8px; text-decoration: none; display: flex; align-items: center; gap: 12px;">
+                                    <i class="fas fa-chart-line" style="font-size: 22px; color: #8b5cf6;"></i>
+                                    <div>
+                                        <div style="font-size: 13.5px; font-weight: 700; color: #fff;">Báo Cáo Tài Chính</div>
+                                        <div style="font-size: 11px; color: var(--text-muted);">Doanh thu, Lợi nhuận</div>
+                                    </div>
+                                </a>
+
+                                <a href="settings.html" style="background: rgba(227, 0, 25, 0.1); border: 1px solid rgba(227, 0, 25, 0.3); padding: 14px; border-radius: 8px; text-decoration: none; display: flex; align-items: center; gap: 12px;">
+                                    <i class="fas fa-sliders-h" style="font-size: 22px; color: #e30019;"></i>
+                                    <div>
+                                        <div style="font-size: 13.5px; font-weight: 700; color: #fff;">Cấu Hình Website</div>
+                                        <div style="font-size: 11px; color: var(--text-muted);">Upload Logo, Hotline</div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- KHỐI 3: ĐƠN HÀNG GẦN ĐÂY VÀ TRẠNG THÁI KHÓA DONE -->
+                    <div class="detail-card">
+                        <div class="section-header-styled">
+                            <h3><span class="bar-indicator"></span> Đơn Hàng Gần Đây & Kiểm Soát Nghiệp Vụ</h3>
+                            <a href="orders.html" style="color: var(--accent-red); font-size: 12.5px; text-decoration: none; font-weight: 700;">
+                                Xem tất cả đơn hàng &rarr;
+                            </a>
+                        </div>
+
+                        <div style="overflow-x: auto;">
+                            <table class="table-dark-tech">
+                                <thead>
+                                    <tr>
+                                        <th>Mã Đơn</th>
+                                        <th>Khách Hàng</th>
+                                        <th>Ngày Đặt</th>
+                                        <th>Kênh Bán</th>
+                                        <th>Tổng Tiền</th>
+                                        <th>Trạng Thái Nghiệp Vụ</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="recent-orders-tbody">
+                                    <!-- Render động qua JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- KHỐI 4: THÀNH VIÊN THỰC HIỆN ĐỒ ÁN PTTKHDT SGU -->
+                    <div class="detail-card" style="background: rgba(16, 20, 31, 0.6); border-color: rgba(139, 92, 246, 0.2);">
+                        <div class="section-header-styled">
+                            <h3><span class="bar-indicator" style="background-color: var(--accent-purple);"></span> Thông Tin Đồ Án Môn Học PTTKHDT - ĐH Sài Gòn (SGU)</h3>
+                            <a href="../../BANG-PHAN-CONG-CHI-TIET.md" target="_blank" style="color: #c084fc; font-size: 12.5px; text-decoration: none; font-weight: 600;">
+                                <i class="fas fa-file-alt"></i> Xem Bảng Phân Công 12 Tuần
+                            </a>
+                        </div>
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 10px;">
+                            <div style="background: var(--bg-card); padding: 12px; border-radius: 8px; border: 1px solid var(--border-color);">
+                                <div style="color: #ffa310; font-weight: 800; font-size: 13.5px;">Nguyễn Công Danh</div>
+                                <div style="color: var(--text-muted); font-size: 12px;">MSSV: 3124410032</div>
+                                <div style="color: #94a3b8; font-size: 11.5px; margin-top: 4px;">Trưởng nhóm / Backend & BFD Lead (35%)</div>
+                            </div>
+                            <div style="background: var(--bg-card); padding: 12px; border-radius: 8px; border: 1px solid var(--border-color);">
+                                <div style="color: #60a5fa; font-weight: 800; font-size: 13.5px;">Trần Nhật Quang</div>
+                                <div style="color: var(--text-muted); font-size: 12px;">MSSV: 3124410293</div>
+                                <div style="color: #94a3b8; font-size: 11.5px; margin-top: 4px;">Frontend Lead / POS & UI Designer (33%)</div>
+                            </div>
+                            <div style="background: var(--bg-card); padding: 12px; border-radius: 8px; border: 1px solid var(--border-color);">
+                                <div style="color: #34d399; font-weight: 800; font-size: 13.5px;">Lê Hoài Lộc</div>
+                                <div style="color: var(--text-muted); font-size: 12px;">MSSV: 3122560041</div>
+                                <div style="color: #94a3b8; font-size: 11.5px; margin-top: 4px;">Database Lead / ERD & Tester (32%)</div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </main>
     </div>
 
+    <!-- 3. FLOATING QUICK DOCK PHÍA PHẢI (THEO REFERENCE IMAGE) -->
+    <div class="floating-action-dock">
+        <a href="pos.html" class="dock-btn" title="Điểm bán lẻ POS">
+            <i class="fas fa-cash-register"></i>
+        </a>
+        <a href="orders.html" class="dock-btn" title="Quản lý Đơn hàng">
+            <i class="fas fa-receipt"></i>
+        </a>
+        <a href="products.html" class="dock-btn" title="Quản lý Sản phẩm">
+            <i class="fas fa-keyboard"></i>
+        </a>
+        <a href="reports.html" class="dock-btn" title="Thống kê Báo cáo">
+            <i class="fas fa-chart-line"></i>
+        </a>
+        <a href="settings.html" class="dock-btn" title="Cấu hình Website & Logo">
+            <i class="fas fa-sliders-h"></i>
+        </a>
+        <a href="../../SO-DO-THIET-KE-PTTKHDT.md" target="_blank" class="dock-btn" title="Sơ đồ thiết kế PTTKHDT">
+            <i class="fas fa-project-diagram"></i>
+        </a>
+        <a href="../../index.html" target="_blank" class="dock-btn" title="Xem Cửa hàng Khách hàng">
+            <i class="fas fa-store"></i>
+        </a>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../scripts/keycap-dataset-100.js"></script>
+    <script src="../scripts/modules/GearsApp.js"></script>
     <script src="./script/admin-common.js"></script>
     <script src="./script/dashboard.js"></script>
 </body>

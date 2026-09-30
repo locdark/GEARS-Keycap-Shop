@@ -1,18 +1,18 @@
 # CHANGELOG - Admin Panel v2.0
 
-## 🎯 Tóm tắt thay đổi
+##  Tóm tắt thay đổi
 
 Đã tái cấu trúc hoàn toàn Admin Panel từ 1 trang thành 4 trang riêng biệt với đầy đủ tính năng CRUD và phân trang.
 
 ---
 
-## ✅ Hoàn thành tất cả yêu cầu
+##  Hoàn thành tất cả yêu cầu
 
-### 1. Admin tách riêng - Không check JavaScript ✅
+### 1. Admin tách riêng - Không check JavaScript 
 - File `index.html` cũ → redirect sang `dashboard.html`
 - **Không cần đăng nhập**, truy cập trực tiếp
 
-### 2. Quản lý Khách hàng - Trang riêng với tìm kiếm & phân trang ✅
+### 2. Quản lý Khách hàng - Trang riêng với tìm kiếm & phân trang 
 - **File mới**: `customers.html` + `customers.js`
 - Tìm kiếm theo tên/email
 - Lọc theo loại tài khoản (Admin/Client)
@@ -21,7 +21,7 @@
 - Reset password
 - Lock/Unlock account
 
-### 3. Quản lý Sản phẩm - Trang riêng ✅
+### 3. Quản lý Sản phẩm - Trang riêng 
 - **File mới**: `products.html` + `products-admin.js`
 - Tìm kiếm sản phẩm
 - Lọc theo danh mục & giá
@@ -31,7 +31,7 @@
 - **XÓA** sản phẩm
 - Quản lý danh mục (CRUD thể loại)
 
-### 4. Đồng bộ thông tin sản phẩm Admin ↔ Client ✅
+### 4. Đồng bộ thông tin sản phẩm Admin ↔ Client 
 - Cùng dùng `localStorage.product`
 - Cấu trúc dữ liệu nhất quán:
   ```javascript
@@ -48,34 +48,34 @@
 
 ---
 
-## 📁 File mới được tạo
+##  File mới được tạo
 
 ```
 assets/Admin/
-├── ✨ dashboard.html          (Trang chủ thống kê)
-├── ✨ customers.html          (Quản lý khách hàng)
-├── ✨ products.html           (Quản lý sản phẩm - QUAN TRỌNG)
-├── ✨ orders.html             (Quản lý đơn hàng)
-├── ✨ README.md               (Tài liệu chi tiết)
-├── ✨ HUONG-DAN.md            (Hướng dẫn tiếng Việt)
-├── ✨ CHANGELOG.md            (File này)
+├──  dashboard.html          (Trang chủ thống kê)
+├──  customers.html          (Quản lý khách hàng)
+├──  products.html           (Quản lý sản phẩm - QUAN TRỌNG)
+├──  orders.html             (Quản lý đơn hàng)
+├──  README.md               (Tài liệu chi tiết)
+├──  HUONG-DAN.md            (Hướng dẫn tiếng Việt)
+├──  CHANGELOG.md            (File này)
 └── script/
-    ├── ✨ admin-common.js     (Hàm dùng chung)
-    ├── ✨ dashboard.js        (Logic trang chủ)
-    ├── ✨ customers.js        (Logic khách hàng)
-    ├── ✨ products-admin.js   (Logic sản phẩm - QUAN TRỌNG)
-    └── ✨ orders.js           (Logic đơn hàng)
+    ├──  admin-common.js     (Hàm dùng chung)
+    ├──  dashboard.js        (Logic trang chủ)
+    ├──  customers.js        (Logic khách hàng)
+    ├──  products-admin.js   (Logic sản phẩm - QUAN TRỌNG)
+    └──  orders.js           (Logic đơn hàng)
 ```
 
 ---
 
-## 🔧 File đã sửa
+##  File đã sửa
 
 - `index.html` - Thêm redirect tự động sang `dashboard.html`
 
 ---
 
-## 📦 Tính năng mới
+##  Tính năng mới
 
 ### Dashboard
 - Thống kê tổng khách hàng
@@ -106,7 +106,7 @@ assets/Admin/
 
 ---
 
-## 🎨 UX/UI Improvements
+##  UX/UI Improvements
 
 - Menu điều hướng rõ ràng
 - Phân trang đẹp với số trang
@@ -117,16 +117,16 @@ assets/Admin/
 
 ---
 
-## 🔒 Bảo mật
+##  Bảo mật
 
-⚠️ **LƯU Ý**: Admin panel hiện tại:
+️ **LƯU Ý**: Admin panel hiện tại:
 - KHÔNG có kiểm tra đăng nhập
 - Phù hợp cho môi trường dev/test
 - KHÔNG dùng cho production
 
 ---
 
-## 💡 Best Practices áp dụng
+##  Best Practices áp dụng
 
 1. **Separation of Concerns**: Mỗi trang có logic riêng
 2. **DRY Principle**: Hàm dùng chung trong `admin-common.js`
@@ -137,7 +137,7 @@ assets/Admin/
 
 ---
 
-## 🚀 Cách sử dụng
+##  Cách sử dụng
 
 ```bash
 # Bước 1: Mở admin panel
@@ -159,14 +159,14 @@ Mở file: assets/Admin/dashboard.html
 
 ---
 
-## 📊 So sánh phiên bản
+##  So sánh phiên bản
 
 | Feature | v1.0 (Cũ) | v2.0 (Mới) |
 |---------|-----------|------------|
 | Số trang | 1 | 4 |
-| Check login | ✅ | ❌ |
-| Search | ❌ | ✅ |
-| Pagination | ❌ | ✅ |
+| Check login |  |  |
+| Search |  |  |
+| Pagination |  |  |
 | Edit product | Cơ bản | Đầy đủ |
 | Data sync | Không rõ | 100% |
 | Category CRUD | Có | Nâng cao |
@@ -175,7 +175,7 @@ Mở file: assets/Admin/dashboard.html
 
 ---
 
-## 🐛 Known Issues
+##  Known Issues
 
 1. Upload ảnh chỉ lưu path, chưa thực sự upload
 2. LocalStorage có giới hạn dung lượng (~5-10MB)
@@ -183,7 +183,7 @@ Mở file: assets/Admin/dashboard.html
 
 ---
 
-## 🔮 Future Improvements
+##  Future Improvements
 
 - [ ] Thêm backend API
 - [ ] Upload ảnh thật lên server
@@ -195,7 +195,7 @@ Mở file: assets/Admin/dashboard.html
 
 ---
 
-## 📝 Notes
+##  Notes
 
 - Tất cả file cũ vẫn giữ nguyên, không bị xóa
 - File `HandlerAdmin.js` cũ không dùng nữa

@@ -4,198 +4,1662 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+    <title>Quản Lý Sản Phẩm Keycap - GEARS Keycap Shop</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700;800&family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css">
     <link rel="shortcut icon" href="../img/ShortCut_Icon.png">
-    <link rel="stylesheet" href="../css/Base.css">
-    <link rel="stylesheet" href="../css/Grid.css">
-    <link rel="stylesheet" href="../css/Responsive.css">
-    <link rel="stylesheet" href="./css/style.css">
-    <title>Quản lý Sản phẩm - GEARS Shop</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+
+    <style>
+        :root {
+            --bg-body: #0c0d12;
+            --bg-sidebar: #10121a;
+            --bg-card: #151822;
+            --bg-card-hover: #1c202d;
+            --bg-input: #1a1e2b;
+            --border-color: #232738;
+            --border-highlight: #3b4259;
+            --accent-red: #e30019;
+            --accent-purple: #8b5cf6;
+            --accent-blue: #3b82f6;
+            --accent-green: #10b981;
+            --accent-orange: #f59e0b;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Quicksand', 'Roboto', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            overflow-x: hidden;
+            font-size: 14px;
+        }
+
+        /* 1. SIDEBAR PHÍA TRÁI (DARK ERP STYLE KHỚP DASHBOARD) */
+        .admin-sidebar {
+            width: 270px;
+            background-color: var(--bg-sidebar);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 100;
+            overflow-y: auto;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-brand {
+            padding: 22px 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .sidebar-brand-title {
+            font-size: 16px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sidebar-brand-title i {
+            color: var(--accent-red);
+            font-size: 20px;
+        }
+
+        .version-badge {
+            font-size: 11px;
+            font-weight: 700;
+            padding: 2px 7px;
+            border-radius: 6px;
+            background: rgba(227, 0, 25, 0.2);
+            color: #ff6b7b;
+            border: 1px solid rgba(227, 0, 25, 0.4);
+        }
+
+        .sidebar-nav {
+            padding: 15px 12px;
+            flex: 1;
+        }
+
+        .nav-section-title {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+            padding: 14px 12px 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            margin-bottom: 10px;
+        }
+
+        .sidebar-item {
+            margin-bottom: 4px;
+        }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 14px;
+            border-radius: 8px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 13.5px;
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+        }
+
+        .sidebar-link:hover {
+            background-color: var(--bg-card);
+            color: #ffffff;
+            border-color: var(--border-color);
+        }
+
+        .sidebar-link.active {
+            background: linear-gradient(90deg, rgba(227, 0, 25, 0.15), rgba(139, 92, 246, 0.1));
+            color: #ffffff;
+            border: 1px solid rgba(227, 0, 25, 0.4);
+            box-shadow: 0 4px 12px rgba(227, 0, 25, 0.15);
+        }
+
+        .sidebar-link-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .sidebar-link-left i {
+            font-size: 15px;
+            width: 18px;
+            text-align: center;
+            color: var(--text-muted);
+            transition: color 0.2s;
+        }
+
+        .sidebar-link:hover .sidebar-link-left i,
+        .sidebar-link.active .sidebar-link-left i {
+            color: var(--accent-red);
+        }
+
+        .sidebar-badge {
+            font-size: 10px;
+            font-weight: 700;
+            padding: 2px 7px;
+            border-radius: 5px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .badge-live { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.4); }
+        .badge-hot { background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.4); }
+        .badge-new { background: rgba(59, 130, 246, 0.2); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.4); }
+        .badge-count { background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.4); }
+        .badge-tech { background: rgba(139, 92, 246, 0.2); color: #c084fc; border: 1px solid rgba(139, 92, 246, 0.4); }
+
+        .sidebar-footer {
+            padding: 16px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .btn-sidebar-store {
+            background: linear-gradient(135deg, #1e2433, #161a25);
+            border: 1px solid var(--border-color);
+            color: #ffffff;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 700;
+            text-align: center;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.25s;
+        }
+
+        .btn-sidebar-store:hover {
+            border-color: var(--accent-red);
+            background: rgba(227, 0, 25, 0.15);
+            color: #ffffff;
+        }
+
+        .btn-sidebar-logout {
+            background: rgba(220, 38, 38, 0.1);
+            border: 1px solid rgba(220, 38, 38, 0.25);
+            color: #ef4444;
+            padding: 9px 14px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 700;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.25s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-sidebar-logout:hover {
+            background: #dc2626;
+            color: #ffffff;
+        }
+
+        /* 2. MAIN VIEWPORT */
+        .admin-main-wrapper {
+            margin-left: 270px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            padding-right: 50px;
+        }
+
+        .admin-topbar {
+            height: 64px;
+            background-color: var(--bg-sidebar);
+            border-bottom: 1px solid var(--border-color);
+            padding: 0 28px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 90;
+        }
+
+        .topbar-breadcrumbs {
+            font-size: 13.5px;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .topbar-breadcrumbs strong {
+            color: #ffffff;
+        }
+
+        .topbar-actions {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .status-pill {
+            background: rgba(16, 185, 129, 0.12);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            color: #34d399;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12.5px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #10b981;
+            border-radius: 50%;
+            box-shadow: 0 0 8px #10b981;
+        }
+
+        .user-profile-badge {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 4px 10px;
+            border-radius: 8px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+        }
+
+        .user-avatar-mini {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #e30019, #8b5cf6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 800;
+            color: #fff;
+        }
+
+        /* 3. CONTENT CONTAINER */
+        .dashboard-content {
+            padding: 24px 28px 60px;
+            flex: 1;
+        }
+
+        /* KPI STATS ROW */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            margin-bottom: 24px;
+        }
+
+        .kpi-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.25s;
+        }
+
+        .kpi-card:hover {
+            border-color: var(--border-highlight);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .kpi-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 3px;
+        }
+
+        .kpi-products::before { background: linear-gradient(90deg, #f59e0b, #d97706); }
+        .kpi-stock::before { background: linear-gradient(90deg, #10b981, #059669); }
+        .kpi-warning::before { background: linear-gradient(90deg, #ef4444, #dc2626); }
+        .kpi-categories::before { background: linear-gradient(90deg, #8b5cf6, #7c3aed); }
+
+        .kpi-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .kpi-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .kpi-icon-wrap {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 17px;
+        }
+
+        .kpi-value {
+            font-size: 26px;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 8px;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .kpi-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        /* 4. MAIN WORKSPACE / TABLE CARD */
+        .detail-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 22px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .section-header-styled {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 18px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid var(--border-color);
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .section-header-styled h3 {
+            font-size: 17px;
+            font-weight: 800;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 0;
+        }
+
+        .section-header-styled h3 span.bar-indicator {
+            width: 4px;
+            height: 20px;
+            background-color: var(--accent-orange);
+            border-radius: 2px;
+            display: inline-block;
+        }
+
+        /* Toolbar Lọc & Tìm Kiếm Công Nghệ Cao */
+        .products-filter-toolbar {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+            background: rgba(16, 18, 26, 0.6);
+            padding: 14px 16px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+        }
+
+        .filter-left-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+            flex: 1;
+        }
+
+        .filter-right-group {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .search-box-dark {
+            position: relative;
+            min-width: 240px;
+            flex: 1;
+            max-width: 320px;
+        }
+
+        .search-box-dark input {
+            width: 100%;
+            background: var(--bg-input);
+            border: 1px solid var(--border-color);
+            color: #ffffff;
+            padding: 9px 12px 9px 36px;
+            border-radius: 8px;
+            font-size: 13px;
+            outline: none;
+            transition: all 0.25s;
+        }
+
+        .search-box-dark input:focus {
+            border-color: var(--accent-orange);
+            box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.2);
+        }
+
+        .search-box-dark i {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+
+        .select-dark {
+            background: var(--bg-input);
+            border: 1px solid var(--border-color);
+            color: #ffffff;
+            padding: 9px 14px;
+            border-radius: 8px;
+            font-size: 13px;
+            outline: none;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .select-dark:focus {
+            border-color: var(--accent-orange);
+        }
+
+        .select-dark option {
+            background: var(--bg-card);
+            color: #ffffff;
+        }
+
+        /* Buttons */
+        .btn-tech {
+            padding: 9px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            border: 1px solid transparent;
+            transition: all 0.25s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            outline: none;
+        }
+
+        .btn-tech-orange {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: #ffffff;
+            box-shadow: 0 4px 14px rgba(245, 158, 11, 0.3);
+        }
+        .btn-tech-orange:hover {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 18px rgba(245, 158, 11, 0.4);
+        }
+
+        .btn-tech-excel {
+            background: rgba(16, 185, 129, 0.15);
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            color: #34d399;
+        }
+        .btn-tech-excel:hover {
+            background: #10b981;
+            color: #ffffff;
+        }
+
+        .btn-tech-filter {
+            background: rgba(227, 0, 25, 0.15);
+            border: 1px solid rgba(227, 0, 25, 0.4);
+            color: #ff6b7b;
+        }
+        .btn-tech-filter:hover {
+            background: var(--accent-red);
+            color: #ffffff;
+        }
+
+        .btn-tech-reset {
+            background: var(--bg-input);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+        }
+        .btn-tech-reset:hover {
+            color: #ffffff;
+            border-color: var(--border-highlight);
+        }
+
+        /* Bảng Danh Sách Sản Phẩm Dark Tech ERP */
+        .table-responsive-dark {
+            overflow-x: auto;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-card);
+        }
+
+        .table-dark-tech {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13.5px;
+        }
+
+        .table-dark-tech th {
+            text-align: left;
+            padding: 14px 16px;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid var(--border-color);
+            background: rgba(16, 18, 26, 0.85);
+            white-space: nowrap;
+        }
+
+        .table-dark-tech td {
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            vertical-align: middle;
+        }
+
+        .table-dark-tech tbody tr {
+            transition: all 0.2s;
+        }
+
+        .table-dark-tech tbody tr:hover {
+            background: rgba(255, 255, 255, 0.03);
+            color: #ffffff;
+        }
+
+        /* Product image thumbnail */
+        .prod-table-thumb {
+            width: 52px;
+            height: 52px;
+            border-radius: 8px;
+            object-fit: cover;
+            background: #ffffff;
+            padding: 3px;
+            border: 1px solid var(--border-color);
+            transition: transform 0.2s;
+            display: block;
+        }
+
+        .prod-table-thumb:hover {
+            transform: scale(1.15);
+            border-color: var(--accent-orange);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Action buttons in table row */
+        .btn-table-action {
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 700;
+            border: 1px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            margin-right: 4px;
+        }
+
+        .btn-table-stock {
+            background: rgba(16, 185, 129, 0.15);
+            border-color: rgba(16, 185, 129, 0.4);
+            color: #34d399;
+        }
+        .btn-table-stock:hover {
+            background: #10b981;
+            color: #ffffff;
+        }
+
+        .btn-table-edit {
+            background: rgba(59, 130, 246, 0.15);
+            border-color: rgba(59, 130, 246, 0.4);
+            color: #60a5fa;
+        }
+        .btn-table-edit:hover {
+            background: #2563eb;
+            color: #ffffff;
+        }
+
+        .btn-table-del {
+            background: rgba(239, 68, 68, 0.15);
+            border-color: rgba(239, 68, 68, 0.4);
+            color: #f87171;
+        }
+        .btn-table-del:hover {
+            background: #dc2626;
+            color: #ffffff;
+        }
+
+        /* Pagination & Footer info */
+        .table-footer-pagination {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 18px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .page-info-dark {
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+
+        .page-info-dark strong {
+            color: var(--accent-orange);
+        }
+
+        .pagination-container-dark {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+
+        .pagination-btn-dark {
+            background: var(--bg-input);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            min-width: 36px;
+            height: 36px;
+            border-radius: 6px;
+            font-size: 12.5px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .pagination-btn-dark:hover {
+            border-color: var(--accent-orange);
+            color: #ffffff;
+        }
+
+        .pagination-btn-dark.active {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            border-color: var(--accent-orange);
+            color: #ffffff;
+            box-shadow: 0 2px 8px rgba(245, 158, 11, 0.3);
+        }
+
+        /* 5. MODAL SYSTEM (DARK GLASSMORPHISM) */
+        .AddProduct_Wrap, .ChangeProduct_Wrap {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(8, 10, 15, 0.85);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .AddProduct_Wrap.isOpenAP, .ChangeProduct_Wrap.isOpenAP {
+            display: flex;
+        }
+
+        .Add_Product_main {
+            background: var(--bg-card);
+            border: 1px solid var(--border-highlight);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.7);
+            border-radius: 14px;
+            width: 680px;
+            max-width: 95%;
+            position: relative;
+            overflow: hidden;
+            animation: modalFadeIn 0.25s ease-out;
+        }
+
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: translateY(-20px) scale(0.97); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .modal-header-styled {
+            padding: 18px 24px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .modal-header-styled.header-orange {
+            background: linear-gradient(90deg, rgba(245, 158, 11, 0.2), rgba(227, 0, 25, 0.1));
+            border-bottom: 1px solid rgba(245, 158, 11, 0.3);
+        }
+
+        .modal-header-styled.header-blue {
+            background: linear-gradient(90deg, rgba(37, 99, 235, 0.2), rgba(139, 92, 246, 0.1));
+            border-bottom: 1px solid rgba(37, 99, 235, 0.3);
+        }
+
+        .modal-header-title {
+            font-size: 16px;
+            font-weight: 800;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-modal-close-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-modal-close-icon:hover {
+            background: var(--accent-red);
+            color: #ffffff;
+            border-color: var(--accent-red);
+        }
+
+        .modal-form-body {
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .form-row-grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+
+        .form-row-grid-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 14px;
+        }
+
+        .form-field-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-field-group label {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .input-dark-control {
+            background: var(--bg-input);
+            border: 1px solid var(--border-color);
+            color: #ffffff;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 13.5px;
+            outline: none;
+            transition: all 0.2s;
+            width: 100%;
+            font-family: inherit;
+        }
+
+        .input-dark-control:focus {
+            border-color: var(--accent-orange);
+            box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.2);
+        }
+
+        /* Upload Dropzone Hero trong Modal */
+        .upload-dropzone-hero {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            background: rgba(16, 18, 26, 0.8);
+            padding: 14px 16px;
+            border-radius: 10px;
+            border: 1px dashed var(--border-highlight);
+        }
+
+        .preview-box-square {
+            width: 72px;
+            height: 72px;
+            border-radius: 10px;
+            background: #ffffff;
+            padding: 4px;
+            border: 2px solid var(--border-highlight);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .preview-box-square img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 6px;
+        }
+
+        .upload-controls-col {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        /* 6. FLOATING QUICK DOCK PHÍA PHẢI */
+        .floating-action-dock {
+            position: fixed;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            background: rgba(21, 24, 34, 0.85);
+            border: 1px solid var(--border-color);
+            padding: 8px 6px;
+            border-radius: 20px;
+            backdrop-filter: blur(8px);
+            z-index: 95;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+        }
+
+        .dock-btn {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            text-decoration: none;
+            font-size: 15px;
+            transition: all 0.25s;
+            position: relative;
+        }
+
+        .dock-btn:hover {
+            color: #ffffff;
+            background: var(--accent-orange);
+            border-color: var(--accent-orange);
+            transform: scale(1.1);
+        }
+
+        .dock-btn[title]:hover::after {
+            content: attr(title);
+            position: absolute;
+            right: 48px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #1e2433;
+            color: #fff;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            white-space: nowrap;
+            border: 1px solid var(--border-color);
+            pointer-events: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 1024px) {
+            .admin-sidebar { width: 70px; }
+            .admin-sidebar .sidebar-brand-title span,
+            .admin-sidebar .version-badge,
+            .admin-sidebar .nav-section-title,
+            .admin-sidebar .sidebar-link-text,
+            .admin-sidebar .sidebar-badge,
+            .admin-sidebar .sidebar-footer { display: none; }
+            .admin-main-wrapper { margin-left: 70px; padding-right: 0; }
+            .floating-action-dock { display: none; }
+        }
+        @media (max-width: 768px) {
+            .kpi-grid { grid-template-columns: 1fr; }
+            .products-filter-toolbar { flex-direction: column; align-items: stretch; }
+            .filter-left-group { flex-direction: column; align-items: stretch; }
+            .search-box-dark { max-width: 100%; }
+            .form-row-grid-2, .form-row-grid-3 { grid-template-columns: 1fr; }
+        }
+
+        /* SIDEBAR COLLAPSED STATE */
+        .admin-sidebar.collapsed { width: 70px !important; }
+        .admin-sidebar.collapsed .sidebar-brand-title span,
+        .admin-sidebar.collapsed .version-badge,
+        .admin-sidebar.collapsed .nav-section-title,
+        .admin-sidebar.collapsed .sidebar-link-text,
+        .admin-sidebar.collapsed .sidebar-badge,
+        .admin-sidebar.collapsed .sidebar-footer,
+        .admin-sidebar.collapsed .sidebar-quick-actions .sidebar-link-text { display: none !important; }
+        .admin-sidebar.collapsed .sidebar-brand { justify-content: center; padding: 16px 8px; }
+        .admin-sidebar.collapsed .sidebar-brand-title { justify-content: center; }
+        .admin-sidebar.collapsed .sidebar-toggle-btn { display: none !important; }
+        .admin-sidebar.collapsed .sidebar-link { justify-content: center; padding: 10px 8px; }
+        .admin-sidebar.collapsed .sidebar-link-left { justify-content: center; gap: 0; }
+        .admin-sidebar.collapsed .sidebar-link-left i { font-size: 18px; }
+        .admin-sidebar.collapsed .sidebar-nav { padding: 10px 6px; }
+        .admin-sidebar.collapsed .sidebar-quick-actions { flex-direction: column !important; padding: 6px !important; gap: 4px !important; }
+        .admin-sidebar.collapsed .sidebar-quick-actions a,
+        .admin-sidebar.collapsed .sidebar-quick-actions button { padding: 8px !important; justify-content: center !important; font-size: 14px !important; }
+        .admin-main-wrapper.sidebar-collapsed { margin-left: 70px !important; }
+    </style>
 </head>
 <body>
-    <div class="main-body">
-        <!-- Header -->
-        <div class="header">
-            <div class="header-navbar--list">
-                <div class="header-navbar--item">
-                    <a href="dashboard.html" style="color: inherit; text-decoration: none;">Trang chủ</a>
-                </div>
-                <div class="header-navbar--item">
-                    <a href="customers.html" style="color: inherit; text-decoration: none;">Quản lý khách hàng</a>
-                </div>
-                <div class="header-navbar--item headerActive">
-                    <a href="products.html" style="color: inherit; text-decoration: none;">Quản lý sản phẩm</a>
-                </div>
-                <div class="header-navbar--item">
-                    <a href="orders.html" style="color: inherit; text-decoration: none;">Quản lý đơn hàng</a>
-                </div>
-                <div class="line"></div>
+
+    <!-- 1. SIDEBAR PHÍA TRÁI (DARK ERP STYLE KHỚP DASHBOARD) -->
+    <aside class="admin-sidebar">
+        <!-- Brand Header -->
+        <div class="sidebar-brand">
+            <div class="sidebar-brand-title">
+                <i class="fas fa-keyboard"></i>
+                <span>QUẢN TRỊ HỆ THỐNG</span>
             </div>
+            <span class="version-badge">v2.6</span>
+            <button class="sidebar-toggle-btn" title="Thu gọn / Mở rộng sidebar" type="button">
+                <i class="fas fa-bars"></i>
+            </button>
         </div>
 
-        <!-- Container -->
-        <div class="container">
-            <div class="grid max-Width">
-                <div class="row sm-gutter">
-                    <div class="col l-12 m-12 c-12">
-                        <div class="container-main">
-                            <div class="container-title">Quản lý Sản phẩm</div>
-                            
-                            <!-- Thanh tìm kiếm và lọc -->
-                            <div class="search-bar" style="margin-bottom: 20px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
-                                <input type="text" id="search-product" placeholder="Tìm kiếm sản phẩm..." 
-                                    class="input-field" style="flex: 1; max-width: 300px;">
-                                <select id="filter-category" class="input-field" style="width: 150px;">
-                                    <option value="">Tất cả danh mục</option>
-                                </select>
-                                <input type="number" id="filter-min-price" placeholder="Giá từ..." 
-                                    class="input-field" style="width: 120px;">
-                                <input type="number" id="filter-max-price" placeholder="Giá đến..." 
-                                    class="input-field" style="width: 120px;">
-                                <button id="btn-search-product" class="confirm-btn">Tìm kiếm</button>
-                                <button id="btn-reset-filter" class="confirm-btn" style="background: #999;">Reset</button>
-                            </div>
+        <!-- Quick Actions (Được đưa lên trên ngay sau logo) -->
+        <div class="sidebar-quick-actions" style="padding:8px 12px;display:flex;gap:6px;border-bottom:1px solid var(--border-color,#232738);">
+            <a href="../../index.html" target="_blank" class="btn-sidebar-store" style="flex:1;padding:7px 10px;font-size:12px;gap:6px;" title="Xem cửa hàng khách hàng">
+                <i class="fas fa-store"></i> <span class="sidebar-link-text">Web KH</span>
+            </a>
+            <button type="button" class="btn-sidebar-logout" style="flex:1;padding:7px 10px;font-size:12px;gap:6px;" onclick="AdminCommon.logoutAdmin()" title="Đăng xuất khỏi hệ thống">
+                <i class="fas fa-sign-out-alt"></i> <span class="sidebar-link-text">Đăng Xuất</span>
+            </button>
+        </div>
 
-                            <!-- Bảng danh sách -->
-                            <div class="container-table" style="max-height: 55vh;">
-                                <table id="product-list"></table>
-                            </div>
-
-                            <!-- Nút chức năng -->
-                            <div class="btn_Admin" style="display:flex;justify-content:space-between;align-items:center;gap:12px; margin-top: 15px;">
-                                <div class="btn-left" style="display:flex;gap:8px;">
-                                    <div class="btn-Product js-editTypeProduct">Sửa thể loại</div>
-                                    <div class="btn-Product js-delTypeProduct">Xóa thể loại</div>
-                                </div>
-                                <div class="btn-right" style="display:flex;gap:8px;">
-                                    <div class="btn-Product js-addTypeProduct">Thêm thể loại</div>
-                                    <div class="btn-Product js-addProduct">Thêm sản phẩm</div>
-                                </div>
-                            </div>
-
-                            <!-- Phân trang -->
-                            <div class="pagination" id="pagination-products" style="display: flex; justify-content: center; gap: 10px; margin-top: 20px; flex-wrap: wrap;">
-                            </div>
-
-                            <!-- Thông tin trang -->
-                            <div class="page-info" style="text-align: center; margin-top: 10px; color: #666;">
-                                Hiển thị <span id="showing-start">0</span> - <span id="showing-end">0</span> 
-                                trong tổng số <span id="total-products">0</span> sản phẩm
-                            </div>
+        <!-- Navigation Menu -->
+        <div class="sidebar-nav">
+            <!-- Nhóm 1: Nghiệp Vụ Bán Hàng -->
+            <div class="nav-section-title">
+                <i class="fas fa-bolt"></i> Nghiệp Vụ Bán Hàng
+            </div>
+            <ul class="sidebar-menu">
+                <li class="sidebar-item">
+                    <a href="dashboard.html" class="sidebar-link">
+                        <div class="sidebar-link-left">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span class="sidebar-link-text">Tổng Quan Dashboard</span>
                         </div>
+                        <span class="sidebar-badge badge-live">Live</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="pos.html" class="sidebar-link">
+                        <div class="sidebar-link-left">
+                            <i class="fas fa-cash-register"></i>
+                            <span class="sidebar-link-text">Điểm Bán Lẻ (POS)</span>
+                        </div>
+                        <span class="sidebar-badge badge-hot">HOT</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="orders.html" class="sidebar-link">
+                        <div class="sidebar-link-left">
+                            <i class="fas fa-receipt"></i>
+                            <span class="sidebar-link-text">Quản Lý Đơn Hàng</span>
+                        </div>
+                        <span class="sidebar-badge badge-new" id="sidebar-order-count">Đơn</span>
+                    </a>
+                </li>
+                <li class="sidebar-item active">
+                    <a href="products.html" class="sidebar-link active">
+                        <div class="sidebar-link-left">
+                            <i class="fas fa-cubes"></i>
+                            <span class="sidebar-link-text">Sản Phẩm Keycap</span>
+                        </div>
+                        <span class="sidebar-badge badge-count" id="sidebar-product-count">100+</span>
+                    </a>
+                </li>
+            </ul>
+
+            <!-- Nhóm 2: Đối Tác & Nhân Sự -->
+            <div class="nav-section-title">
+                <i class="fas fa-users-cog"></i> Đối Tác &amp; Nhân Sự
+            </div>
+            <ul class="sidebar-menu">
+                <li class="sidebar-item">
+                    <a href="suppliers.html" class="sidebar-link">
+                        <div class="sidebar-link-left">
+                            <i class="fas fa-truck-loading"></i>
+                            <span class="sidebar-link-text">Nhà Cung Cấp</span>
+                        </div>
+                        <span class="sidebar-badge badge-tech">Partner</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="customers.html" class="sidebar-link">
+                        <div class="sidebar-link-left">
+                            <i class="fas fa-users"></i>
+                            <span class="sidebar-link-text">Khách Hàng</span>
+                        </div>
+                        <span class="sidebar-badge badge-tech">CRM</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="employees.html" class="sidebar-link">
+                        <div class="sidebar-link-left">
+                            <i class="fas fa-user-shield"></i>
+                            <span class="sidebar-link-text">Nhân Viên &amp; Phân Quyền</span>
+                        </div>
+                        <span class="sidebar-badge badge-tech">Auth</span>
+                    </a>
+                </li>
+            </ul>
+
+            <!-- Nhóm 3: Báo Cáo & Cấu Hình -->
+            <div class="nav-section-title">
+                <i class="fas fa-sliders-h"></i> Báo Cáo &amp; Cấu Hình
+            </div>
+            <ul class="sidebar-menu">
+                <li class="sidebar-item">
+                    <a href="reports.html" class="sidebar-link">
+                        <div class="sidebar-link-left">
+                            <i class="fas fa-chart-line"></i>
+                            <span class="sidebar-link-text">Thống Kê Báo Cáo</span>
+                        </div>
+                        <span class="sidebar-badge badge-tech">Chart</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="database.html" class="sidebar-link">
+                        <div class="sidebar-link-left">
+                            <i class="fas fa-database" style="color: #10b981;"></i>
+                            <span class="sidebar-link-text">Cấu Hình CSDL (Navicat)</span>
+                        </div>
+                        <span class="sidebar-badge badge-tech" style="background: rgba(16,185,129,0.25); color: #34d399;">.env</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="settings.html" class="sidebar-link">
+                        <div class="sidebar-link-left">
+                            <i class="fas fa-cog"></i>
+                            <span class="sidebar-link-text">Cấu Hình Website</span>
+                        </div>
+                        <span class="sidebar-badge badge-new">Logo</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="/so-do-canvas" target="_blank" class="sidebar-link">
+                        <div class="sidebar-link-left">
+                            <i class="fas fa-project-diagram"></i>
+                            <span class="sidebar-link-text">Sơ Đồ PTTKHDT</span>
+                        </div>
+                        <span class="sidebar-badge badge-tech">UML</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </aside>
+
+    <!-- 2. MAIN WRAPPER -->
+    <div class="admin-main-wrapper">
+        <!-- Top Bar -->
+        <header class="admin-topbar">
+            <div class="topbar-breadcrumbs">
+                <span>Hệ Thống</span>
+                <i class="fas fa-chevron-right" style="font-size: 10px; color: var(--text-muted);"></i>
+                <span>Nghiệp Vụ Kho</span>
+                <i class="fas fa-chevron-right" style="font-size: 10px; color: var(--text-muted);"></i>
+                <strong>Quản Lý Sản Phẩm Keycap</strong>
+            </div>
+
+            <div class="topbar-actions">
+                <div class="status-pill">
+                    <span class="status-dot"></span>
+                    <span>Port 3333 Online</span>
+                </div>
+                <div class="user-profile-badge">
+                    <div class="user-avatar-mini" id="admin-user-avatar">AD</div>
+                    <div>
+                        <div style="font-size: 12.5px; font-weight: 700; color: #fff;" id="admin-user-name">Nguyễn Công Danh</div>
+                        <div style="font-size: 11px; color: var(--text-muted);">Quản Trị Viên (SGU)</div>
                     </div>
                 </div>
             </div>
-        </div>
+        </header>
+
+        <!-- Main Body Content -->
+        <main class="dashboard-content">
+            <!-- 4 Thẻ KPI Sản Phẩm -->
+            <section class="kpi-grid">
+                <div class="kpi-card kpi-products">
+                    <div class="kpi-header">
+                        <span class="kpi-title">Tổng Mẫu Sản Phẩm</span>
+                        <div class="kpi-icon-wrap" style="background: rgba(245, 158, 11, 0.15); color: #f59e0b;">
+                            <i class="fas fa-cubes"></i>
+                        </div>
+                    </div>
+                    <div class="kpi-value" id="kpi-total-prod">100</div>
+                    <div class="kpi-footer">
+                        <span style="color: #10b981; font-weight: 700;"><i class="fas fa-check-circle"></i> Đầy đủ 100 mẫu</span>
+                        <span>Đã chuẩn hóa 3NF</span>
+                    </div>
+                </div>
+
+                <div class="kpi-card kpi-stock">
+                    <div class="kpi-header">
+                        <span class="kpi-title">Tổng Tồn Kho Khả Dụng</span>
+                        <div class="kpi-icon-wrap" style="background: rgba(16, 185, 129, 0.15); color: #10b981;">
+                            <i class="fas fa-boxes-stacked"></i>
+                        </div>
+                    </div>
+                    <div class="kpi-value" id="kpi-total-stock">0 nút</div>
+                    <div class="kpi-footer">
+                        <span style="color: #34d399; font-weight: 700;"><i class="fas fa-warehouse"></i> Sẵn sàng xuất kho</span>
+                        <span>POS & Online</span>
+                    </div>
+                </div>
+
+                <div class="kpi-card kpi-warning">
+                    <div class="kpi-header">
+                        <span class="kpi-title">Cảnh Báo Sắp Hết Hàng</span>
+                        <div class="kpi-icon-wrap" style="background: rgba(239, 68, 68, 0.15); color: #ef4444;">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                    </div>
+                    <div class="kpi-value" id="kpi-low-stock" style="color: #f87171;">0</div>
+                    <div class="kpi-footer">
+                        <span style="color: #f87171; font-weight: 700;"><i class="fas fa-bell"></i> Tồn kho dưới 15 cái</span>
+                        <span>Cần nhập thêm</span>
+                    </div>
+                </div>
+
+                <div class="kpi-card kpi-categories">
+                    <div class="kpi-header">
+                        <span class="kpi-title">Cơ Cấu Danh Mục & NCC</span>
+                        <div class="kpi-icon-wrap" style="background: rgba(139, 92, 246, 0.15); color: #8b5cf6;">
+                            <i class="fas fa-tags"></i>
+                        </div>
+                    </div>
+                    <div class="kpi-value" id="kpi-categories-count">5 / 4</div>
+                    <div class="kpi-footer">
+                        <span style="color: #c084fc; font-weight: 700;"><i class="fas fa-truck-loading"></i> 5 Nhóm / 4 NCC</span>
+                        <span>Phân bổ hợp lý</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Khung Quản Lý Bảng Dữ Liệu Sản Phẩm -->
+            <div class="detail-card">
+                <div class="section-header-styled">
+                    <h3><span class="bar-indicator"></span> Danh Sách Sản Phẩm Keycap Trong Kho</h3>
+                    <div style="font-size: 13px; color: var(--text-muted);">
+                        Hệ thống hiển thị chuẩn phân trang, hỗ trợ tải ảnh và cập nhật tồn kho tức thì
+                    </div>
+                </div>
+
+                <!-- Thanh Tìm Kiếm & Lọc Công Nghệ Cao -->
+                <div class="products-filter-toolbar">
+                    <div class="filter-left-group">
+                        <div class="search-box-dark">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="search-product" placeholder="Tìm theo tên, ID, mã nhà cung cấp...">
+                        </div>
+
+                        <select id="filter-category" class="select-dark">
+                            <option value="">Tất cả danh mục</option>
+                        </select>
+
+                        <select id="filter-supplier" class="select-dark">
+                            <option value="">Tất cả nhà cung cấp</option>
+                        </select>
+
+                        <button id="btn-search-product" class="btn-tech btn-tech-filter">
+                            <i class="fas fa-filter"></i> Lọc
+                        </button>
+                        <button id="btn-reset-filter" class="btn-tech btn-tech-reset">
+                            <i class="fas fa-undo"></i> Reset
+                        </button>
+                    </div>
+
+                    <div class="filter-right-group">
+                        <button id="btn-export-products" class="btn-tech btn-tech-excel">
+                            <i class="fas fa-file-excel"></i> Xuất Excel
+                        </button>
+                        <button type="button" class="btn-tech" onclick="openCategoryManageModal()" style="background: rgba(168, 85, 247, 0.18); border: 1px solid rgba(168, 85, 247, 0.4); color: #c084fc; font-weight: 700;">
+                            <i class="fas fa-tags"></i> Quản Lý Danh Mục
+                        </button>
+                        <button class="btn-tech btn-tech-orange js-addProduct">
+                            <i class="fas fa-plus-circle"></i> Tạo Sản Phẩm Mới
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Bảng Dữ Liệu Dark Tech -->
+                <div class="table-responsive-dark">
+                    <table id="product-list" class="table-dark-tech"></table>
+                </div>
+
+                <!-- Phân Trang & Thông Tin Hiển Thị -->
+                <div class="table-footer-pagination">
+                    <div class="page-info-dark">
+                        Hiển thị <span id="showing-start" style="color: #fff; font-weight: 700;">0</span> - 
+                        <span id="showing-end" style="color: #fff; font-weight: 700;">0</span> trong tổng số 
+                        <strong id="total-products">0</strong> sản phẩm Keycap
+                    </div>
+
+                    <div class="pagination-container-dark" id="pagination-products"></div>
+                </div>
+            </div>
+        </main>
     </div>
 
-    <!-- Form thêm sản phẩm -->
+    <!-- 3. FLOATING QUICK DOCK PHÍA PHẢI -->
+    <div class="floating-action-dock">
+        <a href="dashboard.html" class="dock-btn" title="Dashboard">
+            <i class="fas fa-tachometer-alt"></i>
+        </a>
+        <a href="pos.html" class="dock-btn" title="Điểm bán lẻ POS">
+            <i class="fas fa-cash-register"></i>
+        </a>
+        <a href="orders.html" class="dock-btn" title="Quản lý Đơn hàng">
+            <i class="fas fa-receipt"></i>
+        </a>
+        <a href="products.html" class="dock-btn" style="background: var(--accent-orange); color: #fff;" title="Quản lý Sản phẩm">
+            <i class="fas fa-cubes"></i>
+        </a>
+        <a href="reports.html" class="dock-btn" title="Thống kê Báo cáo">
+            <i class="fas fa-chart-line"></i>
+        </a>
+        <a href="settings.html" class="dock-btn" title="Cấu hình Website & Logo">
+            <i class="fas fa-sliders-h"></i>
+        </a>
+        <a href="../../SO-DO-THIET-KE-PTTKHDT.md" target="_blank" class="dock-btn" title="Sơ đồ thiết kế PTTKHDT">
+            <i class="fas fa-project-diagram"></i>
+        </a>
+        <a href="../../index.html" target="_blank" class="dock-btn" title="Xem Cửa hàng Khách hàng">
+            <i class="fas fa-store"></i>
+        </a>
+    </div>
+
+    <!-- 4. MODAL THÊM SẢN PHẨM MỚI (DARK GLASSMORPHISM) -->
     <div class="AddProduct_Wrap">
         <div class="Add_Product_main">
-            <div class="Add_Product_header">Thêm sản phẩm</div>
-            <div class="reg-btn__close js-close-btn">
-                <i class="fas fa-times"></i>
+            <div class="modal-header-styled header-orange">
+                <div class="modal-header-title">
+                    <i class="fas fa-plus-circle" style="color: var(--accent-orange);"></i>
+                    <span>Thêm Mới Sản Phẩm Keycap Vào Kho</span>
+                </div>
+                <div class="btn-modal-close-icon js-close-btn" title="Đóng">
+                    <i class="fas fa-times"></i>
+                </div>
             </div>
 
-            <form id="addProduct" class="AP-container--item" method="get">
-                <div class="AP-body">
-                    <div class="add-group">
-                        <input id="js-item-name" type="text" class="input-field" placeholder="Nhập vào tên sản phẩm" required>
-                        <input id="js-item-price" type="number" class="input-field" placeholder="Nhập vào giá sản phẩm (VNĐ)" required>
-                        <select id="AddOption" class="input-field js-addOption" name="option"></select>
-                        <input type="file" id="js-item-image" class="input-field" accept="image/*" required>
-                        <button id="js-btn-product" type="button" class="add-btn">Thêm</button>
+            <form id="addProduct" class="modal-form-body">
+                <!-- Dropzone Tải Ảnh Sản Phẩm -->
+                <div class="upload-dropzone-hero">
+                    <div class="preview-box-square">
+                        <img id="add-prod-preview" src="../img/ShortCut_Icon.png" alt="Xem trước ảnh">
                     </div>
+                    <div class="upload-controls-col">
+                        <div style="display: flex; gap: 10px; align-items: center;">
+                            <button type="button" class="btn-tech btn-tech-orange" onclick="document.getElementById('add-prod-file').click()" style="padding: 6px 14px; font-size: 12.5px;">
+                                <i class="fas fa-upload"></i> Chọn Ảnh Từ Máy Tính
+                            </button>
+                            <input type="file" id="add-prod-file" accept="image/*" style="display: none;" onchange="handleProductFileUpload(this, 'add')">
+                            <span id="add-file-name" style="font-size: 12px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Chưa chọn tệp ảnh</span>
+                        </div>
+                        <input type="text" id="js-item-image-url" class="input-dark-control" placeholder="Hoặc dán URL/đường dẫn ảnh tại đây..." oninput="updateImagePreviewFromInput('add')" style="padding: 8px 12px; font-size: 12.5px;">
+                    </div>
+                </div>
+
+                <!-- Tên sản phẩm -->
+                <div class="form-field-group">
+                    <label>Tên Sản Phẩm Keycap <span style="color: #ef4444;">*</span></label>
+                    <input id="js-item-name" type="text" class="input-dark-control" placeholder="VD: Nebula Galaxy Resin Artisan Keycap..." required>
+                </div>
+
+                <!-- Danh mục & Nhà cung cấp -->
+                <div class="form-row-grid-2">
+                    <div class="form-field-group">
+                        <label>Danh Mục Phân Loại <span style="color: #ef4444;">*</span></label>
+                        <select id="AddOption" class="select-dark" style="width: 100%;"></select>
+                    </div>
+                    <div class="form-field-group">
+                        <label>Nhà Cung Cấp Đối Tác <span style="color: #ef4444;">*</span></label>
+                        <select id="AddSupplier" class="select-dark" style="width: 100%;"></select>
+                    </div>
+                </div>
+
+                <!-- Giá vốn, Giá bán, Tồn kho -->
+                <div class="form-row-grid-3">
+                    <div class="form-field-group">
+                        <label>Giá Vốn Nhập Kho (VNĐ) <span style="color: #ef4444;">*</span></label>
+                        <input id="js-item-cost" type="number" class="input-dark-control" placeholder="500000" required>
+                    </div>
+                    <div class="form-field-group">
+                        <label>Giá Bán Niêm Yết (VNĐ) <span style="color: #ef4444;">*</span></label>
+                        <input id="js-item-price" type="number" class="input-dark-control" placeholder="850000" required>
+                    </div>
+                    <div class="form-field-group">
+                        <label>Tồn Kho Ban Đầu <span style="color: #ef4444;">*</span></label>
+                        <input id="js-item-stock" type="number" class="input-dark-control" placeholder="10" value="10" required>
+                    </div>
+                </div>
+
+                <!-- Mô tả chi tiết -->
+                <div class="form-field-group">
+                    <label>Mô Tả Chi Tiết Sản Phẩm</label>
+                    <input id="js-item-desc" type="text" class="input-dark-control" placeholder="Chất liệu PBT, profile SA, hoạ tiết đúc thủ công tinh xảo...">
+                </div>
+
+                <!-- Action buttons -->
+                <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 10px; padding-top: 14px; border-top: 1px solid var(--border-color);">
+                    <button type="button" class="btn-tech btn-tech-reset js-close-btn">
+                        Hủy Bỏ
+                    </button>
+                    <button id="js-btn-product" type="button" class="btn-tech btn-tech-orange">
+                        <i class="fas fa-check-circle"></i> Lưu Sản Phẩm Keycap
+                    </button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- Form sửa sản phẩm -->
+    <!-- 5. MODAL CHỈNH SỬA SẢN PHẨM (DARK GLASSMORPHISM) -->
     <div class="ChangeProduct_Wrap">
         <div class="Add_Product_main">
-            <div class="Add_Product_header">Sửa sản phẩm</div>
-            <div class="reg-btn__close js-close-btn2">
-                <i class="fas fa-times"></i>
+            <div class="modal-header-styled header-blue">
+                <div class="modal-header-title">
+                    <i class="fas fa-edit" style="color: var(--accent-blue);"></i>
+                    <span>Chỉnh Sửa Thông Tin Sản Phẩm Keycap</span>
+                </div>
+                <div class="btn-modal-close-icon js-close-btn2" title="Đóng">
+                    <i class="fas fa-times"></i>
+                </div>
             </div>
 
-            <form id="changeProduct" class="AP-container--item" method="get">
-                <div class="AP-body">
-                    <div class="add-group">
-                        <input id="js-change-item-id" type="hidden">
-                        <input id="js-change-item-name" type="text" class="input-field" placeholder="Tên sản phẩm" required>
-                        <input id="js-change-item-price" type="number" class="input-field" placeholder="Giá sản phẩm (VNĐ)" required>
-                        <select id="AddOptionC" class="input-field" name="option"></select>
-                        <div style="margin: 10px 0;">
-                            <img id="current-image-preview" src="" alt="Ảnh hiện tại" style="max-width: 200px; display: none;">
+            <form id="editProductForm" class="modal-form-body">
+                <input type="hidden" id="edit-prod-id">
+
+                <!-- Dropzone Tải Ảnh Sản Phẩm -->
+                <div class="upload-dropzone-hero">
+                    <div class="preview-box-square">
+                        <img id="edit-prod-preview" src="../img/ShortCut_Icon.png" alt="Xem trước ảnh">
+                    </div>
+                    <div class="upload-controls-col">
+                        <div style="display: flex; gap: 10px; align-items: center;">
+                            <button type="button" class="btn-tech" onclick="document.getElementById('edit-prod-file').click()" style="background: rgba(59, 130, 246, 0.2); border: 1px solid rgba(59, 130, 246, 0.4); color: #60a5fa; padding: 6px 14px; font-size: 12.5px;">
+                                <i class="fas fa-upload"></i> Chọn Ảnh Mới Từ Máy
+                            </button>
+                            <input type="file" id="edit-prod-file" accept="image/*" style="display: none;" onchange="handleProductFileUpload(this, 'edit')">
+                            <span id="edit-file-name" style="font-size: 12px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Chưa chọn tệp ảnh mới</span>
                         </div>
-                        <input type="file" id="js-change-item-image" class="input-field" accept="image/*">
-                        <small style="color: #666;">Để trống nếu không muốn đổi ảnh</small>
-                        <button id="js-btn-change-product" type="button" class="add-btn">Cập nhật</button>
+                        <input id="edit-prod-img" type="text" class="input-dark-control" placeholder="Hoặc dán URL/đường dẫn ảnh tại đây..." oninput="updateImagePreviewFromInput('edit')" style="padding: 8px 12px; font-size: 12.5px;">
                     </div>
+                </div>
+
+                <!-- Tên sản phẩm -->
+                <div class="form-field-group">
+                    <label>Tên Sản Phẩm Keycap <span style="color: #ef4444;">*</span></label>
+                    <input id="edit-prod-name" type="text" class="input-dark-control" required>
+                </div>
+
+                <!-- Danh mục & Nhà cung cấp -->
+                <div class="form-row-grid-2">
+                    <div class="form-field-group">
+                        <label>Danh Mục Phân Loại <span style="color: #ef4444;">*</span></label>
+                        <select id="edit-prod-type" class="select-dark" style="width: 100%;"></select>
+                    </div>
+                    <div class="form-field-group">
+                        <label>Nhà Cung Cấp Đối Tác <span style="color: #ef4444;">*</span></label>
+                        <select id="edit-prod-supplier" class="select-dark" style="width: 100%;"></select>
+                    </div>
+                </div>
+
+                <!-- Giá vốn, Giá bán, Tồn kho -->
+                <div class="form-row-grid-3">
+                    <div class="form-field-group">
+                        <label>Giá Vốn Nhập Kho (VNĐ) <span style="color: #ef4444;">*</span></label>
+                        <input id="edit-prod-cost" type="number" class="input-dark-control" required>
+                    </div>
+                    <div class="form-field-group">
+                        <label>Giá Bán Niêm Yết (VNĐ) <span style="color: #ef4444;">*</span></label>
+                        <input id="edit-prod-price" type="number" class="input-dark-control" required>
+                    </div>
+                    <div class="form-field-group">
+                        <label>Số Lượng Tồn Kho <span style="color: #ef4444;">*</span></label>
+                        <input id="edit-prod-stock" type="number" class="input-dark-control" required>
+                    </div>
+                </div>
+
+                <!-- Action buttons -->
+                <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 10px; padding-top: 14px; border-top: 1px solid var(--border-color);">
+                    <button type="button" class="btn-tech btn-tech-reset js-close-btn2">
+                        Hủy Bỏ
+                    </button>
+                    <button id="btn-save-edit-product" type="button" class="btn-tech" style="background: linear-gradient(135deg, #2563eb, #1d4ed8); color: #fff; box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);">
+                        <i class="fas fa-save"></i> Cập Nhật Sản Phẩm
+                    </button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- Form thêm thể loại -->
-    <div class="AddTypeProduct_Wrap">
-        <div class="Add_Product_main">
-            <div class="Add_Product_header">Thêm thể loại sản phẩm</div>
-            <div class="reg-btn__close js-close-btn4">
-                <i class="fas fa-times"></i>
+    <!-- MODAL CẬP NHẬT TỒN KHO NHANH (QUICK STOCK MODAL) -->
+    <div id="quickStockModal" class="modal-backdrop-dark" style="display: none; position: fixed; inset: 0; background: rgba(10, 12, 20, 0.85); backdrop-filter: blur(8px); z-index: 9999; justify-content: center; align-items: center; padding: 20px;">
+        <div style="background: #151824; border: 1px solid #2b3147; border-radius: 12px; width: 100%; max-width: 480px; box-shadow: 0 20px 40px rgba(0,0,0,0.6); overflow: hidden;">
+            <div style="padding: 16px 20px; border-bottom: 1px solid #2b3147; display: flex; justify-content: space-between; align-items: center; background: #1c2030;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <i class="fas fa-boxes-stacked" style="color: #34d399; font-size: 18px;"></i>
+                    <h3 style="font-size: 16px; font-weight: 800; color: #fff; margin: 0;">ĐIỀU CHỈNH TỒN KHO KEYCAP</h3>
+                </div>
+                <button type="button" onclick="closeQuickStockModal()" style="background: none; border: none; color: #94a3b8; font-size: 18px; cursor: pointer;">
+                    <i class="fas fa-times"></i>
+                </button>
             </div>
-            <form id="addTypeProduct" class="AP-container--item" method="get">
-                <div class="AP-body">
-                    <div class="add-group">
-                        <input id="js-Type--id" type="text" class="input-field" placeholder="Nhập ID thể loại (VD: Gaming)" required>
-                        <input id="js-Type--name" type="text" class="input-field" placeholder="Nhập tên thể loại (VD: Gaming Keycap)" required>
-                        <button id="js-btn-product--typpe" type="button" class="add-btn">Thêm</button>
+            
+            <div style="padding: 20px; display: flex; flex-direction: column; gap: 16px;">
+                <div style="display: flex; gap: 14px; align-items: center; background: #10121a; border: 1px solid #232738; padding: 12px; border-radius: 8px;">
+                    <img id="stock-modal-img" src="../img/ShortCut_Icon.png" style="width: 54px; height: 54px; object-fit: cover; border-radius: 6px; border: 1px solid #2b3147;">
+                    <div>
+                        <div style="font-size: 14px; font-weight: 700; color: #fff;" id="stock-modal-name">Tên sản phẩm</div>
+                        <div style="font-size: 12px; color: #94a3b8; margin-top: 2px;">
+                            Mã SP: <span id="stock-modal-id" style="color: #60a5fa; font-weight: 700;">#001</span> &bull; Hiện tại: <strong id="stock-modal-current" style="color: #34d399;">12 nút</strong>
+                        </div>
                     </div>
                 </div>
-            </form>
-        </div>
-    </div>
 
-    <!-- Form sửa thể loại -->
-    <div class="EditTypeProduct_Wrap">
-        <div class="Add_Product_main">
-            <div class="Add_Product_header">Sửa thể loại sản phẩm</div>
-            <div class="reg-btn__close js-close-btn-edit">
-                <i class="fas fa-times"></i>
+                <div>
+                    <label style="display: block; font-size: 12px; font-weight: 700; color: #cbd5e1; margin-bottom: 6px;">
+                        Số lượng tồn kho mới:
+                    </label>
+                    <input type="number" id="stock-modal-input" min="0" class="input-dark" style="width: 100%; height: 42px; font-size: 16px; font-weight: 800; text-align: center; color: #34d399; background: #0c0d14; border: 1px solid #3b82f6;">
+                </div>
+
+                <div>
+                    <div style="font-size: 11.5px; color: #94a3b8; margin-bottom: 6px;">Nút điều chỉnh nhanh:</div>
+                    <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                        <button type="button" class="btn-tech btn-tech-reset" style="padding: 6px 10px; font-size: 12px;" onclick="adjustStockModal(-10)">-10</button>
+                        <button type="button" class="btn-tech btn-tech-reset" style="padding: 6px 10px; font-size: 12px;" onclick="adjustStockModal(-5)">-5</button>
+                        <button type="button" class="btn-tech btn-tech-reset" style="padding: 6px 10px; font-size: 12px;" onclick="adjustStockModal(-1)">-1</button>
+                        <button type="button" class="btn-tech btn-tech-reset" style="padding: 6px 10px; font-size: 12px;" onclick="adjustStockModal(+1)">+1</button>
+                        <button type="button" class="btn-tech btn-tech-reset" style="padding: 6px 10px; font-size: 12px;" onclick="adjustStockModal(+5)">+5</button>
+                        <button type="button" class="btn-tech btn-tech-reset" style="padding: 6px 10px; font-size: 12px;" onclick="adjustStockModal(+10)">+10</button>
+                        <button type="button" class="btn-tech btn-tech-reset" style="padding: 6px 10px; font-size: 12px;" onclick="adjustStockModal(+50)">+50</button>
+                    </div>
+                </div>
             </div>
-            <form id="editTypeProduct" class="AP-container--item" method="get">
-                <div class="AP-body">
-                    <div class="add-group">
-                        <select id="js-edit-Type--id" class="input-field"></select>
-                        <input id="js-edit-Type--name" type="text" class="input-field" placeholder="Nhập tên mới" required>
-                        <button id="js-btn-product--typpe-edit" type="button" class="add-btn">Cập nhật</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
 
-    <!-- Form xóa thể loại -->
-    <div class="DelTypeProduct_Wrap">
-        <div class="Add_Product_main">
-            <div class="Add_Product_header">Xóa thể loại sản phẩm</div>
-            <div class="reg-btn__close js-close-btn-del">
-                <i class="fas fa-times"></i>
+            <div style="padding: 14px 20px; border-top: 1px solid #2b3147; background: #1c2030; display: flex; justify-content: flex-end; gap: 10px;">
+                <button type="button" class="btn-tech btn-tech-reset" onclick="closeQuickStockModal()">
+                    Hủy Bỏ
+                </button>
+                <button type="button" class="btn-tech" style="background: linear-gradient(135deg, #10b981, #059669); color: #fff; font-weight: 700; box-shadow: 0 4px 14px rgba(16,185,129,0.35);" onclick="saveQuickStockModal()">
+                    <i class="fas fa-check"></i> Xác Nhận Lưu Tồn Kho
+                </button>
             </div>
-            <form id="delTypeProduct" class="AP-container--item" method="get">
-                <div class="AP-body">
-                    <div class="add-group">
-                        <select id="js-delete-Type--id" class="input-field"></select>
-                        <button id="js-btn-product--typpe-del" type="button" class="add-btn">Xóa</button>
-                    </div>
-                </div>
-            </form>
         </div>
     </div>
 
+    <!-- MODAL QUẢN LÝ DANH MỤC KEYCAP (THÊM, SỬA, XÓA DANH MỤC) -->
+    <div id="categoryManageModal" class="modal-backdrop-dark" style="display: none; position: fixed; inset: 0; background: rgba(10, 12, 20, 0.85); backdrop-filter: blur(8px); z-index: 9999; justify-content: center; align-items: center; padding: 20px;">
+        <div style="background: #151824; border: 1px solid #2b3147; border-radius: 12px; width: 100%; max-width: 760px; max-height: 90vh; display: flex; flex-direction: column; box-shadow: 0 20px 40px rgba(0,0,0,0.6); overflow: hidden;">
+            <div style="padding: 16px 20px; border-bottom: 1px solid #2b3147; display: flex; justify-content: space-between; align-items: center; background: #1c2030;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <i class="fas fa-tags" style="color: #c084fc; font-size: 18px;"></i>
+                    <h3 style="font-size: 16px; font-weight: 800; color: #fff; margin: 0;">QUẢN LÝ DANH MỤC SẢN PHẨM KEYCAP</h3>
+                </div>
+                <button type="button" onclick="closeCategoryManageModal()" style="background: none; border: none; color: #94a3b8; font-size: 18px; cursor: pointer;">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div style="padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 20px;">
+                <!-- Form Thêm / Sửa Danh Mục -->
+                <div style="background: #10121a; border: 1px solid #232738; border-radius: 8px; padding: 16px;">
+                    <h4 id="cat-form-title" style="font-size: 14px; font-weight: 700; color: #60a5fa; margin: 0 0 12px 0;">
+                        <i class="fas fa-plus-circle"></i> Thêm Danh Mục Keycap Mới
+                    </h4>
+                    <input type="hidden" id="cat-edit-mode" value="add">
+                    <input type="hidden" id="cat-edit-original-id" value="">
+
+                    <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 12px; margin-bottom: 12px;">
+                        <div>
+                            <label style="display: block; font-size: 12px; font-weight: 700; color: #94a3b8; margin-bottom: 4px;">
+                                Mã danh mục <span style="color: #ef4444;">*</span>
+                            </label>
+                            <input type="text" id="cat-input-id" class="input-dark" placeholder="VD: Custom, Artisan..." style="height: 38px; font-size: 13px;">
+                            <small id="error-cat-input-id" style="color: #ef4444; font-size: 11px; display: none; margin-top: 4px;"></small>
+                        </div>
+                        <div>
+                            <label style="display: block; font-size: 12px; font-weight: 700; color: #94a3b8; margin-bottom: 4px;">
+                                Tên hiển thị danh mục <span style="color: #ef4444;">*</span>
+                            </label>
+                            <input type="text" id="cat-input-name" class="input-dark" placeholder="VD: Keycap Custom Độc Bản..." style="height: 38px; font-size: 13px;">
+                            <small id="error-cat-input-name" style="color: #ef4444; font-size: 11px; display: none; margin-top: 4px;"></small>
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom: 14px;">
+                        <label style="display: block; font-size: 12px; font-weight: 700; color: #94a3b8; margin-bottom: 4px;">
+                            Mô tả chi tiết danh mục
+                        </label>
+                        <input type="text" id="cat-input-desc" class="input-dark" placeholder="VD: Các mẫu keycap thiết kế độc bản theo yêu cầu..." style="height: 38px; font-size: 13px;">
+                    </div>
+
+                    <div style="display: flex; justify-content: flex-end; gap: 10px;">
+                        <button type="button" id="btn-cancel-edit-cat" onclick="resetCategoryForm()" class="btn-tech btn-tech-reset" style="display: none;">
+                            Hủy Sửa
+                        </button>
+                        <button type="button" id="btn-save-category" onclick="saveCategory()" class="btn-tech btn-tech-blue" style="font-weight: 700;">
+                            <i class="fas fa-save"></i> <span id="btn-save-cat-text">Lưu Danh Mục</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Bảng Danh Sách Danh Mục Hiện Tại -->
+                <div>
+                    <h4 style="font-size: 14px; font-weight: 700; color: #ffffff; margin: 0 0 10px 0; display: flex; justify-content: space-between; align-items: center;">
+                        <span>Danh Sách Danh Mục Hiện Có</span>
+                        <span id="cat-count-badge" style="font-size: 12px; color: #c084fc; background: rgba(168, 85, 247, 0.15); padding: 3px 8px; border-radius: 4px;">0 danh mục</span>
+                    </h4>
+                    <div style="border: 1px solid #232738; border-radius: 8px; overflow: hidden;">
+                        <table style="width: 100%; border-collapse: collapse; font-size: 13px; text-align: left;">
+                            <thead style="background: #11141e; border-bottom: 1px solid #232738; color: #94a3b8;">
+                                <tr>
+                                    <th style="padding: 10px 14px; width: 120px;">Mã DM</th>
+                                    <th style="padding: 10px 14px;">Tên Danh Mục</th>
+                                    <th style="padding: 10px 14px; text-align: center; width: 110px;">Số Sản Phẩm</th>
+                                    <th style="padding: 10px 14px; text-align: right; width: 140px;">Thao Tác</th>
+                                </tr>
+                            </thead>
+                            <tbody id="category-table-body" style="background: #151822; color: #fff;">
+                                <!-- Render động danh sách danh mục -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="padding: 12px 20px; border-top: 1px solid #2b3147; background: #1c2030; display: flex; justify-content: flex-end;">
+                <button type="button" class="btn-tech btn-tech-reset" onclick="closeCategoryManageModal()">
+                    Đóng
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <script src="../scripts/keycap-dataset-100.js"></script>
+    <script src="../scripts/modules/GearsApp.js"></script>
     <script src="./script/admin-common.js"></script>
     <script src="./script/products-admin.js"></script>
 </body>

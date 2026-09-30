@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cấu Hình Kết Nối CSDL MySQL (Chuẩn Navicat) - GEARS Keycap Shop</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700;800&family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="../font/fontawesome-free-5.15.4-web/css/all.min.css">
+    <link rel="shortcut icon" href="../img/ShortCut_Icon.png">
+    <!-- Dark Obsidian Theme -->
+    <link rel="stylesheet" href="./css/admin-obsidian.css">
+    <style>
+        .navicat-card {
+            background: #141724;
+            border: 1px solid #283049;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            margin-bottom: 24px;
+        }
+        .navicat-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid #23283d;
+        }
+        .navicat-title {
+            font-size: 16px;
+            font-weight: 800;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .navicat-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+        }
+        .form-group-db {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .form-group-db label {
+            font-size: 12.5px;
+            font-weight: 700;
+            color: #cbd5e1;
+        }
+        .form-group-db small {
+            font-size: 11px;
+            color: #94a3b8;
+        }
+        .env-code-box {
+            background: #0d0f17;
+            border: 1px solid #1e2436;
+            border-radius: 8px;
+            padding: 14px;
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 12.5px;
+            color: #38bdf8;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            user-select: all;
+        }
+        .navicat-alert {
+            padding: 14px 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 13px;
+            display: none;
+            line-height: 1.5;
+        }
+        .navicat-alert-success {
+            background: rgba(16, 185, 129, 0.15);
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            color: #34d399;
+        }
+        .navicat-alert-error {
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.4);
+            color: #f87171;
+        }
+        .navicat-tables-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 14px;
+            margin-top: 14px;
+        }
+        .navicat-table-item {
+            background: #0f121d;
+            border: 1px solid #23293e;
+            border-radius: 8px;
+            padding: 14px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.2s;
+        }
+        .navicat-table-item:hover {
+            border-color: #3b82f6;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 1. SIDEBAR PHÍA TRÁI (DARK ERP STYLE) -->
+    <aside class="admin-sidebar">
+        <!-- Brand Header -->
+        <div class="sidebar-brand">
+            <div class="sidebar-brand-title">
+                <i class="fas fa-keyboard"></i>
+                <span>QUẢN TRỊ HỆ THỐNG</span>
+            </div>
+            <span class="version-badge">v2.6</span>
+            <button class="sidebar-toggle-btn" title="Thu gọn / Mở rộng sidebar" type="button">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+
+        <!-- Quick Actions (Đưa lên trên ngay sau logo) -->
+        <div class="sidebar-quick-actions" style="padding:8px 12px;display:flex;gap:6px;border-bottom:1px solid var(--border-color,#232738);">
+            <a href="../../index.html" target="_blank" class="btn-sidebar-store" style="flex:1;padding:7px 10px;font-size:12px;gap:6px;" title="Xem cửa hàng khách hàng">
+                <i class="fas fa-store"></i> <span class="sidebar-link-text">Web KH</span>
+            </a>
+            <button type="button" class="btn-sidebar-logout" style="flex:1;padding:7px 10px;font-size:12px;gap:6px;" onclick="AdminCommon.logoutAdmin()" title="Đăng xuất khỏi hệ thống">
+                <i class="fas fa-sign-out-alt"></i> <span class="sidebar-link-text">Đăng Xuất</span>
+            </button>
+        </div>
+
+        <!-- Navigation Menu -->
+        <div class="sidebar-nav">
+            <!-- Nhóm 1: Nghiệp Vụ Bán Hàng -->
+            <div class="nav-section-title">
+                <i class="fas fa-bolt"></i> Nghiệp Vụ Bán Hàng
+            </div>
+            <ul class="sidebar-menu">
+                <li class="sidebar-item">
+                    <a href="dashboard.html" class="sidebar-link">
+                        <div class="sidebar-link-left">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span class="sidebar-link-text">Tổng Quan Dashboard</span>
+                        </div>
+                        <span class="sidebar-badge badge-live">Live</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="pos.html" class="sidebar-link">
+                        <div class="sidebar-link-left">
+                            <i class="fas fa-cash-register"></i>
+                            <span class="sidebar-link-text">Điểm Bán Lẻ (POS)</span>
+                        </div>
+                        <span class="sidebar-badge badge-hot">HOT</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="orders.html" class="sidebar-link">
+                        <div class="sidebar-link-left">
+                            <i class="fas fa-receipt"></i>
+                            <span class="sidebar-link-text">Quản Lý Đơn Hàng</span>
+                        </div>
+                        <span class="sidebar-badge badge-new" id="sidebar-order-count">5 Đơn</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="products.html" class="sidebar-link">
+                        <div class="sidebar-link-left">
+                            <i class="fas fa-cubes"></i>
+                            <span class="sidebar-link-text">Sản Phẩm Keycap</span>
+                        </div>
+                        <span class="sidebar-badge badge-count" id="sidebar-product-count">100+</span>
+                    </a>
+                </li>
+            </ul>
+
+            <!-- Nhóm 2: Đối Tác & Nhân Sự -->
+            <div class="nav-section-title">
+                <i class="fas fa-users-cog"></i> Đối Tác &amp; Nhân Sự
+            </div>
+            <ul class="sidebar-menu">
+                <li class="sidebar-item">
+                    <a href="suppliers.html" class="sidebar-link">
+                        <div class="sidebar-link-left">
+                            <i class="fas fa-truck-loading"></i>
+                            <span class="sidebar-link-text">Nhà Cung Cấp</span>
+                        </div>
+                        <span class="sidebar-badge badge-tech">Partner</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="customers.html" class="sidebar-link">
+                        <div class="sidebar-link-left">
+                            <i class="fas fa-users"></i>
+                            <span class="sidebar-link-text">Khách Hàng</span>
+                        </div>
+                        <span class="sidebar-badge badge-tech">CRM</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="employees.html" class="sidebar-link">
+                        <div class="sidebar-link-left">
+                            <i class="fas fa-user-shield"></i>
+                            <span class="sidebar-link-text">Nhân Viên &amp; Phân Quyền</span>
+                        </div>
+                        <span class="sidebar-badge badge-tech">Auth</span>
+                    </a>
+                </li>
+            </ul>
+
+            <!-- Nhóm 3: Báo Cáo & Cấu Hình -->
+            <div class="nav-section-title">
+                <i class="fas fa-sliders-h"></i> Báo Cáo &amp; Cấu Hình
+            </div>
+            <ul class="sidebar-menu">
+                <li class="sidebar-item">
+                    <a href="reports.html" class="sidebar-link">
+                        <div class="sidebar-link-left">
+                            <i class="fas fa-chart-line"></i>
+                            <span class="sidebar-link-text">Thống Kê Báo Cáo</span>
+                        </div>
+                        <span class="sidebar-badge badge-tech">Chart</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="database.html" class="sidebar-link active">
+                        <div class="sidebar-link-left">
+                            <i class="fas fa-database" style="color: #10b981;"></i>
+                            <span class="sidebar-link-text">Cấu Hình CSDL (Navicat)</span>
+                        </div>
+                        <span class="sidebar-badge badge-tech" style="background: rgba(16,185,129,0.25); color: #34d399;">.env</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="settings.html" class="sidebar-link">
+                        <div class="sidebar-link-left">
+                            <i class="fas fa-cog"></i>
+                            <span class="sidebar-link-text">Cấu Hình Website</span>
+                        </div>
+                        <span class="sidebar-badge badge-new">Logo</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="/so-do-canvas" target="_blank" class="sidebar-link">
+                        <div class="sidebar-link-left">
+                            <i class="fas fa-project-diagram"></i>
+                            <span class="sidebar-link-text">Sơ Đồ PTTKHDT</span>
+                        </div>
+                        <span class="sidebar-badge badge-tech">UML</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </aside>
+
+    <!-- 2. MAIN WRAPPER -->
+    <div class="admin-main-wrapper">
+        <header class="admin-topbar">
+            <div class="topbar-breadcrumbs">
+                <span>Hệ Thống</span>
+                <i class="fas fa-chevron-right" style="font-size: 10px; color: var(--text-muted);"></i>
+                <span>Cơ Sở Dữ Liệu</span>
+                <i class="fas fa-chevron-right" style="font-size: 10px; color: var(--text-muted);"></i>
+                <strong>Navicat Connection Manager (.env)</strong>
+            </div>
+
+            <div class="topbar-actions">
+                <div id="topbar-db-badge" class="status-pill" style="cursor: pointer;" onclick="refreshDbStatus()" title="Nhấn để kiểm tra lại kết nối MySQL">
+                    <span class="status-dot" id="db-status-dot"></span>
+                    <span id="db-status-text">Đang kết nối...</span>
+                </div>
+
+                <div class="user-profile-badge" onclick="AdminCommon.openAdminChangePasswordModal()" title="Nhấn để xem thông tin và đổi mật khẩu">
+                    <div class="user-avatar-mini" id="admin-user-avatar">AD</div>
+                    <div>
+                        <div style="font-size: 12.5px; font-weight: 700; color: #fff;" id="admin-user-name">Nguyễn Công Danh</div>
+                        <div style="font-size: 11px; color: var(--text-muted);">Quản Trị Viên (SGU)</div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="admin-content-body">
+            <!-- BANNER TIÊU ĐỀ TRANG -->
+            <div class="page-title-box" style="margin-bottom: 24px;">
+                <div class="page-title-left">
+                    <h1 class="page-title" style="font-size: 22px; font-weight: 800; color: #ffffff; display: flex; align-items: center; gap: 10px; margin: 0;">
+                        <i class="fas fa-database" style="color: #10b981;"></i>
+                        QUẢN LÝ KẾT NỐI CSDL MYSQL (NAVICAT CONNECTION)
+                    </h1>
+                    <p class="page-subtitle" style="font-size: 13px; color: var(--text-muted); margin: 6px 0 0 0;">
+                        Hỗ trợ kiểm tra Test Connection trước khi lưu, tự động cập nhật file cấu hình <code>.env</code> và đồng bộ dữ liệu vào MySQL XAMPP.
+                    </p>
+                </div>
+            </div>
+
+            <!-- ALERT THÔNG BÁO TEST KẾT NỐI -->
+            <div id="navicat-alert" class="navicat-alert"></div>
+
+            <!-- CARD 1: FORM CẤU HÌNH NAVICAT -->
+            <div class="navicat-card">
+                <div class="navicat-header">
+                    <div class="navicat-title">
+                        <i class="fas fa-network-wired" style="color: #3b82f6;"></i>
+                        <span>Cấu Hình Thông Số Kết Nối MySQL (Chuẩn Navicat Connection)</span>
+                    </div>
+                    <div style="font-size: 12px; color: #94a3b8; display: flex; align-items: center; gap: 6px;">
+                        <i class="fas fa-file-code" style="color: #38bdf8;"></i>
+                        <span>Lưu trữ: <strong>.env</strong></span>
+                    </div>
+                </div>
+
+                <form id="db-config-form" onsubmit="event.preventDefault(); handleSaveConfig();">
+                    <div class="navicat-grid">
+                        <div class="form-group-db">
+                            <label for="cfg-host">Host Name / IP Address: <span style="color: #ef4444;">*</span></label>
+                            <input type="text" id="cfg-host" class="input-dark" value="127.0.0.1" placeholder="127.0.0.1 hoặc localhost" required oninput="updateEnvPreview()">
+                            <small>Địa chỉ máy chủ cơ sở dữ liệu MySQL (Mặc định: 127.0.0.1)</small>
+                        </div>
+
+                        <div class="form-group-db">
+                            <label for="cfg-port">Port: <span style="color: #ef4444;">*</span></label>
+                            <input type="number" id="cfg-port" class="input-dark" value="3306" placeholder="3306" required oninput="updateEnvPreview()">
+                            <small>Cổng dịch vụ MySQL XAMPP (Mặc định: 3306)</small>
+                        </div>
+
+                        <div class="form-group-db">
+                            <label for="cfg-user">User Name: <span style="color: #ef4444;">*</span></label>
+                            <input type="text" id="cfg-user" class="input-dark" value="root" placeholder="root" required oninput="updateEnvPreview()">
+                            <small>Tài khoản quản trị CSDL (XAMPP mặc định là: root)</small>
+                        </div>
+
+                        <div class="form-group-db">
+                            <label for="cfg-pass">Password:</label>
+                            <div style="position: relative;">
+                                <input type="password" id="cfg-pass" class="input-dark" value="" placeholder="Để trống nếu XAMPP chưa đặt mật khẩu" oninput="updateEnvPreview()" style="padding-right: 36px; width: 100%;">
+                                <span onclick="togglePassVisibility()" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #94a3b8; font-size: 13px;">
+                                    <i id="eye-icon" class="fas fa-eye"></i>
+                                </span>
+                            </div>
+                            <small>Mật khẩu MySQL (XAMPP mặc định để trống)</small>
+                        </div>
+
+                        <div class="form-group-db" style="grid-column: span 2;">
+                            <label for="cfg-db">Database Name: <span style="color: #ef4444;">*</span></label>
+                            <input type="text" id="cfg-db" class="input-dark" value="gears_keycap_shop" placeholder="gears_keycap_shop" required oninput="updateEnvPreview()">
+                            <small>Tên cơ sở dữ liệu đồ án (Nếu chưa có, hệ thống sẽ tự động tạo mới qua CREATE DATABASE)</small>
+                        </div>
+                    </div>
+
+                    <!-- KHUNG PREVIEW NỘI DUNG FILE .ENV -->
+                    <div style="margin-top: 20px;">
+                        <label style="font-size: 12px; font-weight: 700; color: #cbd5e1; margin-bottom: 6px; display: block;">
+                            <i class="fas fa-file-alt" style="color: #f59e0b;"></i> Bản Xem Trước Nội Dung Ghi Vào File .env:
+                        </label>
+                        <div class="env-code-box" id="env-preview-content"># GEARS Keycap Shop - Cau hinh Co So Du Lieu
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_USER=root
+DB_PASSWORD=
+DB_NAME=gears_keycap_shop
+SERVER_PORT=3333</div>
+                    </div>
+
+                    <!-- HÀNG NÚT THAO TÁC THEO CHUẨN NAVICAT -->
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 24px; padding-top: 18px; border-top: 1px solid #23283d; flex-wrap: wrap; gap: 12px;">
+                        <div>
+                            <button type="button" class="btn-tech btn-tech-excel" style="background: #0284c7; color: #fff; font-weight: 700;" onclick="handleTestConnection()">
+                                <i class="fas fa-plug"></i> Test Connection (Kiểm Tra Kết Nối)
+                            </button>
+                        </div>
+
+                        <div style="display: flex; gap: 10px;">
+                            <button type="button" class="btn-tech btn-tech-reset" onclick="handleImportSql()" title="Nạp lại toàn bộ 8 bảng và 100 sản phẩm từ database_keycap_shop.sql">
+                                <i class="fas fa-file-import"></i> Nạp database_keycap_shop.sql
+                            </button>
+                            <button type="submit" class="btn-tech btn-tech-blue" style="background: #10b981; color: #fff; font-weight: 800;">
+                                <i class="fas fa-save"></i> Lưu Cấu Hình (.env) &amp; Kết Nối
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- CARD 2: DATABASE SCHEMA & THỐNG KÊ BẢNG DỮ LIỆU -->
+            <div class="navicat-card">
+                <div class="navicat-header">
+                    <div class="navicat-title">
+                        <i class="fas fa-database" style="color: #10b981;"></i>
+                        <span>Cơ Sở Dữ Liệu MySQL Hiện Tại: <strong id="schema-db-name" style="color: #38bdf8;">gears_keycap_shop</strong></span>
+                    </div>
+                    <button type="button" class="btn-tech btn-tech-reset" style="padding: 4px 12px; font-size: 12px;" onclick="refreshDbStatus()">
+                        <i class="fas fa-sync-alt"></i> Làm Mới
+                    </button>
+                </div>
+
+                <div style="font-size: 13px; color: #94a3b8;">
+                    Hệ thống tự động đồng bộ hai chiều giữa bộ nhớ đệm Frontend và MySQL XAMPP trên máy tính:
+                </div>
+
+                <div class="navicat-tables-grid">
+                    <div class="navicat-table-item" onclick="openTableDataModal('SanPham')" style="cursor: pointer;" title="Bấm để xem dữ liệu bảng SanPham">
+                        <div>
+                            <div style="font-size: 13px; font-weight: 700; color: #fff;">
+                                <i class="fas fa-table" style="color: #3b82f6;"></i> SanPham
+                                <i class="fas fa-external-link-alt" style="font-size: 10px; color: #64748b; margin-left: 6px;"></i>
+                            </div>
+                            <div style="font-size: 11px; color: #94a3b8; margin-top: 2px;">Keycap các dòng</div>
+                        </div>
+                        <span class="sidebar-badge badge-tech" id="cnt-products" style="background: #1e3a8a; color: #93c5fd; font-size: 12px; font-weight: 700;">100</span>
+                    </div>
+
+                    <div class="navicat-table-item" onclick="openTableDataModal('DonHang')" style="cursor: pointer;" title="Bấm để xem dữ liệu bảng DonHang">
+                        <div>
+                            <div style="font-size: 13px; font-weight: 700; color: #fff;">
+                                <i class="fas fa-table" style="color: #10b981;"></i> DonHang
+                                <i class="fas fa-external-link-alt" style="font-size: 10px; color: #64748b; margin-left: 6px;"></i>
+                            </div>
+                            <div style="font-size: 11px; color: #94a3b8; margin-top: 2px;">Đơn bán lẻ &amp; Online</div>
+                        </div>
+                        <span class="sidebar-badge badge-tech" id="cnt-orders" style="background: #064e3b; color: #6ee7b7; font-size: 12px; font-weight: 700;">4</span>
+                    </div>
+
+                    <div class="navicat-table-item" onclick="openTableDataModal('KhachHang')" style="cursor: pointer;" title="Bấm để xem dữ liệu bảng KhachHang">
+                        <div>
+                            <div style="font-size: 13px; font-weight: 700; color: #fff;">
+                                <i class="fas fa-table" style="color: #f59e0b;"></i> KhachHang
+                                <i class="fas fa-external-link-alt" style="font-size: 10px; color: #64748b; margin-left: 6px;"></i>
+                            </div>
+                            <div style="font-size: 11px; color: #94a3b8; margin-top: 2px;">Khách hàng thân thiết</div>
+                        </div>
+                        <span class="sidebar-badge badge-tech" id="cnt-customers" style="background: #78350f; color: #fde68a; font-size: 12px; font-weight: 700;">4</span>
+                    </div>
+
+                    <div class="navicat-table-item" onclick="openTableDataModal('NhanVien')" style="cursor: pointer;" title="Bấm để xem dữ liệu bảng NhanVien">
+                        <div>
+                            <div style="font-size: 13px; font-weight: 700; color: #fff;">
+                                <i class="fas fa-table" style="color: #8b5cf6;"></i> NhanVien
+                                <i class="fas fa-external-link-alt" style="font-size: 10px; color: #64748b; margin-left: 6px;"></i>
+                            </div>
+                            <div style="font-size: 11px; color: #94a3b8; margin-top: 2px;">Nhân sự ban quản lý</div>
+                        </div>
+                        <span class="sidebar-badge badge-tech" id="cnt-employees" style="background: #4c1d95; color: #ddd6fe; font-size: 12px; font-weight: 700;">4</span>
+                    </div>
+
+                    <div class="navicat-table-item" onclick="openTableDataModal('NhaCungCap')" style="cursor: pointer;" title="Bấm để xem dữ liệu bảng NhaCungCap">
+                        <div>
+                            <div style="font-size: 13px; font-weight: 700; color: #fff;">
+                                <i class="fas fa-table" style="color: #ec4899;"></i> NhaCungCap
+                                <i class="fas fa-external-link-alt" style="font-size: 10px; color: #64748b; margin-left: 6px;"></i>
+                            </div>
+                            <div style="font-size: 11px; color: #94a3b8; margin-top: 2px;">Đối tác sản xuất</div>
+                        </div>
+                        <span class="sidebar-badge badge-tech" id="cnt-suppliers" style="background: #831843; color: #fbcfe8; font-size: 12px; font-weight: 700;">4</span>
+                    </div>
+
+                    <div class="navicat-table-item" onclick="openTableDataModal('DangNhap')" style="cursor: pointer;" title="Bấm để xem dữ liệu bảng DangNhap">
+                        <div>
+                            <div style="font-size: 13px; font-weight: 700; color: #fff;">
+                                <i class="fas fa-table" style="color: #06b6d4;"></i> DangNhap
+                                <i class="fas fa-external-link-alt" style="font-size: 10px; color: #64748b; margin-left: 6px;"></i>
+                            </div>
+                            <div style="font-size: 11px; color: #94a3b8; margin-top: 2px;">Tài khoản &amp; Quyền</div>
+                        </div>
+                        <span class="sidebar-badge badge-tech" style="background: #164e63; color: #a5f3fc; font-size: 12px; font-weight: 700;">4</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. MODAL XEM CHI TIẾT DỮ LIỆU BẢNG DATABASE -->
+    <div id="dbTableDetailModal" class="modal-backdrop-dark" style="display: none; position: fixed; inset: 0; background: rgba(10, 12, 20, 0.85); backdrop-filter: blur(8px); z-index: 9999; justify-content: center; align-items: center; padding: 20px;">
+        <div class="modal-box-dark" style="max-width: 1050px; width: 100%; max-height: 88vh; display: flex; flex-direction: column; background: #151824; border: 1px solid #2b3147; border-radius: 12px; box-shadow: 0 20px 40px rgba(0,0,0,0.6); overflow: hidden;">
+            <div class="modal-header-styled" style="padding: 16px 20px; background: linear-gradient(90deg, rgba(59, 130, 246, 0.2), rgba(16, 185, 129, 0.1)); border-bottom: 1px solid rgba(59, 130, 246, 0.3); display: flex; justify-content: space-between; align-items: center;">
+                <div class="modal-header-title" style="display: flex; align-items: center; gap: 10px; font-size: 15px; font-weight: 800; color: #fff;">
+                    <i class="fas fa-table" style="color: #38bdf8;"></i>
+                    <span>Chi Tiết Bảng CSDL: <strong id="modal-table-name" style="color: #38bdf8;">SanPham</strong></span>
+                    <span id="modal-table-source" class="sidebar-badge badge-tech" style="background: rgba(16, 185, 129, 0.2); color: #34d399; font-size: 11px; margin-left: 8px;">MySQL Live</span>
+                </div>
+                <div class="btn-modal-close-icon" onclick="closeTableDataModal()" title="Đóng" style="cursor: pointer; color: #94a3b8; font-size: 18px;">
+                    <i class="fas fa-times"></i>
+                </div>
+            </div>
+
+            <div style="padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #23283d; background: #11141e; gap: 12px; flex-wrap: wrap;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span style="font-size: 13px; color: #94a3b8;">Tổng số bản ghi: <strong id="modal-table-count" style="color: #fff;">0</strong> dòng</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <input type="text" id="modal-table-search" class="input-dark" style="padding: 6px 12px; font-size: 12px; min-width: 220px;" placeholder="Lọc nhanh bản ghi..." oninput="filterTableModalData()">
+                    <button type="button" class="btn-tech btn-tech-excel" style="padding: 6px 12px; font-size: 12px;" onclick="exportCurrentTableModalData()">
+                        <i class="fas fa-file-excel"></i> Xuất Excel
+                    </button>
+                </div>
+            </div>
+
+            <div style="padding: 16px 20px; overflow: auto; flex: 1; background: #0f121b;">
+                <div class="table-responsive-dark" style="border: 1px solid var(--border-color); border-radius: 8px;">
+                    <table class="table-dark-tech" style="width: 100%; margin: 0; text-align: left; font-size: 12px;" id="modal-table-grid">
+                        <thead id="modal-table-thead">
+                            <!-- Columns -->
+                        </thead>
+                        <tbody id="modal-table-tbody">
+                            <!-- Rows -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div style="padding: 12px 20px; border-top: 1px solid var(--border-color); background: #151824; display: flex; justify-content: flex-end;">
+                <button type="button" class="btn-tech btn-tech-reset" onclick="closeTableDataModal()">Đóng cửa sổ</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCRIPTS -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <script src="../scripts/keycap-dataset-100.js"></script>
+    <script src="../scripts/modules/GearsApp.js"></script>
+    <script src="./script/admin-common.js"></script>
+    <script>
+        function updateEnvPreview() {
+            const h = document.getElementById('cfg-host').value || '127.0.0.1';
+            const p = document.getElementById('cfg-port').value || '3306';
+            const u = document.getElementById('cfg-user').value || 'root';
+            const pw = document.getElementById('cfg-pass').value || '';
+            const db = document.getElementById('cfg-db').value || 'gears_keycap_shop';
+
+            const txt = `# GEARS Keycap Shop - Cau hinh Co So Du Lieu (MySQL / XAMPP)
+# Quan ly ket noi chuan Navicat & Do an PTTKHDT SGU
+DB_HOST=${h}
+DB_PORT=${p}
+DB_USER=${u}
+DB_PASSWORD=${pw}
+DB_NAME=${db}
+SERVER_PORT=3333`;
+            document.getElementById('env-preview-content').innerText = txt;
+        }
+
+        function togglePassVisibility() {
+            const inp = document.getElementById('cfg-pass');
+            const icon = document.getElementById('eye-icon');
+            if (inp.type === 'password') {
+                inp.type = 'text';
+                icon.className = 'fas fa-eye-slash';
+            } else {
+                inp.type = 'password';
+                icon.className = 'fas fa-eye';
+            }
+        }
+
+        function showAlert(msg, isSuccess) {
+            const alertBox = document.getElementById('navicat-alert');
+            alertBox.style.display = 'block';
+            alertBox.className = 'navicat-alert ' + (isSuccess ? 'navicat-alert-success' : 'navicat-alert-error');
+            alertBox.innerHTML = `
+                <div style="font-weight: 700; display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+                    <i class="fas ${isSuccess ? 'fa-check-circle' : 'fa-times-circle'}"></i>
+                    <span>${isSuccess ? 'NAVICAT: CONNECTION SUCCESSFUL!' : 'NAVICAT: CONNECTION FAILED!'}</span>
+                </div>
+                <div>${msg}</div>
+            `;
+            alertBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        async function handleTestConnection() {
+            const h = document.getElementById('cfg-host').value.trim();
+            const p = parseInt(document.getElementById('cfg-port').value.trim(), 10) || 3306;
+            const u = document.getElementById('cfg-user').value.trim();
+            const pw = document.getElementById('cfg-pass').value;
+            const db = document.getElementById('cfg-db').value.trim();
+
+            AdminCommon.showToast('Đang kiểm tra kết nối tới MySQL Server...', 'info');
+
+            try {
+                const res = await fetch('/api/db/test-connection', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ host: h, port: p, user: u, password: pw, database: db })
+                });
+                const data = await res.json();
+
+                if (data.success) {
+                    showAlert(`Kết nối thành công tới MySQL Server <strong>${data.host}:${data.port}</strong>!<br>
+Phiên bản máy chủ: <strong>${data.version}</strong><br>
+Cơ sở dữ liệu <strong>${data.database}</strong>: ${data.dbExists ? `Đã tồn tại (${data.tablesCount} bảng)` : 'Chưa tồn tại (sẽ tự động tạo khi bấm Lưu)'}.<br>
+Bạn có thể bấm <strong>"Lưu Cấu Hình (.env) &amp; Kết Nối"</strong> để kích hoạt.`, true);
+                    AdminCommon.showToast('Test Connection thành công!', 'success');
+                } else {
+                    showAlert(`Không thể kết nối tới MySQL Server:<br>
+<strong>Lỗi:</strong> ${data.error}<br>
+<strong>Gợi ý:</strong> Hãy mở XAMPP Control Panel và đảm bảo dịch vụ MySQL đang ở trạng thái Running (Port ${p}).`, false);
+                    AdminCommon.showToast('Test Connection thất bại!', 'error');
+                }
+            } catch (e) {
+                showAlert(`Lỗi mạng hoặc server không phản hồi: ${e.message}`, false);
+            }
+        }
+
+        async function handleSaveConfig() {
+            const h = document.getElementById('cfg-host').value.trim();
+            const p = parseInt(document.getElementById('cfg-port').value.trim(), 10) || 3306;
+            const u = document.getElementById('cfg-user').value.trim();
+            const pw = document.getElementById('cfg-pass').value;
+            const db = document.getElementById('cfg-db').value.trim();
+
+            AdminCommon.showToast('Đang lưu cấu hình vào file .env và kết nối...', 'info');
+
+            try {
+                const res = await fetch('/api/db/save-config', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ host: h, port: p, user: u, password: pw, database: db })
+                });
+                const data = await res.json();
+
+                if (data.success) {
+                    showAlert(`Đã lưu thành công cấu hình vào file <strong>.env</strong>!<br>
+Máy chủ MySQL: <strong>${h}:${p}</strong> &bull; Database: <strong>${db}</strong> &bull; Version: <strong>${data.version}</strong><br>
+${data.autoImported ? 'Hệ thống đã tự động nạp toàn bộ 8 bảng dữ liệu từ database_keycap_shop.sql!' : ''}`, true);
+                    AdminCommon.showToast('Đã lưu cấu hình vào file .env!', 'success');
+                    refreshDbStatus();
+                } else {
+                    showAlert(`Lỗi khi lưu cấu hình: ${data.message || data.error}`, false);
+                    AdminCommon.showToast('Lưu cấu hình thất bại!', 'error');
+                }
+            } catch (e) {
+                showAlert(`Lỗi: ${e.message}`, false);
+            }
+        }
+
+        async function handleImportSql() {
+            if (!confirm('Bạn có chắc chắn muốn nạp lại toàn bộ cấu trúc và dữ liệu từ file database_keycap_shop.sql vào MySQL không?')) return;
+            AdminCommon.showToast('Đang nạp file database_keycap_shop.sql vào MySQL...', 'info');
+            try {
+                const res = await fetch('/api/db/import-sql', { method: 'POST' });
+                const data = await res.json();
+                if (data.success) {
+                    AdminCommon.showToast('Nạp dữ liệu SQL vào MySQL thành công!', 'success');
+                    showAlert('Đã nạp toàn bộ dữ liệu mẫu vào MySQL thành công! Đủ 100 sản phẩm Keycap.', true);
+                    refreshDbStatus();
+                } else {
+                    AdminCommon.showToast(data.message || 'Lỗi khi nạp SQL', 'error');
+                }
+            } catch (e) {
+                AdminCommon.showToast('Lỗi: ' + e.message, 'error');
+            }
+        }
+
+        async function loadInitialConfig() {
+            try {
+                const res = await fetch('/api/db/config');
+                const cfg = await res.json();
+                if (cfg) {
+                    document.getElementById('cfg-host').value = cfg.host || '127.0.0.1';
+                    document.getElementById('cfg-port').value = cfg.port || 3306;
+                    document.getElementById('cfg-user').value = cfg.user || 'root';
+                    document.getElementById('cfg-db').value = cfg.database || 'gears_keycap_shop';
+                    updateEnvPreview();
+                }
+            } catch (e) {}
+            refreshDbStatus();
+        }
+
+        async function refreshDbStatus() {
+            const dot = document.getElementById('db-status-dot');
+            const txt = document.getElementById('db-status-text');
+            const schemaDb = document.getElementById('schema-db-name');
+
+            try {
+                const res = await fetch('/api/db/status');
+                const data = await res.json();
+
+                if (data && data.connected) {
+                    dot.style.background = '#10b981';
+                    dot.style.boxShadow = '0 0 8px #10b981';
+                    txt.innerText = `MySQL ${data.version || ''} (Online)`;
+                    schemaDb.innerText = data.database;
+
+                    if (data.counts) {
+                        document.getElementById('cnt-products').innerText = data.counts.products;
+                        document.getElementById('cnt-orders').innerText = data.counts.orders;
+                        document.getElementById('cnt-customers').innerText = data.counts.customers;
+                        document.getElementById('cnt-employees').innerText = data.counts.employees;
+                        document.getElementById('cnt-suppliers').innerText = data.counts.suppliers;
+                    }
+                } else {
+                    dot.style.background = '#ef4444';
+                    dot.style.boxShadow = '0 0 8px #ef4444';
+                    txt.innerText = 'MySQL Offline (Mở XAMPP)';
+                }
+            } catch (e) {
+                dot.style.background = '#ef4444';
+                txt.innerText = 'Server Offline';
+            }
+        }
+
+        let currentModalTableRows = [];
+        let currentModalTableName = '';
+
+        async function openTableDataModal(tableName) {
+            currentModalTableName = tableName;
+            const modal = document.getElementById('dbTableDetailModal');
+            document.getElementById('modal-table-name').innerText = tableName;
+            document.getElementById('modal-table-search').value = '';
+            modal.style.display = 'flex';
+
+            const tbody = document.getElementById('modal-table-tbody');
+            const thead = document.getElementById('modal-table-thead');
+            tbody.innerHTML = `<tr><td colspan="10" style="text-align: center; padding: 30px; color: #94a3b8;"><i class="fas fa-spinner fa-spin"></i> Đang tải dữ liệu bảng ${tableName}...</td></tr>`;
+            thead.innerHTML = '';
+
+            try {
+                const res = await fetch(`/api/db/table-data?table=${tableName}`);
+                const data = await res.json();
+
+                if (data && data.success && Array.isArray(data.rows)) {
+                    currentModalTableRows = data.rows;
+                    document.getElementById('modal-table-source').innerText = 'MySQL Live';
+                    document.getElementById('modal-table-source').style.color = '#34d399';
+                    renderTableModalGrid(currentModalTableRows);
+                    return;
+                }
+            } catch (e) {}
+
+            // Fallback sang LocalStorage nếu MySQL không phản hồi
+            document.getElementById('modal-table-source').innerText = 'LocalStorage Frontend';
+            document.getElementById('modal-table-source').style.color = '#f59e0b';
+            let fallbackData = [];
+            if (tableName === 'SanPham') fallbackData = AdminCommon.getLocalStorage('product') || [];
+            else if (tableName === 'DonHang') fallbackData = AdminCommon.getLocalStorage('orders') || [];
+            else if (tableName === 'KhachHang') fallbackData = AdminCommon.getLocalStorage('user') || [];
+            else if (tableName === 'NhanVien') fallbackData = AdminCommon.getLocalStorage('employees') || [];
+            else if (tableName === 'NhaCungCap') fallbackData = AdminCommon.getLocalStorage('suppliers') || [];
+            else if (tableName === 'DangNhap') fallbackData = AdminCommon.getLocalStorage('employees') || [];
+
+            currentModalTableRows = fallbackData;
+            renderTableModalGrid(currentModalTableRows);
+        }
+
+        function closeTableDataModal() {
+            document.getElementById('dbTableDetailModal').style.display = 'none';
+        }
+
+        function filterTableModalData() {
+            const query = (document.getElementById('modal-table-search').value || '').toLowerCase().trim();
+            if (!query) {
+                renderTableModalGrid(currentModalTableRows);
+                return;
+            }
+            const filtered = currentModalTableRows.filter(row => {
+                return Object.values(row).some(val => String(val || '').toLowerCase().includes(query));
+            });
+            renderTableModalGrid(filtered);
+        }
+
+        function renderTableModalGrid(rows) {
+            const thead = document.getElementById('modal-table-thead');
+            const tbody = document.getElementById('modal-table-tbody');
+            const countEl = document.getElementById('modal-table-count');
+
+            countEl.innerText = rows.length;
+
+            if (!rows || rows.length === 0) {
+                thead.innerHTML = '';
+                tbody.innerHTML = `<tr><td style="text-align: center; padding: 30px; color: #94a3b8;">Không có bản ghi nào trong bảng này!</td></tr>`;
+                return;
+            }
+
+            // Lấy danh sách keys từ bản ghi đầu tiên
+            const sample = rows[0];
+            const keys = Object.keys(sample).filter(k => typeof sample[k] !== 'object' || sample[k] === null);
+
+            thead.innerHTML = `<tr style="background: #11141e; border-bottom: 1px solid #23283d;">` +
+                keys.map(k => `<th style="padding: 10px 14px; color: #38bdf8; font-weight: 700; white-space: nowrap;">${k}</th>`).join('') +
+                `</tr>`;
+
+            tbody.innerHTML = rows.map(r => {
+                return `<tr style="border-bottom: 1px solid #1c2030;">` +
+                    keys.map(k => {
+                        let val = r[k];
+                        if (val === null || val === undefined) val = '<em style="color:#64748b;">NULL</em>';
+                        else if (typeof val === 'number') val = val.toLocaleString('vi-VN');
+                        else if (String(val).length > 60) val = `<span title="${AdminCommon.escapeHtml(String(val))}">${AdminCommon.escapeHtml(String(val).substring(0, 57))}...</span>`;
+                        else val = AdminCommon.escapeHtml(String(val));
+                        return `<td style="padding: 9px 14px; white-space: nowrap; color: #cbd5e1;">${val}</td>`;
+                    }).join('') +
+                    `</tr>`;
+            }).join('');
+        }
+
+        function exportCurrentTableModalData() {
+            if (!currentModalTableRows || currentModalTableRows.length === 0) {
+                AdminCommon.showToast('Không có dữ liệu để xuất!', 'warning');
+                return;
+            }
+            AdminCommon.exportTableToExcel(currentModalTableRows, `Bang_${currentModalTableName}_Keycap`, currentModalTableName);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadInitialConfig();
+            AdminCommon.loadAdminUserInfo();
+        });
+    </script>
+</body>
+</html>
