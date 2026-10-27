@@ -18,66 +18,52 @@
 
 ---
 
-## 2. HƯỚNG DẪN CHẠY DỰ ÁN (DÀNH CHO MỌI NGƯỜI - AI CŨNG CÀI ĐƯỢC)
+## 2. HƯỚNG DẪN KHỞI CHẠY PHẦN MỀM (DÀNH CHO GIẢNG VIÊN & SINH VIÊN)
 
-Dự án được đóng gói để **bất kỳ ai (giảng viên, sinh viên, người không rành kỹ thuật)** đều có thể mở và sử dụng ngay lập tức chỉ với 1 cú nhấp chuột. Bạn có thể chọn 1 trong các cách sau:
-
----
-
-### Cách 1: [DỄ NHẤT] 1 Click Bằng File `start.bat` (Khuyên Dùng Trên Windows)
-> Dành cho người dùng Windows muốn mở nhanh nhất mà không cần gõ bất kỳ dòng lệnh nào.
-
-1. Tải dự án về máy và giải nén thư mục `GEARS-Shop-Main-Project`.
-2. Tìm và **nhấp đúp chuột vào tệp `start.bat`**.
-3. Hệ thống sẽ tự động nhận diện môi trường và **tự động mở trình duyệt web** vào thẳng trang chủ!
+Dự án cung cấp **Hệ thống Phần Mềm Java Desktop Chuẩn Đồ Án PTTKHDT Kiến Trúc 3 Lớp** hỗ trợ chạy độc lập từng phân hệ hoặc **Khởi Động Đồng Thời Cả 3 Phần Mềm (Admin + Thu Ngân + Khách Hàng)** để kiểm thử tương tác Real-time đa tác nhân qua Observer Pattern!
 
 ---
 
-### Cách 2: Mở Trực Tiếp Bằng Trình Duyệt Web (Không Cần Cài Đặt Gì Hết)
-> Hoạt động trên mọi hệ điều hành (Windows, macOS, Linux) mà không cần cài thêm bất kỳ phần mềm nào.
+### Cách 1: [ĐẶC BIỆT - KHUYÊN DÙNG CHẤM ĐIỂM] Khởi Động Đồng Thời 3 Phần Mềm Bằng `Chay-Cung-Luc-3-Phan-Mem.bat`
+> Tự động khởi chạy và sắp xếp đồng thời cả 3 cửa sổ trên màn hình để chấm điểm tương tác Real-time:
+> 1. **Cửa Sổ Trái**: [QUẢN TRỊ VIÊN ADMIN] - Giám sát Dashboard biểu đồ Java2D, Kho 100 Keycaps, Quản lý đơn, CRM, Báo cáo & CSDL.
+> 2. **Cửa Sổ Phải-Trên**: [THU NGÂN CASHIER POS] - Điểm bán lẻ POS tại quầy, giỏ hàng, in hóa đơn.
+> 3. **Cửa Sổ Phải-Dưới**: [CỔNG MUA SẮM KHÁCH HÀNG] - Duyệt catalog 100 keycaps, giỏ hàng trực tuyến, tích lũy xu, thanh toán VietQR / COD.
+> 
+> *Khi Khách Hàng hoặc Thu Ngân đặt hàng, hệ thống Observer Pattern lập tức kích hoạt cập nhật doanh thu và đơn hàng lên màn hình Quản Trị Viên không có độ trễ!*
 
-1. Mở thư mục dự án `GEARS-Shop-Main-Project`.
-2. **Nhấp đúp chuột** vào tệp [`index.html`](file:///c:/Users/MY%20PC/Downloads/GEARS-Shop-Main-Project/GEARS-Shop-Main-Project/index.html) để mở giao diện Cửa hàng khách hàng trên trình duyệt mặc định (Chrome, Edge, Cốc Cốc, Safari...).
-3. Muốn vào trang Quản trị & Bán hàng POS: Nhấp đúp vào tệp `assets/Admin/login.html`.
-4. Muốn xem Sơ đồ Kiến trúc & OOP Canvas: Nhấp đúp vào tệp `so-do-canvas.html`.
-
----
-
-### Cách 3: Chạy Bằng Tiện Ích Live Server (Dành Cho Ai Dùng VS Code)
-1. Mở thư mục dự án bằng phần mềm **Visual Studio Code**.
-2. Tìm tệp `index.html` ở thanh danh sách tệp bên trái.
-3. Nhấp chuột phải vào `index.html` $\to$ Chọn **"Open with Live Server"** (hoặc bấm nút **"Go Live"** ở góc dưới cùng bên phải màn hình VS Code).
+1. Nhấp đúp chuột vào tệp **`Chay-Cung-Luc-3-Phan-Mem.bat`** (hoặc gõ `java -cp GEARS-Keycap-Shop.jar com.gears.Main all`).
+2. Màn hình 3 phân hệ sẽ tự động mở và xếp song song trên desktop!
 
 ---
 
-### Cách 4: Chạy Bằng Node.js Terminal (Dành Cho Lập Trình Viên)
-1. Cài đặt **Node.js** nếu máy chưa có: [https://nodejs.org](https://nodejs.org) (chọn bản LTS).
-2. Mở cửa sổ dòng lệnh (**Command Prompt** hoặc **PowerShell**) tại thư mục dự án và chạy lần lượt 2 lệnh:
-   ```bash
-   npm install
-   node server.js
-   ```
-3. Mở trình duyệt web bất kỳ và truy cập các đường dẫn:
-   - **Trang chủ Cửa hàng**: `http://localhost:3333/`
-   - **Cổng Đăng Nhập Quản trị & Thu ngân POS**: `http://localhost:3333/assets/Admin/login.html`
-   - **Màn hình Bán Hàng Tại Quầy POS**: `http://localhost:3333/assets/Admin/pos.html`
-   - **Bảng Điều Khiển Quản Trị**: `http://localhost:3333/assets/Admin/dashboard.html`
-   - **Trình Vẽ Sơ Đồ Thiết Kế Canvas**: `http://localhost:3333/so-do-canvas`
+### Cách 2: Khởi Chạy Từng Phân Hệ Riêng Biệt
+- **Quản Trị Viên (Admin)**: Nhấp đúp **`Chay-Admin.bat`** (`admin` / `Admin@123`).
+- **Thu Ngân (Cashier POS)**: Nhấp đúp **`Chay-Thu-Ngan-POS.bat`** (`cashier` / `Cashier@123`).
+- **Khách Hàng (Customer Portal)**: Nhấp đúp **`Chay-Khach-Hang.bat`** (Mặc định: Nguyễn Văn Hải - KH02).
+- **Hộp Thoại Khởi Chạy (Launcher Menu)**: Nhấp đúp **`Chay-Phan-Mem-Java.bat`**.
 
 ---
 
-### Cách 5: Chạy Qua XAMPP / WampServer (Dành Cho Ai Dùng Web Server PHP)
-1. Sao chép toàn bộ thư mục `GEARS-Shop-Main-Project` vào thư mục `C:\xampp\htdocs\`.
-2. Mở **XAMPP Control Panel** và nhấn **Start** tại mục **Apache**.
-3. Mở trình duyệt gõ: `http://localhost/GEARS-Shop-Main-Project/`.
+### Cách 3: Chạy Bằng Menu Tổng Hợp `start.bat`
+Nhấp đúp chuột vào tệp **`start.bat`** và chọn:
+- Phím `1`: Khởi động cùng lúc cả 3 phần mềm (Admin + Thu Ngân + Khách Hàng).
+- Phím `2`: Mở phần mềm Quản Trị Viên (Admin).
+- Phím `3`: Mở phần mềm Thu Ngân POS.
+- Phím `4`: Mở cổng mua sắm Khách Hàng.
+- Phím `5`: Chạy toàn bộ 48 Test Cases tự động kiểm thử hệ thống.
+- Phím `6`: Biên dịch lại toàn bộ mã nguồn Java `src/` và đóng gói JAR mới.
+- Phím `7`: Mở bản Web Storefront tham khảo.
 
 ---
 
-### Cách 6 (Tùy Chọn): Nạp Cơ Sở Dữ Liệu MySQL
-Dự án đã tích hợp sẵn cơ chế tự động nạp dữ liệu chuẩn trên trình duyệt (`LocalStorage`), nên **không bắt buộc cài đặt CSDL vẫn chạy mượt mà 100%**. Nếu giảng viên yêu cầu nạp CSDL MySQL:
-1. Mở **phpMyAdmin** (`http://localhost/phpmyadmin`) hoặc **MySQL Workbench**.
-2. Tạo CSDL mới: `gears_keycap_shop`.
-3. Nhấn **Import** $\to$ chọn tệp [`database_keycap_shop.sql`](file:///c:/Users/MY%20PC/Downloads/GEARS-Shop-Main-Project/GEARS-Shop-Main-Project/database_keycap_shop.sql) trong thư mục dự án $\to$ bấm **Go**.
+### Cách 4: Chạy Kiểm Thử 48 Test Cases Tự Động Bằng `Chay-Kiem-Thu-TestCases.bat`
+- Nhấp đúp vào **`Chay-Kiem-Thu-TestCases.bat`** để chạy bộ kiểm thử tự động `GearsFullTestSuite` đạt chuẩn 48/48 (100.0%)!
+
+---
+
+### Cách 5: Biên Dịch Lại Mã Nguồn Java Bằng `Bien-Dich-Java.bat`
+- Nhấp đúp vào **`Bien-Dich-Java.bat`** để biên dịch lại toàn bộ các class Java bằng `javac` và đóng gói tệp `GEARS-Keycap-Shop.jar` chuẩn hóa.
 
 ---
 
@@ -140,55 +126,89 @@ Hệ thống thiết lập sẵn các tài khoản tương ứng với từng va
 
 ---
 
-## 5. CẤU TRÚC THƯ MỤC DỰ ÁN
+## 5. CẤU TRÚC KIẾN TRÚC 3 LỚP JAVA DESKTOP (CHUẨN ĐỒ ÁN PTTKHDT SGU)
+
+Dự án được phân tách chặt chẽ theo mô hình **3 Lớp (3-Tier Architecture)** kết hợp các mẫu thiết kế chuẩn **GoF Design Patterns**:
 
 ```text
-GEARS-Shop-Main-Project/
-├── index.html                      # Trang chủ Web Storefront bán lẻ (GearVN UI)
-├── so-do-canvas.html               # Trình vẽ sơ đồ kiến trúc & mẫu thiết kế OOP trên Canvas
-├── server.js                       # Node.js Express/HTTP dev server (Port 3333)
-├── package.json                    # Cấu hình dự án & thư viện hỗ trợ
-├── database_keycap_shop.sql        # Script CSDL MySQL hoàn chỉnh
-├── .gitignore                      # Cấu hình loại bỏ file rác, logs, file tạm khi đẩy Git
-├── README.md                       # Tài liệu tổng quan & hướng dẫn chạy dự án
-├── BANG-PHAN-CONG-CHI-TIET.md      # Bảng phân công nhiệm vụ & tiến độ đồ án
-├── KIEM-THU-HE-THONG-TEST-CASES.md # Danh mục kịch bản kiểm thử hệ thống
-├── assets/
-│   ├── css/
-│   │   ├── gearvn-theme.css        # Hệ thống Design System GearVN Signature Red & Mega Dropdown
-│   │   └── Cart.css                # CSS giỏ hàng & modal thông tin
-│   ├── scripts/
-│   │   ├── storefront.js           # Controller chính của trang mua sắm khách hàng
-│   │   ├── keycap-dataset-100.js   # Bộ dữ liệu 100 sản phẩm Keycap chuẩn hóa
-│   │   ├── LocalStorage.js         # Tầng lưu trữ dữ liệu client
-│   │   ├── address-autocomplete.js # Module gợi ý địa chỉ giao hàng Geocoding
-│   │   ├── models-oop.js           # Định nghĩa các lớp thực thể OOP
-│   │   └── modules/                # 11 Module dịch vụ hướng đối tượng (GoF Patterns)
-│   │       ├── GearsApp.js         # Master Facade Pattern
-│   │       ├── StorageService.js   # Singleton & Observer Pattern
-│   │       ├── ProductService.js   # Quản lý nghiệp vụ sản phẩm
-│   │       ├── OrderService.js     # Quản lý nghiệp vụ đơn hàng & thanh toán
-│   │       ├── CustomerService.js  # Quản lý hồ sơ khách hàng & CRM
-│   │       ├── EmployeeService.js  # Quản lý nhân viên & phân quyền
-│   │       └── ...
-│   └── Admin/
-│       ├── login.html              # Màn hình đăng nhập hệ thống (Admin & POS)
-│       ├── dashboard.html          # Bảng điều khiển quản trị tổng quan
-│       ├── pos.html                # Màn hình bán hàng tại quầy (POS Terminal)
-│       ├── products.html           # Phân hệ quản lý sản phẩm
-│       ├── orders.html             # Phân hệ quản lý & chỉnh sửa đơn hàng
-│       ├── customers.html          # Phân hệ quản lý khách hàng
-│       ├── employees.html          # Phân hệ quản lý nhân viên & phân quyền
-│       ├── suppliers.html          # Phân hệ quản lý nhà cung cấp
-│       ├── reports.html            # Phân hệ báo cáo thống kê & tài chính
-│       ├── database.html           # Trình thanh tra CSDL & khôi phục dữ liệu
-│       ├── css/
-│       │   └── admin-obsidian.css  # Giao diện Obsidian Dark ERP chuyên nghiệp
-│       └── script/
-│           ├── admin-common.js     # Hàm dùng chung, xác thực & toast notification
-│           ├── orders.js           # Controller quản lý & bộ biên tập đơn hàng
-│           ├── pos.js              # Controller bán hàng tại quầy
-│           └── ...
+GEARS-Keycap-Shop/
+├── Chay-Phan-Mem-Java.bat          # 1-Click khởi chạy Phần Mềm Java Swing Desktop
+├── Bien-Dich-Java.bat              # 1-Click tự động biên dịch javac và build JAR
+├── start.bat                       # Menu chọn khởi chạy (Java App / Web Storefront)
+├── GEARS-Keycap-Shop.jar           # Tệp thực thi độc lập (Runnable JAR)
+├── data/                           # CSDL lưu trữ bền vững (CSDL nạp sẵn 100 keycaps)
+├── database_keycap_shop.sql        # Script CSDL MySQL gốc
+│
+├── src/com/gears/                  # MÃ NGUỒN PHẦN MỀM JAVA 3 LỚP (OOP)
+│   ├── Main.java                   # Điểm khởi chạy ứng dụng (Application Entry Point)
+│   │
+│   ├── model/                      # TẦNG THỰC THỂ (ENTITY / DTO LAYER)
+│   │   ├── BaseEntity.java         # Lớp cơ sở trừu tượng (ID, Timestamps)
+│   │   ├── NguoiDung.java          # Lớp trừu tượng User (Đa hình getVaiTro)
+│   │   ├── KhachHang.java          # Thực thể Khách hàng (CRM, Keycap Coins)
+│   │   ├── NhanVien.java           # Thực thể Nhân viên (Phân quyền Admin/POS)
+│   │   ├── SanPhamKeycap.java      # Thực thể Sản phẩm (Tính giá vốn, lãi gộp)
+│   │   ├── ChiTietDonHang.java     # Chi tiết mặt hàng trong đơn
+│   │   ├── DonHang.java            # Thực thể Đơn hàng (Khóa trạng thái Done/Hủy)
+│   │   ├── NhaCungCap.java         # Thực thể Nhà cung cấp đối tác
+│   │   ├── BaoCao.java             # Thực thể Báo cáo tài chính
+│   │   └── ShopConfig.java         # Thực thể Cấu hình thương hiệu & VietQR
+│   │
+│   ├── dao/                        # TẦNG TRUY XUẤT DỮ LIỆU (DATA ACCESS OBJECT LAYER)
+│   │   ├── IGenericDAO.java        # Interface Generic DAO chuẩn CRUD
+│   │   ├── SanPhamDAO.java         # DAO truy xuất kho 100 sản phẩm
+│   │   ├── DonHangDAO.java         # DAO quản lý đơn hàng
+│   │   ├── KhachHangDAO.java       # DAO quản lý khách hàng
+│   │   ├── NhanVienDAO.java        # DAO quản lý nhân sự
+│   │   ├── NhaCungCapDAO.java      # DAO quản lý nhà cung cấp
+│   │   └── BaoCaoDAO.java          # DAO kết xuất báo cáo
+│   │
+│   ├── service/                    # TẦNG NGHIỆP VỤ (BUSINESS LOGIC / BUS LAYER)
+│   │   ├── AuthService.java        # Nghiệp vụ đăng nhập, mật khẩu an toàn
+│   │   ├── SanPhamService.java     # Nghiệp vụ kiểm tra tồn kho, nhập/xuất kho
+│   │   ├── DonHangService.java     # State Machine khóa đơn Done & hoàn kho khi hủy
+│   │   ├── KhachHangService.java   # Nghiệp vụ tích lũy điểm thưởng & thăng hạng
+│   │   ├── NhanVienService.java    # Nghiệp vụ phân quyền Quản trị / Thu ngân
+│   │   ├── NhaCungCapService.java  # Ràng buộc toàn vẹn khóa ngoại khi xóa NCC
+│   │   └── BaoCaoService.java      # Tính toán doanh thu, giá vốn, lãi gộp & xuất CSV
+│   │
+│   ├── patterns/                   # 6 MẪU THIẾT KẾ HƯỚNG ĐỐI TƯỢNG (GoF PATTERNS)
+│   │   ├── singleton/
+│   │   │   ├── DatabaseContext.java# Singleton quản lý CSDL & Seed Data
+│   │   │   └── SessionManager.java # Singleton phiên làm việc người dùng
+│   │   ├── factory/
+│   │   │   ├── SanPhamFactory.java # Factory sản xuất đối tượng theo thể loại
+│   │   │   └── EntityFactory.java  # Factory tạo DonHang, User, NhaCungCap
+│   │   ├── strategy/
+│   │   │   ├── ChienLuocThanhToan.java # Strategy Interface đa hình thanh toán
+│   │   │   ├── ThanhToanTienMat.java   # Strategy thanh toán tiền mặt & tiền thối
+│   │   │   ├── ThanhToanVietQR.java    # Strategy sinh mã VietQR Napas 24/7
+│   │   │   ├── ThanhToanTheNganHang.java # Strategy quẹt thẻ POS Terminal
+│   │   │   └── PaymentProcessor.java   # Strategy Context điều hướng thanh toán
+│   │   ├── observer/
+│   │   │   ├── IDataObserver.java  # Observer Interface cập nhật UI thời gian thực
+│   │   │   └── Subject.java        # Observable Subject phát sự kiện
+│   │   ├── facade/
+│   │   │   └── GearsShopFacade.java# Master Facade cổng giao tiếp cấp cao duy nhất
+│   │   └── builder/
+│   │       └── InvoiceBuilder.java # Builder tạo mẫu hóa đơn bán lẻ in ấn
+│   │
+│   └── ui/                         # TẦNG GIAO DIỆN NGƯỜI DÙNG (BOUNDARY / GUI SWING)
+│       ├── LoginFrame.java         # Cổng đăng nhập phân quyền Admin / Cashier
+│       ├── MainFrame.java          # Cửa sổ chính với Sidebar điều hướng hiện đại
+│       ├── theme/UITheme.java      # Design System (GearVN Red + Obsidian Dark)
+│       ├── components/             # Reusable UI Widgets (ModernButton, ModernTable, StatCard, ReceiptDialog...)
+│       └── panels/                 # 10 Phân Hệ Màn Hình
+│           ├── DashboardPanel.java # Bảng điều khiển KPI & đơn hàng gần đây
+│           ├── POSPanel.java       # Màn hình bán hàng tại quầy POS & Numpad
+│           ├── SanPhamPanel.java   # Quản lý 100 sản phẩm & điều chỉnh kho
+│           ├── DonHangPanel.java   # Quản lý đơn hàng & khóa trạng thái Done/Hủy
+│           ├── NhaCungCapPanel.java# Quản lý nhà cung cấp & kiểm tra ràng buộc
+│           ├── KhachHangPanel.java # CRM khách hàng & điểm thưởng
+│           ├── NhanVienPanel.java  # Quản lý nhân viên & đổi quyền Admin/POS
+│           ├── BaoCaoPanel.java    # Biểu đồ tài chính & xuất file Excel CSV
+│           ├── ShopConfigPanel.java# Cấu hình thương hiệu & VietQR Napas
+│           └── OOPInspectorPanel.java # Trình kiểm tra & thuyết trình đồ án OOP trực tiếp
 ```
 
 ---

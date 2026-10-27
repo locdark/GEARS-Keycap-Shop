@@ -26,3 +26,7 @@ dropdown_*.png
 # OS generated files
 .DS_Store
 Thumbs.db
+
+# Java build artifacts
+bin/
+*.class
