@@ -85,6 +85,20 @@ public class DonHangPanel extends JPanel implements IDataObserver {
         ModernButton btnFilter = new ModernButton("Lọc Đơn Hàng", UITheme.BG_CARD, UITheme.BG_CARD_HOVER, UITheme.TEXT_PRIMARY);
         btnFilter.addActionListener(e -> filterData());
 
+        ModernButton btnReload = new ModernButton("Tải Lại Dữ Liệu", new Color(0x1B, 0x38, 0x4C), new Color(0x23, 0x4C, 0x6A), UITheme.STATUS_INFO);
+        btnReload.setFont(UITheme.FONT_BOLD);
+        btnReload.setPreferredSize(new Dimension(145, 36));
+        btnReload.setToolTipText("Làm mới và nạp lại toàn bộ đơn hàng mới nhất từ CSDL đĩa");
+        btnReload.addActionListener(e -> {
+            facade.reloadDatabase();
+            refreshData();
+            JOptionPane.showMessageDialog(this,
+                    "ĐÃ TẢI LẠI VÀ ĐỒNG BỘ CSDL THÀNH CÔNG!\n\n"
+                    + "Tổng số đơn hàng hiện có: " + facade.getAllOrders().size() + " đơn\n"
+                    + "(Hệ thống tự động liên tục kiểm tra và đồng bộ đơn hàng mới)",
+                    "Làm Mới Dữ Liệu Hoàn Tất", JOptionPane.INFORMATION_MESSAGE);
+        });
+
         JLabel lblStatus = new JLabel("Trạng thái:");
         lblStatus.setFont(UITheme.FONT_BOLD);
         lblStatus.setForeground(UITheme.TEXT_SECONDARY);
@@ -99,6 +113,7 @@ public class DonHangPanel extends JPanel implements IDataObserver {
         pnlFilters.add(lblChannel);
         pnlFilters.add(cbChannelFilter);
         pnlFilters.add(btnFilter);
+        pnlFilters.add(btnReload);
 
         pnlTop.add(pnlFilters, BorderLayout.CENTER);
         add(pnlTop, BorderLayout.NORTH);

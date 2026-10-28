@@ -478,6 +478,42 @@ function handleCheckout() {
   totalPayment.push(tempTemp);
   localStorage.setItem("cartList", JSON.stringify(totalPayment));
 
+  // Đồng bộ ngay lập tức sang orders của Admin
+  try {
+      var currentOrders = JSON.parse(localStorage.getItem("orders")) || [];
+      if (!currentOrders.some(o => o.id === tempTemp.maHD)) {
+          currentOrders.unshift({
+              id: tempTemp.maHD,
+              orderCode: 'DH-WEB-' + String(tempTemp.maHD).slice(-4),
+              customerName: tempTemp.maKH || 'Khách hàng Web',
+              customerPhone: '',
+              customerEmail: '',
+              address: tempTemp.diaChiNhanHang || 'Giao hàng tận nơi',
+              date: new Date().toISOString(),
+              status: 'moi',
+              paymentMethod: tempTemp.paymentMethod || 'Online',
+              paymentMethodText: tempTemp.paymentMethod || 'Đặt hàng Web Online',
+              cashierName: 'Hệ thống Web',
+              channel: 'Online',
+              items: tempTemp.totalProducts ? tempTemp.totalProducts.map(tp => ({
+                  id: tp.id,
+                  name: tp.name,
+                  quantity: tp.quantity || 1,
+                  price: tp.price,
+                  costPrice: Math.round(tp.price * 0.65)
+              })) : [],
+              subTotal: tempTemp.tongTien,
+              discountPercent: 0,
+              discountAmount: 0,
+              total: tempTemp.tongTien,
+              costTotal: Math.round(tempTemp.tongTien * 0.65),
+              profit: Math.round(tempTemp.tongTien * 0.35),
+              note: 'Khách hàng đặt qua Website Client'
+          });
+          localStorage.setItem("orders", JSON.stringify(currentOrders));
+      }
+  } catch (errSync) {}
+
   // Xóa giỏ hàng tạm thời và cập nhật giao diện
   sendRequire(tempArray);
   tempArray = [];

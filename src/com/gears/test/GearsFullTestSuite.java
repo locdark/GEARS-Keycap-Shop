@@ -212,6 +212,10 @@ public class GearsFullTestSuite {
         });
 
         runTest("TC20", "Tự động cập nhật", "Tự động hoàn tất và khóa đơn khi thanh toán POS thành công", () -> {
+            SanPhamKeycap sp1 = facade.getProductById(1);
+            if (sp1 != null && sp1.getSoLuongTon() < 1) {
+                sp1.nhapKho(10);
+            }
             DonHang posOrder = new DonHang("POS-AUTO-DONE", "Khách Test", "0911", "POS", "Cash", "POS");
             posOrder.themChiTiet(new ChiTietDonHang(1, "Artisan", 1, 825000, 520000));
             StringBuilder err = new StringBuilder();

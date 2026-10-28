@@ -12,6 +12,10 @@ if exist "C:\Program Files\Java\jdk-21\bin\javac.exe" (
     set "JAVAC_CMD=C:\Program Files\Java\jdk-21\bin\javac.exe"
     set "JAR_CMD=C:\Program Files\Java\jdk-21\bin\jar.exe"
 )
+if exist "C:\Program Files\Java\jdk-21.0.12\bin\javac.exe" (
+    set "JAVAC_CMD=C:\Program Files\Java\jdk-21.0.12\bin\javac.exe"
+    set "JAR_CMD=C:\Program Files\Java\jdk-21.0.12\bin\jar.exe"
+)
 
 if not exist "bin" mkdir bin
 

@@ -116,6 +116,17 @@ public class MainFrame extends JFrame {
         lblUser.setFont(UITheme.FONT_REGULAR);
         lblUser.setForeground(UITheme.TEXT_PRIMARY);
 
+        ModernButton btnSync = new ModernButton("Tải Lại CSDL", new Color(0x1B, 0x38, 0x4C), new Color(0x23, 0x4C, 0x6A), UITheme.STATUS_INFO);
+        btnSync.setFont(UITheme.FONT_SMALL);
+        btnSync.setPreferredSize(new Dimension(105, 30));
+        btnSync.setToolTipText("Làm mới và đồng bộ toàn bộ CSDL hệ thống");
+        btnSync.addActionListener(e -> {
+            facade.reloadDatabase();
+            JOptionPane.showMessageDialog(this,
+                    "ĐÃ ĐỒNG BỘ VÀ TẢI LẠI CSDL THÀNH CÔNG!\n- Toàn bộ dữ liệu 10 phân hệ đã được làm mới từ đĩa.",
+                    "Đồng Bộ Thành Công", JOptionPane.INFORMATION_MESSAGE);
+        });
+
         ModernButton btnLogout = new ModernButton("Đăng Xuất", UITheme.BG_CARD, UITheme.BG_CARD_HOVER, UITheme.TEXT_SECONDARY);
         btnLogout.setFont(UITheme.FONT_SMALL);
         btnLogout.setPreferredSize(new Dimension(90, 30));
@@ -123,6 +134,7 @@ public class MainFrame extends JFrame {
 
         pnlRight.add(lblClock);
         pnlRight.add(lblUser);
+        pnlRight.add(btnSync);
         pnlRight.add(btnLogout);
 
         pnlHeader.add(pnlRight, BorderLayout.EAST);
@@ -240,6 +252,11 @@ public class MainFrame extends JFrame {
         this.activeCardName = cardName;
         cardLayout.show(pnlContentCards, cardName);
         lblCurrentScreen.setText(title);
+
+        // Tự động kiểm tra và đồng bộ lại CSDL khi chuyển sang màn hình Đơn Hàng hoặc Dashboard
+        if ("DON_HANG".equals(cardName) || "DASHBOARD".equals(cardName)) {
+            facade.reloadDatabase();
+        }
 
         // Update button visual states & vector icon colors
         for (Map.Entry<String, JButton> entry : sidebarButtons.entrySet()) {

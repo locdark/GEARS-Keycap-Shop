@@ -370,3 +370,36 @@ function loadRecentOrders() {
         `;
     }).join('');
 }
+
+// Reload Dashboard button handler
+document.addEventListener('DOMContentLoaded', function () {
+    const reloadBtn = document.getElementById('btn-reload-dashboard');
+    if (reloadBtn) {
+        reloadBtn.addEventListener('click', () => {
+            loadDashboardStats();
+            loadMasterProductList();
+            renderCategoryBreakdown();
+            loadRecentOrders();
+            AdminCommon.showToast('Đã tải lại toàn bộ số liệu Dashboard mới nhất!', 'success');
+        });
+    }
+});
+
+// Tự động đồng bộ thời gian thực khi có đơn hàng mới từ tab khác
+window.addEventListener('storage', function (e) {
+    if (e.key === 'orders' || e.key === 'cartList' || e.key === 'product') {
+        loadDashboardStats();
+        loadRecentOrders();
+        renderCategoryBreakdown();
+    }
+});
+
+window.addEventListener('focus', function () {
+    loadDashboardStats();
+    loadRecentOrders();
+});
+
+setInterval(function () {
+    loadDashboardStats();
+    loadRecentOrders();
+}, 4000);

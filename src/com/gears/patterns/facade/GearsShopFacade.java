@@ -212,4 +212,17 @@ public class GearsShopFacade {
     public void updateShopConfig(ShopConfig cfg) {
         dbContext.setShopConfig(cfg);
     }
+
+    /**
+     * Tải lại toàn bộ dữ liệu CSDL từ tệp đĩa data/gears_database.dat và phát tín hiệu cho các Observer
+     */
+    public boolean reloadDatabase() {
+        boolean ok = dbContext.reloadFromDisk();
+        if (ok) {
+            com.gears.patterns.observer.Subject.getInstance().notifyObservers("DATABASE_RELOADED", null);
+            com.gears.patterns.observer.Subject.getInstance().notifyObservers("ORDER_CREATED", null);
+            com.gears.patterns.observer.Subject.getInstance().notifyObservers("STOCK_CHANGED", null);
+        }
+        return ok;
+    }
 }

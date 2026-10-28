@@ -26,13 +26,21 @@ public class DatabaseContext {
     private static final String DATA_DIR = "data";
     private static final String DB_FILE = "data/gears_database.dat";
 
+    private volatile long lastFileModifiedTimestamp = 0;
+
     private DatabaseContext() {
         new File(DATA_DIR).mkdirs();
         loadFromDisk();
         if (sanPhamMap.isEmpty()) {
             initSeedData();
             saveToDisk();
+        } else {
+            File file = new File(DB_FILE);
+            if (file.exists()) {
+                this.lastFileModifiedTimestamp = file.lastModified();
+            }
         }
+        startDiskFileWatcher();
     }
 
     public static synchronized DatabaseContext getInstance() {
@@ -51,6 +59,10 @@ public class DatabaseContext {
             oos.writeObject(new ArrayList<>(donHangMap.values()));
             oos.writeObject(new ArrayList<>(baoCaoMap.values()));
             oos.writeObject(shopConfig);
+            File file = new File(DB_FILE);
+            if (file.exists()) {
+                this.lastFileModifiedTimestamp = file.lastModified();
+            }
         } catch (Exception e) {
             System.err.println("Lỗi lưu CSDL xuống đĩa: " + e.getMessage());
         }
@@ -81,9 +93,80 @@ public class DatabaseContext {
             for (BaoCao r : reports) baoCaoMap.put(r.getMaBC(), r);
 
             shopConfig = (ShopConfig) ois.readObject();
+            this.lastFileModifiedTimestamp = file.lastModified();
         } catch (Exception e) {
             System.err.println("Không thể đọc CSDL từ đĩa (sẽ khởi tạo lại mẫu): " + e.getMessage());
         }
+    }
+
+    @SuppressWarnings("unchecked")
+    public synchronized boolean reloadFromDisk() {
+        File file = new File(DB_FILE);
+        if (!file.exists()) return false;
+
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
+            List<SanPhamKeycap> products = (List<SanPhamKeycap>) ois.readObject();
+            List<NhaCungCap> suppliers = (List<NhaCungCap>) ois.readObject();
+            List<KhachHang> customers = (List<KhachHang>) ois.readObject();
+            List<NhanVien> employees = (List<NhanVien>) ois.readObject();
+            List<DonHang> orders = (List<DonHang>) ois.readObject();
+            List<BaoCao> reports = (List<BaoCao>) ois.readObject();
+            ShopConfig cfg = (ShopConfig) ois.readObject();
+
+            sanPhamMap.clear();
+            for (SanPhamKeycap p : products) sanPhamMap.put(p.getMaSP(), p);
+
+            nhaCungCapMap.clear();
+            for (NhaCungCap s : suppliers) nhaCungCapMap.put(s.getMaNCC(), s);
+
+            khachHangMap.clear();
+            for (KhachHang c : customers) khachHangMap.put(c.getId(), c);
+
+            nhanVienMap.clear();
+            for (NhanVien e : employees) nhanVienMap.put(e.getId(), e);
+
+            donHangMap.clear();
+            for (DonHang o : orders) donHangMap.put(o.getMaDH(), o);
+
+            baoCaoMap.clear();
+            for (BaoCao r : reports) baoCaoMap.put(r.getMaBC(), r);
+
+            if (cfg != null) this.shopConfig = cfg;
+            this.lastFileModifiedTimestamp = file.lastModified();
+            return true;
+        } catch (Exception e) {
+            System.err.println("Lỗi nạp lại CSDL từ đĩa: " + e.getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Tự động quét file CSDL đĩa mỗi 1.5 giây để đồng bộ liên tiến trình (Cross-Process Sync).
+     * Khi có bất kỳ ứng dụng con nào (Customer Portal, Cashier POS) đặt đơn hoặc sửa dữ liệu,
+     * tiến trình Quản Trị Viên (Admin) sẽ tự động nạp lại và bắn tín hiệu Observer cập nhật ngay lập tức!
+     */
+    private void startDiskFileWatcher() {
+        Thread watcherThread = new Thread(() -> {
+            while (true) {
+                try {
+                    Thread.sleep(1500);
+                    File file = new File(DB_FILE);
+                    if (file.exists() && file.lastModified() > lastFileModifiedTimestamp) {
+                        boolean ok = reloadFromDisk();
+                        if (ok) {
+                            com.gears.patterns.observer.Subject.getInstance().notifyObservers("DATABASE_RELOADED", null);
+                            com.gears.patterns.observer.Subject.getInstance().notifyObservers("ORDER_CREATED", null);
+                            com.gears.patterns.observer.Subject.getInstance().notifyObservers("STOCK_CHANGED", null);
+                        }
+                    }
+                } catch (InterruptedException e) {
+                    break;
+                } catch (Exception ignored) {
+                }
+            }
+        }, "GEARS-Disk-AutoSync");
+        watcherThread.setDaemon(true);
+        watcherThread.start();
     }
 
     // === ACCESSORS ===

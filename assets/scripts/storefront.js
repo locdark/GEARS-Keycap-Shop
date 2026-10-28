@@ -756,6 +756,31 @@ function handleCheckoutButton() {
     orders.unshift(newOrder);
     AdminCommon.setLocalStorage('orders', orders);
 
+    // Đồng bộ vào cartList để đảm bảo mọi module đều nhận được đơn hàng
+    try {
+        const cartList = AdminCommon.getLocalStorage('cartList') || [];
+        cartList.unshift({
+            maHD: newOrder.id,
+            maKH: newOrder.customerName || 'Khách hàng Web',
+            ngayLapHD: new Date().toLocaleDateString('vi-VN'),
+            tongTien: newOrder.total,
+            diaChiNhanHang: newOrder.address,
+            paymentMethod: newOrder.paymentMethod,
+            totalProducts: newOrder.items,
+            status: newOrder.status
+        });
+        AdminCommon.setLocalStorage('cartList', cartList);
+    } catch(e) {}
+
+    // Bắn API lưu vào CSDL backend nếu server.js đang hoạt động
+    try {
+        fetch('/api/orders', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(newOrder)
+        }).catch(() => {});
+    } catch(e) {}
+
     // Trừ tồn kho sản phẩm
     clientCart.forEach(it => {
         const prod = clientProducts.find(p => p.id === it.id);
@@ -859,6 +884,15 @@ function simulateSepayPayment() {
             orders[orderIdx].paymentMethodText = 'Chuyển khoản SePay (Đã thanh toán thành công)';
             orders[orderIdx].paidAt = new Date().toISOString();
             AdminCommon.setLocalStorage('orders', orders);
+
+            try {
+                const cartList = AdminCommon.getLocalStorage('cartList') || [];
+                const cIdx = cartList.findIndex(c => c.maHD === currentPendingOrder.id);
+                if (cIdx !== -1) {
+                    cartList[cIdx].status = 'giaohang';
+                    AdminCommon.setLocalStorage('cartList', cartList);
+                }
+            } catch(e) {}
         }
 
         if (sepayCountdownTimer) clearInterval(sepayCountdownTimer);

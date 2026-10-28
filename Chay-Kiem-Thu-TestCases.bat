@@ -12,6 +12,9 @@ set "JAVA_CMD=java"
 if exist "C:\Program Files\Java\jdk-21\bin\java.exe" (
     set "JAVA_CMD=C:\Program Files\Java\jdk-21\bin\java.exe"
 )
+if exist "C:\Program Files\Java\jdk-21.0.12\bin\java.exe" (
+    set "JAVA_CMD=C:\Program Files\Java\jdk-21.0.12\bin\java.exe"
+)
 
 echo [*] Dang khoi chay toan bo 48 Test Cases tu com.gears.test.GearsFullTestSuite...
 echo ======================================================================

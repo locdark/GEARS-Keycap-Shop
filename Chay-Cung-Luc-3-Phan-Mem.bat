@@ -18,6 +18,9 @@ set "JAVA_CMD=java"
 if exist "C:\Program Files\Java\jdk-21\bin\java.exe" (
     set "JAVA_CMD=C:\Program Files\Java\jdk-21\bin\java.exe"
 )
+if exist "C:\Program Files\Java\jdk-21.0.12\bin\java.exe" (
+    set "JAVA_CMD=C:\Program Files\Java\jdk-21.0.12\bin\java.exe"
+)
 
 if exist "GEARS-Keycap-Shop.jar" (
     "%JAVA_CMD%" -cp GEARS-Keycap-Shop.jar com.gears.Main all

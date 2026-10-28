@@ -6,6 +6,7 @@ import com.gears.patterns.observer.IDataObserver;
 import com.gears.patterns.observer.Subject;
 import com.gears.ui.components.BarChartComponent;
 import com.gears.ui.components.DonutChartComponent;
+import com.gears.ui.components.ModernButton;
 import com.gears.ui.components.ModernTable;
 import com.gears.ui.components.StatCard;
 import com.gears.ui.theme.UITheme;
@@ -76,7 +77,20 @@ public class DashboardPanel extends JPanel implements IDataObserver {
         pnlText.add(Box.createVerticalStrut(4));
         pnlText.add(lblSub);
 
+        ModernButton btnReload = new ModernButton("Tải Lại Dữ Liệu", new Color(0x1B, 0x38, 0x4C), new Color(0x23, 0x4C, 0x6A), UITheme.STATUS_INFO);
+        btnReload.setFont(UITheme.FONT_BOLD);
+        btnReload.setPreferredSize(new Dimension(150, 36));
+        btnReload.setToolTipText("Làm mới chỉ số KPI và đơn hàng mới nhất từ CSDL");
+        btnReload.addActionListener(e -> {
+            facade.reloadDatabase();
+            refreshData();
+            JOptionPane.showMessageDialog(this,
+                    "Đã làm mới dữ liệu Dashboard thành công!\nTổng doanh thu hiện tại: " + CURRENCY.format(facade.getTotalRevenue()),
+                    "Làm Mới Dashboard", JOptionPane.INFORMATION_MESSAGE);
+        });
+
         pnlHeader.add(pnlText, BorderLayout.WEST);
+        pnlHeader.add(btnReload, BorderLayout.EAST);
         add(pnlHeader, BorderLayout.NORTH);
     }
 

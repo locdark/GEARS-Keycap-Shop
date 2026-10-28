@@ -541,15 +541,23 @@ function setupOrderEvents() {
         });
     }
 
+    const reloadBtn = document.getElementById('btn-reload-order');
+    if (reloadBtn) {
+        reloadBtn.addEventListener('click', () => {
+            syncOrdersWithCartList();
+            loadOrders();
+            AdminCommon.showToast('Đã tải lại toàn bộ danh sách đơn hàng mới nhất!', 'success');
+        });
+    }
+
     if (resetBtn) {
         resetBtn.addEventListener('click', () => {
             if (searchInput) searchInput.value = '';
             if (filterStatus) filterStatus.value = '';
             if (filterChannel) filterChannel.value = '';
-            filteredOrders = [...allOrders];
-            currentPage = 1;
-            displayOrders();
-            AdminCommon.showToast('Đã đặt lại bộ lọc danh sách đơn hàng!', 'info');
+            syncOrdersWithCartList();
+            loadOrders();
+            AdminCommon.showToast('Đã đặt lại bộ lọc và làm mới dữ liệu!', 'info');
         });
     }
 
@@ -853,3 +861,29 @@ function saveEditingOrder() {
     updateOrderKPIs();
     displayOrders();
 }
+
+// ============================================================================
+// 12. TỰ ĐỘNG ĐỒNG BỘ THỜI GIAN THỰC (CROSS-TAB & CROSS-WINDOW SYNC)
+// Khi khách hàng đặt đơn thành công từ Tab Web Storefront, trang Quản lý đơn hàng
+// Admin sẽ ngay lập tức tự động cập nhật danh sách đơn hàng và các thẻ KPI!
+// ============================================================================
+window.addEventListener('storage', function (e) {
+    if (e.key === 'orders' || e.key === 'cartList' || e.key === 'product') {
+        syncOrdersWithCartList();
+        loadOrders();
+    }
+});
+
+window.addEventListener('focus', function () {
+    syncOrdersWithCartList();
+    loadOrders();
+});
+
+// Định kỳ quét tự động mỗi 3 giây
+setInterval(function () {
+    syncOrdersWithCartList();
+    const currentOrders = AdminCommon.getLocalStorage('orders') || [];
+    if (currentOrders.length !== allOrders.length) {
+        loadOrders();
+    }
+}, 3000);
